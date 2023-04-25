@@ -23,7 +23,7 @@ class OtpScreenController extends GetxController
   GetStorage storage = GetStorage();
   String? phone;
   String? verID;
-  int? forceToken;
+  // int? forceToken;
   RxBool isLoading = false.obs;
   RxString otpCode = ''.obs;
 
@@ -52,7 +52,7 @@ class OtpScreenController extends GetxController
     if (Get.arguments != null) {
       verID = Get.arguments[0] as String;
       phone = Get.arguments[1] as String;
-      forceToken = Get.arguments[2] as int;
+      // forceToken = Get.arguments[2] as int;
       log('ver id $verID');
       log('phone $phone');
     }
@@ -114,7 +114,10 @@ class OtpScreenController extends GetxController
       log(phone.toString());
       Get.toNamed(
         Routes.OTP_SCREEN,
-        arguments: <dynamic>[verificationid, phone.toString(), forceToken],
+        arguments: <dynamic>[
+          verificationid,
+          phone.toString(),
+        ], // forceToken],
       );
       change(null, status: RxStatus.success());
     }

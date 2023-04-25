@@ -77,12 +77,14 @@ class GetStartedController extends GetxController with StateMixin<dynamic> {
           verificationFailed: (FirebaseAuthException authException) {
             log('Phone number verification failed. Code: ${authException.code}. Message: ${authException.message}');
           },
-          codeSent: (String verificationId, [int? forceResendingToken]) {
+          codeSent: (String verificationId, [int? forceResendingToken]) async {
             log('force resending token $forceResendingToken');
             log('code sent');
+            log('ver id $verificationId');
+
             verificationid = verificationId;
             log(phoneNumber);
-            Get.toNamed(
+            await Get.toNamed(
               Routes.OTP_SCREEN,
               arguments: <dynamic>[
                 verificationId,
