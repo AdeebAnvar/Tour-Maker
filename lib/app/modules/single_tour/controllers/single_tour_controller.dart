@@ -188,7 +188,7 @@ class SingleTourController extends GetxController
   }
 
   Future<void> onClickAddPassenger(PackageData package) async {
-    if (currentUserAddress != null) {
+    if (currentUserAddress == null) {
       final DateTime sd = DateTime.parse(package.dateOfTravel.toString());
       final DateTime today = DateTime.now();
       if (sd.difference(today).inDays <= 7) {

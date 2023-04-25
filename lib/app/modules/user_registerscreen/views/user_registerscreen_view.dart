@@ -185,7 +185,7 @@ class UserRegisterscreenView extends GetView<UserRegisterscreenController> {
                             return Container(
                               padding: const EdgeInsets.all(15),
                               decoration: BoxDecoration(
-                                color: const Color(0xFFF6F6F6),
+                                color: const Color.fromARGB(255, 232, 231, 233),
                                 borderRadius: BorderRadius.circular(15),
                               ),
                               child: DropdownButton<Gender>(
@@ -211,7 +211,7 @@ class UserRegisterscreenView extends GetView<UserRegisterscreenController> {
                             return Container(
                               padding: const EdgeInsets.all(15),
                               decoration: BoxDecoration(
-                                color: const Color(0xFFF6F6F6),
+                                color: const Color.fromARGB(255, 232, 231, 233),
                                 borderRadius: BorderRadius.circular(15),
                               ),
                               child: DropdownButton<CategoryType>(

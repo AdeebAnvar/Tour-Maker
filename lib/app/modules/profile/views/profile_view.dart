@@ -42,7 +42,7 @@ class ProfileView extends GetView<ProfileController> {
                         height: 180,
                         child: CircleAvatar(
                           radius: 60,
-                          backgroundImage: controller.showUserPic.value ==''
+                          backgroundImage: controller.showUserPic.value
                               ? MemoryImage(controller.getImageFromBytes())
                                   as ImageProvider<Object>?
                               : AssetImage(controller.image.value),

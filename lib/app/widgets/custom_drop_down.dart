@@ -27,7 +27,7 @@ class CustomDropDownButton extends StatelessWidget {
       child: InputDecorator(
         decoration: InputDecoration(
           filled: true,
-          fillColor: const Color(0xFFF6F6F6),
+          fillColor: const Color.fromARGB(255, 232, 231, 233),
           contentPadding:
               const EdgeInsets.symmetric(vertical: 12.0, horizontal: 29.0),
           border: OutlineInputBorder(
