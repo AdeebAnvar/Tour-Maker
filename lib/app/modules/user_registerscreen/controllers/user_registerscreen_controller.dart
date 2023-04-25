@@ -84,7 +84,8 @@ class UserRegisterscreenController extends GetxController
             (Gender gender) =>
                 gender.toString().split('.').last.toLowerCase() ==
                 user.value.gender?.toLowerCase(),
-            orElse: () => Gender.Male)
+            orElse: () => Gender.Male,
+          )
         : Gender.Male;
     log('user category: ${user.value.category}');
     log('CategoryType values: ${CategoryType.values}');
@@ -96,7 +97,8 @@ class UserRegisterscreenController extends GetxController
             (CategoryType categoryType) =>
                 categoryType.toString().split('.').last.toLowerCase() ==
                 user.value.category?.toLowerCase(),
-            orElse: () => CategoryType.standard)
+            orElse: () => CategoryType.standard,
+          )
         : CategoryType.standard;
     userPhone.value = user.value.phoneNumber.toString();
     userName.value = user.value.name.toString();
@@ -143,18 +145,22 @@ class UserRegisterscreenController extends GetxController
     );
     log('kjfgiogosd ${res.message}');
     log('kjfgiogosd st ${res.status}');
-    if (res.status == ApiResponseStatus.completed) {
-      log('Adeeb updated');
-      currentUserName = nameOFuser;
-      currentUserPhoneNumber = phoneNumberOfuser;
-      currentUserState = stateOFuser;
-      currentUserCategory = categoryOFuser;
-      log('Adeeb update user category $categoryOFuser');
-      currentUserAddress = addressOFuser;
-      isloading.value = false;
-      Get.back();
-    } else {
-      log('Adeeb not updated');
+    try {
+      if (res.status == ApiResponseStatus.completed) {
+        log('Adeeb updated');
+        currentUserName = nameOFuser;
+        currentUserPhoneNumber = phoneNumberOfuser;
+        currentUserState = stateOFuser;
+        currentUserCategory = categoryOFuser;
+        log('Adeeb update user category $categoryOFuser');
+        currentUserAddress = addressOFuser;
+        isloading.value = false;
+        Get.back();
+      } else {
+        log('Adeeb not updated');
+      }
+    } catch (e) {
+      log('update user $e');
     }
   }
 
@@ -214,14 +220,15 @@ class UserRegisterscreenController extends GetxController
       isloading.value = true;
       if (selectedCategoryType.value != CategoryType.standard) {
         log('not standard');
-        CustomDialog().showCustomDialog('Register as an agent of\n TourMaker',
+        await CustomDialog().showCustomDialog(
+            'Register as an agent of\n TourMaker',
             'You have to pay \n424+GST \nto apply as an\n agent of TourMaker',
             cancelText: 'Go Back',
             confirmText: 'Pay rs 424 + GST', onCancel: () {
           Get.back();
-        }, onConfirm: () {
+        }, onConfirm: () async {
           Get.back();
-          payAmount();
+          await payAmount();
         });
       } else {
         await saveUserInfo();
@@ -274,7 +281,7 @@ class UserRegisterscreenController extends GetxController
     try {
       if (res.data != null) {
         razorPayModel.value = res.data!;
-        openRazorPay(razorPayModel.value.packageId.toString(), 1000);
+        await openRazorPay(razorPayModel.value.packageId.toString(), 1000);
       } else {
         // log(' adeeb raz emp ');
       }

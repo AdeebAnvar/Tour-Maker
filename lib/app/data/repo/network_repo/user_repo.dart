@@ -236,6 +236,9 @@ class UserRepository {
         options: Options(headers: authHeader),
         data: formData,
       );
+      log('repo updateuser msg ${res.statusMessage}');
+      log('repo updateuser code ${res.statusCode}');
+
       if (res.statusCode == 200) {
         log('200');
         return ApiResponse<Map<String, dynamic>>.completed(res.data);
@@ -244,10 +247,12 @@ class UserRepository {
         return ApiResponse<Map<String, dynamic>>.error(res.statusMessage);
       }
     } on DioError catch (de) {
-      log('jnijk');
+      log('repo updateuser de error ${de.error}');
+      log('repo updateuserde eror mess ${de.message}');
       return ApiResponse<Map<String, dynamic>>.error(de.error.toString());
     } catch (e) {
       log('fgs');
+      log('repo updateuser code ${e}');
       return ApiResponse<Map<String, dynamic>>.error(e.toString());
     }
   }
