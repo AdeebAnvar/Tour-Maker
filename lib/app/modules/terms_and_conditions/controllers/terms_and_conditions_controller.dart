@@ -62,7 +62,7 @@ If you can book minimum 2 tours within 20 days of your app installation, you wil
     //   tAndCStatus: 'true',
     // );
     final ApiResponse<Map<String, dynamic>> res =
-        await UserRepository().signUpTheUser('true');
+        await UserRepository().updateUser(tAndCStatusOfUser: 'true');
     log('ihih ${res.data}');
     if (res.status == ApiResponseStatus.completed) {
       log('completed');

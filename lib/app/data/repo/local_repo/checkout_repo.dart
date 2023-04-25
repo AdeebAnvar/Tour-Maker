@@ -2,7 +2,7 @@ import 'dart:convert';
 
 import 'package:shared_preferences/shared_preferences.dart';
 
-import '../../models/network_models/checkout_model.dart';
+import '../../models/local_model/checkout_model.dart';
 
 class CheckOutRepositoy {
   static Future<void> saveData(CheckOutModel model) async {

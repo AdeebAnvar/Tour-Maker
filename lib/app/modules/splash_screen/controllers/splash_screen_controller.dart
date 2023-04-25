@@ -57,7 +57,8 @@ class SplashScreenController extends GetxController with StateMixin<dynamic> {
         final String token = await currentUser!.getIdToken(true);
         await getStorage.write('token', token);
         log('adeeb token frm splsh $token');
-        sendFCM(token);
+        // sendFCM(token);
+        checkUserExistsOnDB(token);
       } else {
         log(' user is not logged in firebase');
         await Get.offAllNamed(Routes.GET_STARTED);
@@ -67,7 +68,7 @@ class SplashScreenController extends GetxController with StateMixin<dynamic> {
     }
   }
 
-  Future<void> sendFCM(dynamic token) async {
+  Future<void> putFcm() async {
     log('send fcm');
     final FirebaseMessaging messaging = FirebaseMessaging.instance;
     final NotificationSettings settings = await messaging.requestPermission();
@@ -80,7 +81,7 @@ class SplashScreenController extends GetxController with StateMixin<dynamic> {
       final ApiResponse<Map<String, dynamic>> res =
           await UserRepository().putFCMToken(fcmToken);
       if (res.status == ApiResponseStatus.completed) {
-        checkUserExistsOnDB(token, fcmToken);
+        // checkUserExistsOnDB(token, fcmToken);
       } else {
         log('req not send');
       }
@@ -90,21 +91,43 @@ class SplashScreenController extends GetxController with StateMixin<dynamic> {
     }
   }
 
-  Future<void> checkUserExistsOnDB(dynamic token, dynamic fcmToken) async {
+  Future<void> checkUserExistsOnDB(dynamic token) async {
     log('check user');
     final ApiResponse<Map<String, dynamic>> res =
         await UserRepository().checkUserExists();
     if (res.data!.isNotEmpty) {
-      if (tndc == null) {
-        await Get.offAllNamed(Routes.TERMS_AND_CONDITIONS);
-      } else {
-        await Get.offAllNamed(Routes.HOME);
-      }
+      await Get.offAllNamed(Routes.HOME);
+
       // Get.offAllNamed(Routes.TOKEN_SCREEN, arguments: [token, fcmToken]);
     } else {
       await Get.offAllNamed(Routes.LOGIN);
+
+      postFcm();
+    }
+  }
+
+  Future<void> postFcm() async {
+    log('send fcm');
+    final FirebaseMessaging messaging = FirebaseMessaging.instance;
+    final NotificationSettings settings = await messaging.requestPermission();
+    if (settings.authorizationStatus == AuthorizationStatus.authorized) {
+      //authorized
+      isNotificationON = true;
+      final String? fcmToken = await messaging.getToken();
+      fcmtoken = fcmToken;
+      log('fcm $fcmToken');
+      final ApiResponse<Map<String, dynamic>> res =
+          await UserRepository().postFCMToken(fcmToken!);
+      if (res.status == ApiResponseStatus.completed) {
+        // checkUserExistsOnDB(token, fcmToken);
+      } else {
+        log('req not send');
+      }
+    } else {
+      //not authorized
+      isNotificationON = false;
     }
   }
 }
 
-String? tndc;
+// String? tndc;

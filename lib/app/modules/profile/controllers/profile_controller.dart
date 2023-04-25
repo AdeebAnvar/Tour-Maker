@@ -52,7 +52,7 @@ class ProfileController extends GetxController with StateMixin<ProfileView> {
   Future<void> getData() async {
     change(null, status: RxStatus.loading());
     final ApiResponse<UserModel> res = await userRepo.getUserDetails();
-    log('getData ${res.message}');
+    log('getData hguyyu${res.message}');
 
     if (res.status == ApiResponseStatus.completed && res.data != null) {
       userData.value = res.data!;

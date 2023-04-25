@@ -13,7 +13,7 @@ class ExclusiveToursModel {
   static ExclusiveToursModel fromJson(Map<String, dynamic> json) =>
       ExclusiveToursModel(
         id: json['id'] as int,
-        name: json['name'] as String,
+        name:json['name']==null?'': json['name'] as String,
         image: json['image'] as String,
       );
 }

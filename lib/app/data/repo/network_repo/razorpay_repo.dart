@@ -69,7 +69,7 @@ class RazorPayRepository {
     try {
       final Map<String, dynamic>? authHeader = await Client().getAuthHeader();
       final Response<Map<String, dynamic>> response = await dio.postUri(
-          Uri.parse('verifyInitialpayment'),
+          Uri.parse('verifyinitialpayment'),
           options: Options(headers: authHeader),
           data: <String, dynamic>{
             'order_id': orderID,

@@ -7,7 +7,7 @@ import 'package:razorpay_flutter/razorpay_flutter.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../../../../core/utils/constants.dart';
-import '../../../data/models/network_models/checkout_model.dart';
+import '../../../data/models/local_model/checkout_model.dart';
 import '../../../data/models/network_models/order_model.dart';
 import '../../../data/models/network_models/single_tour_model.dart';
 import '../../../data/models/network_models/wishlist_model.dart';
@@ -188,7 +188,7 @@ class SingleTourController extends GetxController
   }
 
   Future<void> onClickAddPassenger(PackageData package) async {
-    if (currentUserAddress == null) {
+    if (currentUserAddress != null) {
       final DateTime sd = DateTime.parse(package.dateOfTravel.toString());
       final DateTime today = DateTime.now();
       if (sd.difference(today).inDays <= 7) {
@@ -269,7 +269,7 @@ class SingleTourController extends GetxController
     packageData.extraOffer != true
         ? adultAmount = packageData.amount!
         : adultAmount = packageData.offerAmount!;
-    packageData.kidsOfferAmount != null
+    packageData.kidsOfferAmount != 0
         ? childAmount = packageData.kidsOfferAmount!
         : childAmount = packageData.kidsAmount!;
     final int totalAdultAmount = adultCount * adultAmount;

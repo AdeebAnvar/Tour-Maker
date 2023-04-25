@@ -5,7 +5,7 @@ import 'package:get/get.dart';
 
 import '../../../../core/theme/style.dart';
 
-import '../../../data/models/network_models/budget_models.dart';
+import '../../../data/models/local_model/budget_models.dart';
 import '../../../data/models/network_models/category_model.dart';
 import '../../../data/models/network_models/destinations_model.dart';
 import '../../../data/models/network_models/package_model.dart';

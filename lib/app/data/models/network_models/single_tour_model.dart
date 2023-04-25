@@ -77,20 +77,27 @@ class TourData {
 
   static TourData fromJson(Map<String, dynamic> json) => TourData(
         iD: json['ID'] as int,
-        name: json['name'] as String,
-        image: json['image'] as String,
-        destination: json['destination'] as String,
-        description: json['description'] as String,
-        days: json['days'] as int,
-        nights: json['nights'] as int,
-        priority: json['priority'] as int,
-        trending: json['trending'] as String,
-        exclusiveTour: json['exclusive_tour'] as String,
-        tourCode: json['tour_code'] as String,
-        category: json['category'] as String,
-        itinerary: json['itinerary'] as String,
-        travelType: json['travel_type'] as String,
-        region: json['region'] as String,
+        name: json['name'] != null ? json['name'] as String : '',
+        image: json['image'] != null
+            ? json['image'] as String
+            : 'assets/Background.png',
+        destination:
+            json['destination'] == null ? '' : json['destination'] as String,
+        description:
+            json['description'] == null ? '' : json['description'] as String,
+        days: json['days'] == null ? 0 : json['days'] as int,
+        nights: json['nights'] == null ? 0 : json['nights'] as int,
+        priority: json['priority'] == null ? 0 : json['priority'] as int,
+        trending: json['trending'] == null ? '' : json['trending'] as String,
+        exclusiveTour: json['exclusive_tour'] == null
+            ? ''
+            : json['exclusive_tour'] as String,
+        tourCode: json['tour_code'] == null ? '' : json['tour_code'] as String,
+        category: json['category'] == null ? '' : json['category'] as String,
+        itinerary: json['itinerary'] == null ? '' : json['itinerary'] as String,
+        travelType:
+            json['travel_type'] == null ? '' : json['travel_type'] as String,
+        region: json['region'] == null ? '' : json['region'] as String,
       );
 }
 
@@ -151,19 +158,38 @@ class PackageData {
   static PackageData fromJson(Map<String, dynamic> json) => PackageData(
         iD: json['id'] as int,
         tourId: json['tour_id'] as int,
-        dateOfTravel: json['date_of_travel'] as String,
-        totalSeats: json['total_seats'] as int,
-        availableSeats: json['available_seats'] as int,
-        agentCommission: json['agent_commission'] as int,
-        amount: json['amount'] as int,
-        kidsAmount: json['kids_amount'] as int,
-        offerAmount: json['offer_amount'] as int,
-        kidsOfferAmount: json['kids_offer_amount'] as int,
-        extraOffer: json['extra_offer'] as bool,
-        lastAmount: json['last_amount'] as int,
-        advanceAmount: json['advance_amount'] as int,
-        batchOrIndividual: json['batch_or_individual'] as String,
-        gstPercent: json['gst_percent'] as int,
-        transportationMode: json['transportation_mode'] as String,
+        dateOfTravel: json['date_of_travel'] == null
+            ? ''
+            : json['date_of_travel'] as String,
+        totalSeats:
+            json['total_seats'] == null ? 0 : json['total_seats'] as int,
+        availableSeats: json['available_seats'] == null
+            ? 0
+            : json['available_seats'] as int,
+        agentCommission: json['agent_commission'] == null
+            ? 0
+            : json['agent_commission'] as int,
+        amount: json['amount'] == null ? 0 : json['amount'] as int,
+        kidsAmount:
+            json['kids_amount'] == null ? 0 : json['kids_amount'] as int,
+        offerAmount:
+            json['offer_amount'] == null ? 0 : json['offer_amount'] as int,
+        kidsOfferAmount: json['kids_offer_amount'] == null
+            ? 0
+            : json['kids_offer_amount'] as int,
+        extraOffer:
+            json['extra_offer'] == null ? false : json['extra_offer'] as bool,
+        lastAmount:
+            json['last_amount'] == null ? 0 : json['last_amount'] as int,
+        advanceAmount:
+            json['advance_amount'] == null ? 0 : json['advance_amount'] as int,
+        batchOrIndividual: json['batch_or_individual'] == null
+            ? ''
+            : json['batch_or_individual'] as String,
+        gstPercent:
+            json['gst_percent'] == null ? 0 : json['gst_percent'] as int,
+        transportationMode: json['transportation_mode'] == null
+            ? ''
+            : json['transportation_mode'] as String,
       );
 }

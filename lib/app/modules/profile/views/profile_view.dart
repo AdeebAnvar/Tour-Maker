@@ -42,7 +42,7 @@ class ProfileView extends GetView<ProfileController> {
                         height: 180,
                         child: CircleAvatar(
                           radius: 60,
-                          backgroundImage: controller.showUserPic.value
+                          backgroundImage: controller.showUserPic.value ==''
                               ? MemoryImage(controller.getImageFromBytes())
                                   as ImageProvider<Object>?
                               : AssetImage(controller.image.value),
@@ -180,8 +180,7 @@ class ProfileView extends GetView<ProfileController> {
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: <Widget>[
                             Text('country :', style: subheading1),
-                            if (controller.userData.value.country == null &&
-                                controller.userData.value.country == '')
+                            if (controller.userData.value.country == '')
                               GestureDetector(
                                 onTap: () => controller.onClickAdddetail(),
                                 child: Text(

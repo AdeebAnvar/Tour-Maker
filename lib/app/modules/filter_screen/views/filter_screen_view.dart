@@ -4,7 +4,7 @@ import 'package:get/get.dart';
 
 import '../../../../core/theme/style.dart';
 
-import '../../../data/models/network_models/budget_models.dart';
+import '../../../data/models/local_model/budget_models.dart';
 import '../../../widgets/custom_elevated_button.dart';
 import '../../../widgets/custom_loadinscreen.dart';
 import '../controllers/filter_screen_controller.dart';

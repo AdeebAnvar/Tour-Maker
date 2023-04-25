@@ -40,18 +40,16 @@ class LoginController extends GetxController with StateMixin<dynamic> {
       }
       final UserModel user = UserModel(
         name: name.value,
-        phoneNumber: phone.value,
+        phoneNumber: currentUserPhoneNumber,
         state: state.value,
-        category: 'Standard User',
+        // category: 'standard',
       );
+      log('$currentUserPhoneNumber');
       currentUserName = name.value;
       // currentUserState = state.value;
-      currentUserCategory = 'Standard User';
-      final ApiResponse<Map<String, dynamic>> res = await userRepo.loginTheUser(
-          category: 'Standard User',
-          name: name.value,
-          state: state.value,
-          phoneNumber: phone.value);
+      currentUserCategory = 'standard';
+      final ApiResponse<Map<String, dynamic>> res =
+          await userRepo.loginTheUser(user);
       if (res.status == ApiResponseStatus.completed) {
         log('completed');
 

@@ -130,7 +130,7 @@ class FixedDepartures extends StatelessWidget {
                                   .packageData![
                                       controller.selectedBatchIndex.value]
                                   .offerAmount ==
-                              null)
+                              0)
                             TextSpan(
                               text: controller
                                   .batchTours
@@ -180,7 +180,7 @@ class FixedDepartures extends StatelessWidget {
                                   .packageData![
                                       controller.selectedBatchIndex.value]
                                   .kidsOfferAmount ==
-                              null)
+                              0)
                             TextSpan(
                               text: controller
                                   .batchTours
@@ -271,6 +271,7 @@ class FixedDepartures extends StatelessWidget {
                           ),
                         ),
                       ),
+                      const SizedBox(width: 50),
                       GestureDetector(
                         onTap: controller.onWhatsAppClicked,
                         child: SvgPicture.asset(

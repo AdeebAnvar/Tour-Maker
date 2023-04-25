@@ -129,24 +129,21 @@ class UserRepository {
     }
   }
 
-  Future<ApiResponse<Map<String, dynamic>>> loginTheUser(
-      {required String name,
-      required String state,
-      required String phoneNumber,
-      required String category}) async {
+  Future<ApiResponse<Map<String, dynamic>>> loginTheUser(UserModel um) async {
     try {
       final Map<String, dynamic>? autheHeader = await Client().getAuthHeader();
       log('auth hre $autheHeader');
-      final FormData formData = FormData.fromMap(<String, dynamic>{
-        'name': name,
-        'phone_number': phoneNumber,
-        'state': state,
-        'category': category
-      });
+      // final FormData formData = FormData.fromMap(<String, dynamic>{
+      //   'name': name,
+      //   'phone_number': phoneNumber,
+      //   'state': state,
+      //   // 'category': category
+      // });
       final Response<Map<String, dynamic>> res = await dio.postUri(
-          Uri.parse('user/signup'),
-          options: Options(headers: autheHeader),
-          data: formData);
+        Uri.parse('user/signup'),
+        options: Options(headers: autheHeader),
+        data: um.toJson(),
+      );
       log('signUpTheUser ${res.statusMessage}');
 
       if (res.statusCode == 200) {

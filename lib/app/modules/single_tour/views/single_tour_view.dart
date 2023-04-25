@@ -72,60 +72,68 @@ class SingleTourView extends GetView<SingleTourController> {
   SingleChildScrollView tourDetailContainer(double screenWidth,
       SingleTourController controller, BuildContext context) {
     return SingleChildScrollView(
-        child: Column(children: <Widget>[
-      SizedBox(height: screenWidth - 70),
-      Container(
-          decoration: const BoxDecoration(
-              borderRadius: BorderRadius.only(
-                  topLeft: Radius.circular(40), topRight: Radius.circular(40)),
-              color: Colors.white),
-          child: Padding(
+      child: Column(
+        children: <Widget>[
+          SizedBox(height: screenWidth - 70),
+          Container(
+            decoration: const BoxDecoration(
+                borderRadius: BorderRadius.only(
+                    topLeft: Radius.circular(40),
+                    topRight: Radius.circular(40)),
+                color: Colors.white),
+            child: Padding(
               padding: const EdgeInsets.all(20.0),
               child: Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: <Widget>[
-                        Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 70),
-                          child: Text(
-                            '${controller.singleTour.value.tourData?.tourCode}',
-                            style: heading2,
-                          ),
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 70),
+                        child: Text(
+                          '${controller.singleTour.value.tourData?.tourCode}',
+                          style: heading2,
                         ),
-                        CustomToolTip(
-                            onPressed: () => controller.onViewItineraryClicked(
-                                controller
-                                    .singleTour.value.tourData!.itinerary!),
-                            label: 'VIEW ITINERARY',
-                            icon: TourMaker.group_2)
-                      ],
-                    ),
-                    const SizedBox(height: 20),
-                    Row(
-                      children: <Widget>[
-                        Text('Tour Description',
-                            style: heading3.copyWith(
-                                decoration: TextDecoration.underline))
-                      ],
-                    ),
-                    const SizedBox(height: 20),
-                    Padding(
-                      padding: const EdgeInsets.all(15.0),
-                      child: Text(
-                          '${controller.singleTour.value.tourData?.description}',
-                          style: paragraph1),
-                    ),
-                    const SizedBox(height: 10),
-                    CustomTabBar(controller: controller),
-                    const SizedBox(height: 30),
-                    Obx(() => controller.selectedIndex.value == 0
+                      ),
+                      CustomToolTip(
+                          onPressed: () => controller.onViewItineraryClicked(
+                              controller.singleTour.value.tourData!.itinerary!),
+                          label: 'VIEW ITINERARY',
+                          icon: TourMaker.group_2)
+                    ],
+                  ),
+                  const SizedBox(height: 20),
+                  Row(
+                    children: <Widget>[
+                      Text('Tour Description',
+                          style: heading3.copyWith(
+                              decoration: TextDecoration.underline))
+                    ],
+                  ),
+                  const SizedBox(height: 20),
+                  Padding(
+                    padding: const EdgeInsets.all(15.0),
+                    child: Text(
+                        '${controller.singleTour.value.tourData?.description}',
+                        style: paragraph1),
+                  ),
+                  const SizedBox(height: 10),
+                  CustomTabBar(controller: controller),
+                  const SizedBox(height: 30),
+                  Obx(
+                    () => controller.selectedIndex.value == 0
                         ? buildFixedDeparture()
-                        : buildCustomDeparture())
-                  ])))
-    ]));
+                        : buildCustomDeparture(),
+                  )
+                ],
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
   }
 
   Positioned tourName(SingleTourController controller) {

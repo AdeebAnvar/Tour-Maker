@@ -4,7 +4,7 @@ import 'package:get/get.dart';
 import 'package:razorpay_flutter/razorpay_flutter.dart';
 
 import '../../../../core/utils/constants.dart';
-import '../../../data/models/network_models/checkout_model.dart';
+import '../../../data/models/local_model/checkout_model.dart';
 import '../../../data/models/network_models/razorpay_model.dart';
 import '../../../data/repo/local_repo/checkout_repo.dart';
 import '../../../data/repo/network_repo/passenger_repo.dart';

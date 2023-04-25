@@ -158,7 +158,7 @@ class OtpScreenController extends GetxController
   }
 
   Future<void> putFCM() async {
-    log('adeeb put fcm');
+    log('adeeb put otp fcm');
     final FirebaseMessaging messaging = FirebaseMessaging.instance;
     final NotificationSettings settings = await messaging.requestPermission();
     if (settings.authorizationStatus == AuthorizationStatus.authorized) {
