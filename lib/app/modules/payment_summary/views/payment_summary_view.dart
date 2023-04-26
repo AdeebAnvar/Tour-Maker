@@ -26,18 +26,9 @@ class PaymentSummaryView extends GetView<PaymentSummaryController> {
         body: controller.obx(
           onEmpty: const CustomErrorScreen(errorText: 'Nothing found....'),
           onLoading: const CustomLoadingScreen(),
-          (PaymentSummaryView? state) => Container(
-            margin: const EdgeInsets.all(15),
-            padding: const EdgeInsets.all(15),
-            decoration: const BoxDecoration(
-              borderRadius: BorderRadius.only(
-                topLeft: Radius.circular(30),
-                topRight: Radius.circular(30),
-              ),
-              color: Color(0xFFF1F1F1),
-            ),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
+          (PaymentSummaryView? state) => Padding(
+            padding: const EdgeInsets.all(18.0),
+            child: ListView(
               children: <Widget>[
                 Card(
                   margin: const EdgeInsets.all(10),
@@ -243,6 +234,7 @@ class PaymentSummaryView extends GetView<PaymentSummaryController> {
                               Text(controller.getRemainingAmount().toString()),
                             ],
                           ),
+                          const SizedBox(height: 30),
                           if (controller.getRemainingAmount() != 0)
                             Obx(() {
                               return CustomButton().showButtonWithGradient(

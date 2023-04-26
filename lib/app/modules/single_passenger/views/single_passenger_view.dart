@@ -16,6 +16,8 @@ class SinglePassengerView extends GetView<SinglePassengerController> {
     final SinglePassengerController controller =
         Get.put(SinglePassengerController());
     return Scaffold(
+      extendBody: true,
+      extendBodyBehindAppBar: true,
       appBar: const CustomAppBar(),
       body: controller.obx(
         (SinglePassengerView? state) => Padding(
@@ -24,8 +26,7 @@ class SinglePassengerView extends GetView<SinglePassengerController> {
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(25),
             ),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
+            child: ListView(
               children: <Widget>[
                 Padding(
                   padding: const EdgeInsets.all(10.0),
