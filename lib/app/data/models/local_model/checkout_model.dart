@@ -17,7 +17,7 @@ class CheckOutModel {
     this.transportationMode,
     this.advanceAmount,
   });
-  String? tourID;
+  int? tourID;
   String? tourName;
   String? tourCode;
   String? tourItinerary;
@@ -55,7 +55,7 @@ class CheckOutModel {
 
   static CheckOutModel fromMap(Map<String, dynamic> map) => CheckOutModel(
         tourName: map['tourName'] as String,
-        tourID: map['tourID'] as String,
+        tourID: map['tourID'] as int,
         tourCode: map['tourCode'] as String,
         tourItinerary: map['tourItinerary'] as String,
         dateOfTravel: map['dateOfTravel'] as String,

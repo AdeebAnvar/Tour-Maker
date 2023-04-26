@@ -30,9 +30,15 @@ class CustomDialog {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: <Widget>[
-                      DefaultTextStyle(
-                        style: heading3.copyWith(),
-                        child: Text(title),
+                      SizedBox(
+                        height: 45,
+                        width: 220,
+                        child: DefaultTextStyle(
+                          style: heading3.copyWith(),
+                          child: Text(title,
+                              textAlign: TextAlign.center,
+                              overflow: TextOverflow.visible),
+                        ),
                       ),
                     ],
                   ),
@@ -40,13 +46,19 @@ class CustomDialog {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: <Widget>[
-                      DefaultTextStyle(
-                        style: subheading2.copyWith(fontSize: 10.sp),
-                        child: Text(contentText, textAlign: TextAlign.center),
+                      SizedBox(
+                        width: 200,
+                        height: 50,
+                        child: DefaultTextStyle(
+                          style: subheading2.copyWith(fontSize: 10.sp),
+                          child: Text(contentText,
+                              textAlign: TextAlign.center,
+                              overflow: TextOverflow.visible),
+                        ),
                       ),
                     ],
                   ),
-                  const SizedBox(height: 23),
+                  const SizedBox(height: 29),
                   Column(
                     mainAxisAlignment: MainAxisAlignment.end,
                     mainAxisSize: MainAxisSize.min,

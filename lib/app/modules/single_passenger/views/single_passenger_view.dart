@@ -19,7 +19,7 @@ class SinglePassengerView extends GetView<SinglePassengerController> {
       appBar: const CustomAppBar(),
       body: controller.obx(
         (SinglePassengerView? state) => Padding(
-          padding: const EdgeInsets.all(24),
+          padding: const EdgeInsets.all(10),
           child: Card(
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(25),
@@ -30,6 +30,7 @@ class SinglePassengerView extends GetView<SinglePassengerController> {
                 Padding(
                   padding: const EdgeInsets.all(10.0),
                   child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: <Widget>[
                       const Text('name : '),
                       Text(
@@ -46,6 +47,7 @@ class SinglePassengerView extends GetView<SinglePassengerController> {
                 Padding(
                   padding: const EdgeInsets.all(10.0),
                   child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: <Widget>[
                       const Text('order ID : '),
                       Text(
@@ -62,6 +64,7 @@ class SinglePassengerView extends GetView<SinglePassengerController> {
                 Padding(
                   padding: const EdgeInsets.all(10.0),
                   child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: <Widget>[
                       const Text('phone number : '),
                       Text(
@@ -78,6 +81,7 @@ class SinglePassengerView extends GetView<SinglePassengerController> {
                 Padding(
                   padding: const EdgeInsets.all(10.0),
                   child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: <Widget>[
                       const Text('DOB : '),
                       Text(
@@ -97,12 +101,14 @@ class SinglePassengerView extends GetView<SinglePassengerController> {
                 Padding(
                   padding: const EdgeInsets.all(10.0),
                   child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: <Widget>[
                       const Text('address : '),
                       SizedBox(
                         width: 200,
                         child: Text(
                           controller.passenger[0].address.toString(),
+                          textAlign: TextAlign.end,
                           style: GoogleFonts.montserrat(
                             fontWeight: FontWeight.w600,
                             fontSize: 14,
@@ -118,8 +124,21 @@ class SinglePassengerView extends GetView<SinglePassengerController> {
                   padding: const EdgeInsets.all(10.0),
                   child: Column(
                     children: <Widget>[
-                      const Text('ID proof : '),
-                      Image.memory(controller.getImageFromBytes())
+                      Text('ID proof : ', style: subheading1),
+                      const SizedBox(height: 20),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Container(
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(15),
+                              ),
+                              height: 400,
+                              width: 200,
+                              child:
+                                  Image.memory(controller.getImageFromBytes())),
+                        ],
+                      )
                     ],
                   ),
                 ),

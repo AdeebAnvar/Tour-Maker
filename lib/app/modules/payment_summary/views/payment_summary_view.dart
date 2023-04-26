@@ -10,6 +10,7 @@ import '../../../../core/tour_maker_icons.dart';
 import '../../../../core/utils/date_utils.dart';
 import '../../../../core/utils/string_utils.dart';
 import '../../../widgets/custom_appbar.dart';
+import '../../../widgets/custom_elevated_button.dart';
 import '../../../widgets/custom_errorscreen.dart';
 import '../../../widgets/custom_loadinscreen.dart';
 import '../controllers/payment_summary_controller.dart';
@@ -65,15 +66,15 @@ class PaymentSummaryView extends GetView<PaymentSummaryController> {
                                       style: paragraph4),
                                 ],
                               ),
-                              Column(
-                                children: <Widget>[
-                                  Text('Booked Date', style: subheading3),
-                                  // Text(
-                                  //     controller.bookingList[0].
-                                  //         .toString(),
-                                  //     style: paragraph4),
-                                ],
-                              ),
+                              // Column(
+                              //   children: <Widget>[
+                              //     Text('Booked Date', style: subheading3),
+                              //     // Text(
+                              //     //     controller.bookingList[0].
+                              //     //         .toString(),
+                              //     //     style: paragraph4),
+                              //   ],
+                              // ),
                               Column(
                                 children: <Widget>[
                                   Text('Tour Date', style: subheading3),
@@ -170,7 +171,7 @@ class PaymentSummaryView extends GetView<PaymentSummaryController> {
                     child: Container(
                       width: 100.w,
                       padding: const EdgeInsets.symmetric(
-                          vertical: 18, horizontal: 10),
+                          vertical: 22, horizontal: 25),
                       decoration: BoxDecoration(
                         color: Colors.white,
                         borderRadius: BorderRadius.circular(30),
@@ -242,6 +243,16 @@ class PaymentSummaryView extends GetView<PaymentSummaryController> {
                               Text(controller.getRemainingAmount().toString()),
                             ],
                           ),
+                          if (controller.getRemainingAmount() != 0)
+                            Obx(() {
+                              return CustomButton().showButtonWithGradient(
+                                isLoading: controller.isLoading.value,
+                                text: 'Pay Remaining Amount',
+                                onPressed: () =>
+                                    controller.onClickPayRemainingAmount(
+                                        controller.bookingList[0].id!),
+                              );
+                            }),
                         ],
                       ),
                     ),

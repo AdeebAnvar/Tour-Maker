@@ -9,6 +9,7 @@ import 'package:sms_autofill/sms_autofill.dart';
 import 'package:timer_count_down/timer_controller.dart';
 
 import '../../../../core/utils/constants.dart';
+import '../../../data/models/network_models/user_model.dart';
 import '../../../data/repo/network_repo/user_repo.dart';
 import '../../../routes/app_pages.dart';
 import '../../../services/network_services/dio_client.dart';
@@ -138,16 +139,20 @@ class OtpScreenController extends GetxController
 
   Future<void> checkUserExistsORnot(dynamic token, dynamic fcmtok) async {
     log('adeeb check user');
-    final ApiResponse<Map<String, dynamic>> res =
-        await UserRepository().checkUserExists();
+    final ApiResponse<UserModel> res = await UserRepository().getUserDetails();
     if (res.status == ApiResponseStatus.completed) {
-      if (res.data?.isEmpty != true) {
+      if (res.data != null) {
         log('adeeb home');
         putFCM();
-
-        Get.offAllNamed(Routes.HOME);
+        final user = res.data!;
+        currentUserAddress = user.address;
+        currentUserCategory = user.category;
+        await storage.write('currentUserAddress', user.address);
+        await storage.write('currentUserCategory', user.category);
+        await Get.offAllNamed(Routes.HOME);
         isLoading.value = false;
-        // Get.offAllNamed(Routes.TOKEN_SCREEN, arguments: [token, fcmtok]);
+
+        //Get.offAllNamed(Routes.TOKEN_SCREEN,arguments:[token,fcmtok]);
       } else {
         log('adeeb login');
         postFcm();

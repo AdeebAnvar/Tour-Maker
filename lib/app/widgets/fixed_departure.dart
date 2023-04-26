@@ -255,7 +255,7 @@ class FixedDepartures extends StatelessWidget {
               children: <Widget>[
                 Text('For Direct Booking',
                     style: GoogleFonts.montserrat(color: Colors.grey.shade800)),
-                if (currentUserCategory != 'Standard User')
+                if (currentUserCategory != 'standard')
                   Row(
                     children: <Widget>[
                       Container(

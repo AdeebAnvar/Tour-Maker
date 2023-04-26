@@ -159,8 +159,8 @@ class CustomButton {
           height: height ?? 50,
           width: width ?? 250,
           decoration: BoxDecoration(
-            color: const Color.fromARGB(255, 97, 45, 109),
-            borderRadius: BorderRadius.circular(100),
+            color: englishViolet,
+            borderRadius: BorderRadius.circular(15),
           ),
           child: isLoading
               ? const Center(

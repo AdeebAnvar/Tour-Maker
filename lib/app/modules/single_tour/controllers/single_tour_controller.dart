@@ -305,7 +305,7 @@ class SingleTourController extends GetxController
       commission: packageData.agentCommission,
       dateOfTravel: packageData.dateOfTravel,
       gst: packageData.gstPercent,
-      tourID: singleTour.value.tourData?.iD.toString(),
+      tourID: singleTour.value.tourData?.iD,
       kidsAmount: packageData.kidsAmount,
       kidsOfferAmount: packageData.kidsOfferAmount,
       offerAmount: packageData.offerAmount,

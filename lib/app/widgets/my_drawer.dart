@@ -12,6 +12,7 @@ import '../../core/theme/style.dart';
 import '../../core/tour_maker_icons.dart';
 import '../data/models/network_models/user_model.dart';
 import '../routes/app_pages.dart';
+import 'custom_dialogue.dart';
 
 class MyDrawer extends StatelessWidget {
   MyDrawer({super.key, this.controller});
@@ -142,57 +143,13 @@ class MyDrawer extends StatelessWidget {
   }
 
   void onLogoutPressed(BuildContext context) {
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return Padding(
-          padding: const EdgeInsets.symmetric(vertical: 260, horizontal: 25),
-          child: Container(
-            padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 25),
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(20),
-              color: Colors.white,
-            ),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: <Widget>[
-                Text(
-                  'Do you really want to logout \n from TourMaker?',
-                  textAlign: TextAlign.center,
-                  style: subheading2,
-                ),
-                const Divider(),
-                GestureDetector(
-                  onTap: () => logout(),
-                  child: SizedBox(
-                    height: 35,
-                    child: Center(
-                      child: Text('Logout', style: subheading2),
-                    ),
-                  ),
-                ),
-                const Divider(),
-                GestureDetector(
-                  onTap: () => cancel(),
-                  child: const SizedBox(
-                      height: 35,
-                      child: Center(
-                        child: Text(
-                          'Cancel',
-                          style: TextStyle(
-                            // fontFamily: montserratMedium,
-                            fontWeight: FontWeight.w500,
-                            fontSize: 14,
-                            color: Colors.red,
-                          ),
-                        ),
-                      )),
-                ),
-              ],
-            ),
-          ),
-        );
-      },
+    CustomDialog().showCustomDialog(
+      'Do you really want to logout from TourMaker?',
+      '',
+      cancelText: 'Go Back',
+      confirmText: 'Logout',
+      onCancel: () => cancel(),
+      onConfirm: () => logout(),
     );
   }
 
@@ -230,9 +187,11 @@ class MyDrawer extends StatelessWidget {
   }
 
   Future<void> logout() async {
-    await FirebaseAuth.instance
-        .signOut()
-        .then((dynamic value) => Get.offAllNamed(Routes.GET_STARTED));
+    await FirebaseAuth.instance.signOut().then(
+          (dynamic value) => Get.offAllNamed(
+            Routes.GET_STARTED,
+          ),
+        );
   }
 
   void cancel() => Get.back();

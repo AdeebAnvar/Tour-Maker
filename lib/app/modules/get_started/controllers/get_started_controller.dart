@@ -9,6 +9,7 @@ import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import '../../../../core/theme/style.dart';
 import '../../../routes/app_pages.dart';
+import '../../../widgets/custom_dialogue.dart';
 
 class GetStartedController extends GetxController with StateMixin<dynamic> {
   GlobalKey<FormState> formKey = GlobalKey<FormState>();
@@ -65,9 +66,10 @@ class GetStartedController extends GetxController with StateMixin<dynamic> {
     if (formKey.currentState!.validate()) {
       log('valid');
       isloading.value = true;
+
+      final String phoneNumber = '+${selectedCountry.value.phoneCode}$phone';
+      final FirebaseAuth auth = FirebaseAuth.instance;
       try {
-        final String phoneNumber = '+${selectedCountry.value.phoneCode}$phone';
-        final FirebaseAuth auth = FirebaseAuth.instance;
         log('get started try');
         await auth
             .verifyPhoneNumber(
@@ -75,6 +77,9 @@ class GetStartedController extends GetxController with StateMixin<dynamic> {
           timeout: const Duration(seconds: 60),
           verificationCompleted: (PhoneAuthCredential authCredential) async {},
           verificationFailed: (FirebaseAuthException authException) {
+            isloading.value = false;
+            CustomDialog().showCustomDialog('Phone number verification failed.',
+                'Code: ${authException.code}. Message: ${authException.message}');
             log('Phone number verification failed. Code: ${authException.code}. Message: ${authException.message}');
           },
           codeSent: (String verificationId, [int? forceResendingToken]) async {
@@ -92,7 +97,6 @@ class GetStartedController extends GetxController with StateMixin<dynamic> {
                 forceResendingToken
               ],
             );
-            isFinished.value = true;
           },
           codeAutoRetrievalTimeout: (String verificationId) {
             log('verificationId  $verificationId');
@@ -103,9 +107,8 @@ class GetStartedController extends GetxController with StateMixin<dynamic> {
             .catchError((dynamic e) {
           log('catch err get started $e');
         });
-
-        isloading.value = false;
       } catch (e) {
+        isloading.value = false;
         log('get started verify catch $e');
       }
     } else {

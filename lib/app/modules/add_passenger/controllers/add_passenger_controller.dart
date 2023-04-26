@@ -79,15 +79,12 @@ class AddPassengerController extends GetxController
             customerAddress.value,
             image.value);
         if (res.status == ApiResponseStatus.completed) {
-          if (travellers.isEmpty) {
-            isloading.value = true;
-          } else {
-            Get.back();
-          }
-
           image.value = '';
-          await getTravellers(orderID);
-        } else {}
+          await getTravellers(orderID).whenComplete(() => Get.back());
+        } else {
+          CustomDialog().showCustomDialog("Can't add the passenger",
+              'Please check the all details that you entered');
+        }
         isloading.value = false;
       } else {
         Get.snackbar('Add your ID proof', 'Add any ID proof',

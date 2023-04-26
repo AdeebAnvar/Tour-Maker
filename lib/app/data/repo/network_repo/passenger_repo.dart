@@ -67,6 +67,58 @@ class PassengerRepository {
     }
   }
 
+  Future<ApiResponse<OrderPaymentModel>> createAdvancePayment(
+      OrderPaymentModel orderPaymentModel) async {
+    try {
+      final Map<String, dynamic>? authHeader = await Client().getAuthHeader();
+      final Response<Map<String, dynamic>> response = await dio.postUri(
+          Uri.parse('createpayment?payment_type=advance'),
+          data: orderPaymentModel.toJson(),
+          options: Options(headers: authHeader));
+      log('hayavan 1');
+      if (response.statusCode == 200) {
+        final OrderPaymentModel razorpay = OrderPaymentModel.fromJson(
+            response.data!['result'] as Map<String, dynamic>);
+        return ApiResponse<OrderPaymentModel>.completed(razorpay);
+      } else {
+        log('hayavan 1 res msg${response.statusMessage}');
+        return ApiResponse<OrderPaymentModel>.error(response.statusMessage);
+      }
+    } on DioError catch (de) {
+      log('hayavan 1 de err${de.error}');
+      return ApiResponse<OrderPaymentModel>.error(de.error.toString());
+    } catch (e) {
+      log('hayavan 1 catch $e');
+      return ApiResponse<OrderPaymentModel>.error(e.toString());
+    }
+  }
+
+  Future<ApiResponse<OrderPaymentModel>> createRemainingAmountPayment(
+      OrderPaymentModel orderPaymentModel) async {
+    try {
+      final Map<String, dynamic>? authHeader = await Client().getAuthHeader();
+      final Response<Map<String, dynamic>> response = await dio.postUri(
+          Uri.parse('createpayment?payment_type=remaining'),
+          data: orderPaymentModel.toJson(),
+          options: Options(headers: authHeader));
+      log('hayavan 1');
+      if (response.statusCode == 200) {
+        final OrderPaymentModel razorpay = OrderPaymentModel.fromJson(
+            response.data!['result'] as Map<String, dynamic>);
+        return ApiResponse<OrderPaymentModel>.completed(razorpay);
+      } else {
+        log('hayavan 1 res msg${response.statusMessage}');
+        return ApiResponse<OrderPaymentModel>.error(response.statusMessage);
+      }
+    } on DioError catch (de) {
+      log('hayavan 1 de err${de.error}');
+      return ApiResponse<OrderPaymentModel>.error(de.error.toString());
+    } catch (e) {
+      log('hayavan 1 catch $e');
+      return ApiResponse<OrderPaymentModel>.error(e.toString());
+    }
+  }
+
   Future<ApiResponse<bool>> verifyPayment(
     String? mpaymentID,
     String? msignature,

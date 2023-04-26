@@ -175,7 +175,7 @@ class CheckoutScreenView extends GetView<CheckoutScreenController> {
                       ),
                     buildItem(
                         'Total Amount :', '₹ ${controller.getTotalAmount()}'),
-                    if (currentUserCategory == 'Standard User')
+                    if (currentUserCategory == 'standard')
                       const SizedBox()
                     else
                       buildItem('Discount :',
@@ -199,12 +199,16 @@ class CheckoutScreenView extends GetView<CheckoutScreenController> {
                       children: <Widget>[
                         Text(
                           'Grand Total :',
-                          style: heading2.copyWith(fontStyle: FontStyle.italic),
+                          style: heading3.copyWith(fontStyle: FontStyle.italic),
                         ),
-                        Text(
-                          '₹ ${controller.getGrandTotal().toStringAsFixed(2)}',
-                          style: heading2.copyWith(
-                            fontStyle: FontStyle.italic,
+                        SizedBox(
+                          height: 20,
+                          width: 160,
+                          child: Text(
+                            '₹ ${controller.getGrandTotal().toStringAsFixed(2)}',
+                            style: heading3.copyWith(
+                                fontStyle: FontStyle.italic,
+                                overflow: TextOverflow.visible),
                           ),
                         ),
                       ],
@@ -212,10 +216,14 @@ class CheckoutScreenView extends GetView<CheckoutScreenController> {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.end,
                       children: <Widget>[
-                        Text(
-                          '(Includes GST ${controller.checkOutModel.value!.gst}%)',
-                          style: subheading1.copyWith(
-                            fontStyle: FontStyle.italic,
+                        SizedBox(
+                          height: 20,
+                          width: 160,
+                          child: Text(
+                            '(Includes GST ${controller.checkOutModel.value!.gst}%)',
+                            style: subheading1.copyWith(
+                                fontStyle: FontStyle.italic,
+                                overflow: TextOverflow.visible),
                           ),
                         ),
                       ],

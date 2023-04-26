@@ -123,16 +123,16 @@ class UserRegisterscreenView extends GetView<UserRegisterscreenController> {
                           const SizedBox(height: 15),
                           Obx(() {
                             return CustomTextFormField(
-                              controller: TextEditingController(
-                                  text: controller.userAddress.value),
-                              maxLines: 10,
-                              minLines: 1,
+                              // controller: TextEditingController(
+                              //     text: controller.userAddress.value),
+                              // maxLines: 10,
+                              // minLines: 1,
                               validator: (String? value) =>
                                   controller.addressValidator(value),
                               onChanged: (String? value) => controller
                                   .userAddress.value = value.toString(),
                               hintText: 'Address',
-                              // initialValue: controller.userAddress.value,
+                              initialValue: controller.userAddress.value,
                             );
                           }),
                           const SizedBox(height: 15),
