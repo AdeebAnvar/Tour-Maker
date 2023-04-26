@@ -252,7 +252,7 @@ class UserRepository {
       return ApiResponse<Map<String, dynamic>>.error(de.error.toString());
     } catch (e) {
       log('fgs');
-      log('repo updateuser code $e');
+      log('repo updaeuser code $e');
       return ApiResponse<Map<String, dynamic>>.error(e.toString());
     }
   }
