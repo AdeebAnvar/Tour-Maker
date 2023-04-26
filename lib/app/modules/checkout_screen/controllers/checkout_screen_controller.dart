@@ -122,8 +122,7 @@ class CheckoutScreenController extends GetxController
         Get.back();
       },
       onConfirm: () {
-        Get.offAllNamed(Routes.SINGLE_TOUR,
-            arguments: <dynamic>[checkOutModel.value!.tourID]);
+        Get.until((route) => Get.currentRoute == '/single-tour');
       },
     );
   }
