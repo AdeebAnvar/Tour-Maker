@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
@@ -221,6 +223,12 @@ class UserRegisterscreenView extends GetView<UserRegisterscreenController> {
                                 onChanged: (CategoryType? newValue) {
                                   controller.selectedCategoryType.value =
                                       newValue!;
+                                  if (controller.selectedCategoryType.value ==
+                                      CategoryType.standard) {
+                                    log('sfg');
+                                  } else {
+                                    controller.payAmount();
+                                  }
                                 },
                                 hint: const Text('Select Category'),
                                 items: CategoryType.values

@@ -172,26 +172,29 @@ class UserRegisterscreenController extends GetxController
   Future<void> onRegisterClicked() async {
     if (formKey.currentState!.validate()) {
       isloading.value = true;
-      if (selectedCategoryType.value != CategoryType.standard) {
-        log('not standard');
-        await CustomDialog().showCustomDialog(
-            'Register as an agent of TourMaker',
-            'You have to pay \n424+GST \nto apply as an\n agent of TourMaker',
-            cancelText: 'Go Back',
-            confirmText: 'Pay rs 424 + GST', onCancel: () {
-          Get.back();
-        }, onConfirm: () async {
-          Get.back();
-          await payAmount();
-        });
-      } else {
-        await saveUserInfo();
-        log(' standard');
-      }
+      await saveUserInfo();
+      // if (selectedCategoryType.value != CategoryType.standard) {
+      //   log('not standard');
+      //   await CustomDialog().showCustomDialog(
+      //       'Register as an agent of TourMaker',
+      //       'You have to pay \n424+GST \nto apply as an\n agent of TourMaker',
+      //       cancelText: 'Go Back',
+      //       confirmText: 'Pay rs 424 + GST', onCancel: () {
+      //     Get.back();
+      //   }, onConfirm: () async {
+      //     log('Kirubuib confirm payamount');
+      //     Get.back();
+      //     await payAmount();
+      //   });
+      // } else {
+      //   await saveUserInfo();
+      //   log(' standard');
+      // }
     }
   }
 
   Future<void> payAmount() async {
+    log('Kirubuib payAmount');
     final RazorPayModel razorPaymodel = RazorPayModel(
       contact: userPhone.value,
       currency: 'INR',
@@ -200,8 +203,10 @@ class UserRegisterscreenController extends GetxController
     final ApiResponse<RazorPayModel> res =
         await RazorPayRepository().createPayment(razorPaymodel);
     try {
+      log('Kirubuib craete payment ');
       if (res.data != null) {
         razorPayModel.value = res.data!;
+        log('Kirubuib package id ${razorPayModel.value.packageId}');
         await openRazorPay(razorPayModel.value.packageId.toString());
       } else {
         log(' adeeb raz emp ');
@@ -234,6 +239,8 @@ class UserRegisterscreenController extends GetxController
 
   Future<void> _handlePaymentSuccess(PaymentSuccessResponse response) async {
     log('Payment success: ${response.signature}');
+    log('Kirubuib payment suces');
+
     final String? signature = response.signature;
     final String? orderId = razorPayModel.value.packageId;
     final String? paymentId = response.paymentId;
@@ -244,6 +251,8 @@ class UserRegisterscreenController extends GetxController
       log('cer payme ${res.status}');
       if (res.status == ApiResponseStatus.completed) {
         log('Payment verification succeeded.');
+        log('Kirubuib ver success ');
+
         await saveUserInfo();
       } else {
         log('Payment verification failed: ${res.message}');
@@ -262,6 +271,8 @@ class UserRegisterscreenController extends GetxController
   }
 
   Future<void> saveUserInfo() async {
+    log('Kirubuib save user info ');
+
     final String categoryOFuser = selectedCategoryType.value
         .toString()
         .split('.')
@@ -293,7 +304,7 @@ class UserRegisterscreenController extends GetxController
         enterpriseNameOFuser: enterpriseNameOFuser,
       );
     } catch (e) {
-      log('catch update $e');
+      log('Kirubuib catch update $e');
     }
   }
 
@@ -322,8 +333,8 @@ class UserRegisterscreenController extends GetxController
       addressOFuser: addressOFuser,
       enterpriseNameOFuser: enterpriseNameOFuser,
     );
-    log('kjfgiogosd ${res.message}');
-    log('kjfgiogosd st ${res.status}');
+    log('Kirubuib update user mes${res.message}');
+    log('Kirubuib uppdate user status ${res.status}');
     try {
       if (res.status == ApiResponseStatus.completed) {
         log('Adeeb updated');
@@ -336,11 +347,11 @@ class UserRegisterscreenController extends GetxController
         isloading.value = false;
         Get.back();
       } else {
-        log('Adeeb not updated');
+        log('Kirubuib Adeeb not updated');
         isloading.value = false;
       }
     } catch (e) {
-      log('update user $e');
+      log('Kirubuib update user $e');
     }
   }
 }
