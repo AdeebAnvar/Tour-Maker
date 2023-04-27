@@ -1,6 +1,7 @@
 class SingleBookingModel {
   SingleBookingModel(
       {this.amountPaid,
+      this.createdAt,
       this.customTourId,
       this.dateOfTravel,
       this.gst,
@@ -19,6 +20,7 @@ class SingleBookingModel {
       this.tourCode,
       this.tourName,
       this.userId});
+  String? createdAt;
   num? amountPaid;
   int? customTourId;
   String? dateOfTravel;
@@ -40,6 +42,7 @@ class SingleBookingModel {
   String? userId;
 
   Map<String, dynamic> toJson() => <String, dynamic>{
+        'created_at': createdAt,
         'amount_paid': amountPaid,
         'custom_tour_id': customTourId,
         'date_of_travel': dateOfTravel,
@@ -63,6 +66,8 @@ class SingleBookingModel {
 
   static SingleBookingModel fromJson(Map<String, dynamic> json) =>
       SingleBookingModel(
+        createdAt:
+            json['created_at'] == null ? '' : json['created_at'] as String,
         amountPaid:
             json['amount_paid'] == null ? 0.0 : json['amount_paid'] as num,
         customTourId:
@@ -73,6 +78,7 @@ class SingleBookingModel {
         gst: json['gst'] == null ? 0.0 : json['gst'] as num,
         gstAmount: json['gst_amount'] == null ? 0.0 : json['gst_amount'] as num,
         id: json['id'] as int,
+        // ignore: avoid_bool_literals_in_conditional_expressions
         isCustom: json['is_custom'] == null ? false : json['is_custom'] as bool,
         noOfAdults:
             json['no_of_adults'] == null ? 0 : json['no_of_adults'] as int,

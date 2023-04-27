@@ -79,7 +79,7 @@ class UserRegisterscreenController extends GetxController
     userEmail.value = user.value.email.toString();
     usereEnterpriseName.value = user.value.enterpriseName.toString();
     log('Gender value: ${user.value.gender}');
-    selectedGender.value = user.value.gender != null
+    selectedGender.value = user.value.gender != ''
         ? Gender.values.firstWhere(
             (Gender gender) =>
                 gender.toString().split('.').last.toLowerCase() ==
@@ -92,7 +92,7 @@ class UserRegisterscreenController extends GetxController
     // selectedCategoryType.value =
     //     categoryTypeMap[user.value.category] ?? CategoryType.standard;
     // log('CategoryType values: ${categoryTypeMap[user.value.category]}');
-    selectedCategoryType.value = user.value.category != null
+    selectedCategoryType.value = user.value.category != ''
         ? CategoryType.values.firstWhere(
             (CategoryType categoryType) =>
                 categoryType.toString().split('.').last.toLowerCase() ==
@@ -116,52 +116,6 @@ class UserRegisterscreenController extends GetxController
       return response.data!;
     }
     return response.data!;
-  }
-
-  Future<void> updateUser({
-    String? categoryOFuser,
-    String? districtOFuser,
-    String? emailOFuser,
-    String? genderOFuser,
-    String? nameOFuser,
-    String? stateOFuser,
-    String? phoneNumberOfuser,
-    String? addressOFuser,
-    String? enterpriseNameOFuser,
-    String? countryOFuser,
-  }) async {
-    final ApiResponse<Map<String, dynamic>> res =
-        await UserRepository().updateUser(
-      categoryOFuser: categoryOFuser,
-      districtOFuser: districtOFuser,
-      emailOFuser: emailOFuser,
-      genderOFuser: genderOFuser,
-      nameOFuser: nameOFuser,
-      countryOFuser: countryOFuser,
-      stateOFuser: stateOFuser,
-      phoneNumberOfuser: phoneNumberOfuser,
-      addressOFuser: addressOFuser,
-      enterpriseNameOFuser: enterpriseNameOFuser,
-    );
-    log('kjfgiogosd ${res.message}');
-    log('kjfgiogosd st ${res.status}');
-    try {
-      if (res.status == ApiResponseStatus.completed) {
-        log('Adeeb updated');
-        currentUserName = nameOFuser;
-        currentUserPhoneNumber = phoneNumberOfuser;
-        currentUserState = stateOFuser;
-        currentUserCategory = categoryOFuser;
-        log('Adeeb update user category $categoryOFuser');
-        currentUserAddress = addressOFuser;
-        isloading.value = false;
-        Get.back();
-      } else {
-        log('Adeeb not updated');
-      }
-    } catch (e) {
-      log('update user $e');
-    }
   }
 
   Future<void> getAddressofUser() async {
@@ -221,7 +175,7 @@ class UserRegisterscreenController extends GetxController
       if (selectedCategoryType.value != CategoryType.standard) {
         log('not standard');
         await CustomDialog().showCustomDialog(
-            'Register as an agent of\n TourMaker',
+            'Register as an agent of TourMaker',
             'You have to pay \n424+GST \nto apply as an\n agent of TourMaker',
             cancelText: 'Go Back',
             confirmText: 'Pay rs 424 + GST', onCancel: () {
@@ -237,63 +191,29 @@ class UserRegisterscreenController extends GetxController
     }
   }
 
-  Future<void> saveUserInfo() async {
-    final String categoryOFuser = selectedCategoryType.value
-        .toString()
-        .split('.')
-        .last
-        .split('_')
-        .join(' ');
-    final String districtOFuser = userCity.value;
-    final String emailOFuser = userEmail.value;
-    final String genderOFuser =
-        selectedGender.value.toString().split('.').last.split('_').join(' ');
-    final String nameOFuser = userName.value;
-    final String stateOFuser = userState.value;
-    final String phoneNumberOfuser = userPhone.value;
-    final String addressOFuser = userAddress.value;
-    final String enterpriseNameOFuser = usereEnterpriseName.value;
-    final String countryOFuser = userCountry.value;
-
-    await updateUser(
-      categoryOFuser: categoryOFuser,
-      countryOFuser: countryOFuser,
-      districtOFuser: districtOFuser,
-      emailOFuser: emailOFuser,
-      genderOFuser: genderOFuser,
-      nameOFuser: nameOFuser,
-      stateOFuser: stateOFuser,
-      phoneNumberOfuser: phoneNumberOfuser,
-      addressOFuser: addressOFuser,
-      enterpriseNameOFuser: enterpriseNameOFuser,
-    );
-  }
-
   Future<void> payAmount() async {
     final RazorPayModel razorPaymodel = RazorPayModel(
-      amount: 1000,
-      contact: currentUserPhoneNumber,
+      contact: userPhone.value,
       currency: 'INR',
-      name: currentUserName,
+      name: userName.value,
     );
     final ApiResponse<RazorPayModel> res =
         await RazorPayRepository().createPayment(razorPaymodel);
     try {
       if (res.data != null) {
         razorPayModel.value = res.data!;
-        await openRazorPay(razorPayModel.value.packageId.toString(), 1000);
+        await openRazorPay(razorPayModel.value.packageId.toString());
       } else {
-        // log(' adeeb raz emp ');
+        log(' adeeb raz emp ');
       }
     } catch (e) {
-      // log('raz catch $e');
+      log('raz catch $e');
     }
   }
 
-  Future<void> openRazorPay(String orderId, int amount) async {
+  Future<void> openRazorPay(String orderId) async {
     final Map<String, Object?> options = <String, Object?>{
       'key': 'rzp_test_yAFypxWUiCD7H7',
-      'amount': 10000 * 100, // convert to paise
       'name': currentUserName,
       'description': 'Test Payment',
       'order_id': orderId,
@@ -340,6 +260,89 @@ class UserRegisterscreenController extends GetxController
   void _handleExternalWallet(ExternalWalletResponse response) {
     log('External wallet: ${response.walletName}');
   }
+
+  Future<void> saveUserInfo() async {
+    final String categoryOFuser = selectedCategoryType.value
+        .toString()
+        .split('.')
+        .last
+        .split('_')
+        .join(' ');
+    final String districtOFuser = userCity.value;
+    final String emailOFuser = userEmail.value;
+    final String genderOFuser =
+        selectedGender.value.toString().split('.').last.split('_').join(' ');
+    final String nameOFuser = userName.value;
+    final String stateOFuser = userState.value;
+    final String phoneNumberOfuser = userPhone.value;
+    final String addressOFuser = userAddress.value;
+    final String enterpriseNameOFuser = usereEnterpriseName.value;
+    final String countryOFuser = userCountry.value;
+
+    try {
+      await updateUser(
+        categoryOFuser: categoryOFuser,
+        countryOFuser: countryOFuser,
+        districtOFuser: districtOFuser,
+        emailOFuser: emailOFuser,
+        genderOFuser: genderOFuser,
+        nameOFuser: nameOFuser,
+        stateOFuser: stateOFuser,
+        phoneNumberOfuser: phoneNumberOfuser,
+        addressOFuser: addressOFuser,
+        enterpriseNameOFuser: enterpriseNameOFuser,
+      );
+    } catch (e) {
+      log('catch update $e');
+    }
+  }
+
+  Future<void> updateUser({
+    String? categoryOFuser,
+    String? districtOFuser,
+    String? emailOFuser,
+    String? genderOFuser,
+    String? nameOFuser,
+    String? stateOFuser,
+    String? phoneNumberOfuser,
+    String? addressOFuser,
+    String? enterpriseNameOFuser,
+    String? countryOFuser,
+  }) async {
+    final ApiResponse<Map<String, dynamic>> res =
+        await UserRepository().updateUser(
+      categoryOFuser: categoryOFuser,
+      districtOFuser: districtOFuser,
+      emailOFuser: emailOFuser,
+      genderOFuser: genderOFuser,
+      nameOFuser: nameOFuser,
+      countryOFuser: countryOFuser,
+      stateOFuser: stateOFuser,
+      phoneNumberOfuser: phoneNumberOfuser,
+      addressOFuser: addressOFuser,
+      enterpriseNameOFuser: enterpriseNameOFuser,
+    );
+    log('kjfgiogosd ${res.message}');
+    log('kjfgiogosd st ${res.status}');
+    try {
+      if (res.status == ApiResponseStatus.completed) {
+        log('Adeeb updated');
+        currentUserName = nameOFuser;
+        currentUserPhoneNumber = phoneNumberOfuser;
+        currentUserState = stateOFuser;
+        currentUserCategory = categoryOFuser;
+        log('Adeeb update user category $categoryOFuser');
+        currentUserAddress = addressOFuser;
+        isloading.value = false;
+        Get.back();
+      } else {
+        log('Adeeb not updated');
+        isloading.value = false;
+      }
+    } catch (e) {
+      log('update user $e');
+    }
+  }
 }
 
 enum Gender {
@@ -350,7 +353,7 @@ enum Gender {
 
 enum CategoryType {
   Freelancer,
-  Shop,
+  shop,
   TravelAgency,
   ContactCarriage,
   eServiceCentre,

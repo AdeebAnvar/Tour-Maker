@@ -48,10 +48,10 @@ class CheckoutScreenController extends GetxController
   num getTotalAmount() {
     final int adultCount = checkOutModel.value!.adultCount!;
     final int chidrenCount = checkOutModel.value!.childrenCount!;
-    final num adultAmount = checkOutModel.value!.offerAmount != null
+    final num adultAmount = checkOutModel.value!.offerAmount != 0
         ? checkOutModel.value!.offerAmount! * adultCount
         : checkOutModel.value!.amount! * adultCount;
-    final num kidsAmount = checkOutModel.value!.kidsOfferAmount != null
+    final num kidsAmount = checkOutModel.value!.kidsOfferAmount != 0
         ? checkOutModel.value!.kidsOfferAmount! * chidrenCount
         : checkOutModel.value!.kidsAmount! * chidrenCount;
     final num totalAmount = adultAmount + kidsAmount;
@@ -122,7 +122,7 @@ class CheckoutScreenController extends GetxController
         Get.back();
       },
       onConfirm: () {
-        Get.until((route) => Get.currentRoute == '/single-tour');
+        Get.offAllNamed(Routes.HOME);
       },
     );
   }
@@ -130,7 +130,7 @@ class CheckoutScreenController extends GetxController
   void onClickconfirmPurchase(int id) {
     CustomDialog().showCustomDialog(
       'Total amount ${getGrandTotal().toStringAsFixed(2)}',
-      'Advance amount ${checkOutModel.value!.advanceAmount}',
+      'Advance amount ${checkOutModel.value!.advanceAmount} + GST(${checkOutModel.value!.gst}%)',
       cancelText: 'Pay Advance Amount',
       confirmText: 'Pay Full Amount',
       onCancel: () {
@@ -154,7 +154,7 @@ class CheckoutScreenController extends GetxController
     log('Payment pay adv amount orderPayment ${orderPaymentModel.value.id}');
     log('kunukunu ${orderPaymentModel.value}');
     // //open razorpay
-    openRazorPay(orderPaymentModel.value.id.toString());
+    openRazorPay(orderAdvPaymentModel.value.id.toString());
   }
 
   Future<void> payFullAmount(int id) async {
@@ -170,7 +170,9 @@ class CheckoutScreenController extends GetxController
   Future<OrderPaymentModel> createPayment(int iD) async {
     log('Payment xcreate $iD');
     final OrderPaymentModel omp = OrderPaymentModel(
-        orderId: iD, currency: 'INR', contact: currentUserPhoneNumber);
+      orderId: iD,
+      currency: 'INR',
+    );
 
     try {
       final ApiResponse<OrderPaymentModel> res =
@@ -191,7 +193,9 @@ class CheckoutScreenController extends GetxController
   Future<OrderPaymentModel> createAdvancePayment(int iD) async {
     log('kunukunu xcreate ');
     final OrderPaymentModel omp = OrderPaymentModel(
-        orderId: iD, currency: 'INR', contact: currentUserPhoneNumber);
+      orderId: iD,
+      currency: 'INR',
+    );
 
     try {
       final ApiResponse<OrderPaymentModel> res =
@@ -231,7 +235,12 @@ class CheckoutScreenController extends GetxController
 
   Future<void> _handlePaymentSuccess(PaymentSuccessResponse response) async {
     final String? signature = response.signature;
-    final String? orderId = orderPaymentModel.value.id;
+    final String? orderId;
+    if (orderPaymentModel.value.id == null) {
+      orderId = orderAdvPaymentModel.value.id;
+    } else {
+      orderId = orderPaymentModel.value.id;
+    }
     final String? paymentId = response.paymentId;
     log('Payment bbddibdi sing $signature');
     log('Payment bbddibdi id $orderId');
@@ -242,8 +251,9 @@ class CheckoutScreenController extends GetxController
     try {
       if (res.status == ApiResponseStatus.completed && res.data!) {
         log('kunukunu completed payment fro the tour');
-        Get.offAllNamed(Routes.SINGLE_TOUR,
-                arguments: <dynamic>[checkOutModel.value!.tourID])!
+        Get.offAllNamed(
+          Routes.HOME,
+        )!
             .then(
           (value) => Get.snackbar(
             'Success ',

@@ -15,6 +15,6 @@ class OrderModel {
         'package_id': packageID,
       };
   static OrderModel fromJson(Map<String, dynamic> json) => OrderModel(
-        orderID: json['ordr_id'] as String,
+        orderID: json['ordr_id'] == null ? '' : json['ordr_id'] as String,
       );
 }

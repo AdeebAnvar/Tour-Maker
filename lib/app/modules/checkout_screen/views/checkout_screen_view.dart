@@ -90,7 +90,7 @@ class CheckoutScreenView extends GetView<CheckoutScreenController> {
                                 ),
                               ),
                               if (controller.checkOutModel.value?.offerAmount ==
-                                  null)
+                                  0)
                                 TextSpan(
                                     text:
                                         '₹ ${controller.checkOutModel.value!.amount}/pax',
@@ -142,7 +142,7 @@ class CheckoutScreenView extends GetView<CheckoutScreenController> {
                                 ),
                                 if (controller
                                         .checkOutModel.value?.kidsOfferAmount ==
-                                    null)
+                                    0)
                                   TextSpan(
                                       text:
                                           '₹ ${controller.checkOutModel.value!.kidsAmount}/pax',

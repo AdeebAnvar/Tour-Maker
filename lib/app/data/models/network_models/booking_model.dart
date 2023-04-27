@@ -27,7 +27,7 @@ class BookingsModel {
   int? noOfAdults;
   int? noOfKids;
   bool? offerApplied;
-  num? orderConfirmed;
+  String? orderConfirmed;
   String? orderStatus;
   int? packageId;
   num? payableAmount;
@@ -77,8 +77,8 @@ class BookingsModel {
             ? false
             : json['offer_applied'] as bool,
         orderConfirmed: json['order_confirmed'] == null
-            ? 0
-            : json['order_confirmed'] as num,
+            ? ''
+            : json['order_confirmed'] as String,
         orderStatus:
             json['order_status'] == null ? '' : json['order_status'] as String,
         packageId: json['package_id'] as int,

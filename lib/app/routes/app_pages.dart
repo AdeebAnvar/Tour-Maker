@@ -2,6 +2,8 @@ import 'package:flutter/animation.dart';
 
 import 'package:get/get.dart';
 
+import '../modules/Booking_summary/bindings/booking_summary_binding.dart';
+import '../modules/Booking_summary/views/booking_summary_view.dart';
 import '../modules/add_passenger/bindings/add_passenger_binding.dart';
 import '../modules/add_passenger/views/add_passenger_view.dart';
 import '../modules/booking_screen/bindings/booking_screen_binding.dart';
@@ -22,8 +24,7 @@ import '../modules/login/bindings/login_binding.dart';
 import '../modules/login/views/login_view.dart';
 import '../modules/lucky_draw/bindings/lucky_draw_binding.dart';
 import '../modules/lucky_draw/views/lucky_draw_view.dart';
-import '../modules/maangaatholi/bindings/maangaatholi_binding.dart';
-import '../modules/maangaatholi/views/maangaatholi_view.dart';
+
 import '../modules/main_screen/bindings/main_screen_binding.dart';
 import '../modules/main_screen/views/main_screen_view.dart';
 import '../modules/nointernet/bindings/nointernet_binding.dart';
@@ -148,13 +149,6 @@ class AppPages {
       name: _Paths.PAYMENT_SCREEN,
       page: () => const PaymentScreenView(),
       binding: PaymentScreenBinding(),
-    ),
-    GetPage<dynamic>(
-      transition: Transition.downToUp,
-      curve: Curves.easeInOut,
-      name: _Paths.PAYMENT_SUMMARY,
-      page: () => const PaymentSummaryView(),
-      binding: PaymentSummaryBinding(),
     ),
     GetPage<dynamic>(
       transition: Transition.fadeIn,
@@ -305,9 +299,18 @@ class AppPages {
       binding: SinglePassengerBinding(),
     ),
     GetPage(
-      name: _Paths.MAANGAATHOLI,
-      page: () => const MaangaatholiView(),
-      binding: MaangaatholiBinding(),
+      transition: Transition.downToUp,
+      curve: Curves.easeInOut,
+      name: _Paths.PAYMENT_SUMMARY,
+      page: () => const PaymentSummaryView(),
+      binding: PaymentSummaryBinding(),
+    ),
+    GetPage(
+      transition: Transition.fadeIn,
+      curve: Curves.easeInOut,
+      name: _Paths.BOOKING_SUMMARY,
+      page: () => const BookingSummaryView(),
+      binding: BookingSummaryBinding(),
     ),
   ];
 }

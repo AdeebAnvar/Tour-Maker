@@ -46,15 +46,17 @@ class PaymentScreenController extends GetxController
     tabcontroller.animateTo(1);
   }
 
-  void onTapSingleProcessingPayment() => Get.toNamed(Routes.PAYMENT_SUMMARY);
+  void onTapSingleProcessingPayment(int id) =>
+      Get.toNamed(Routes.PAYMENT_SUMMARY, arguments: id);
 
-  void onTapIcon() {}
-
-  void onTapSinglePendingPayment() {
-    Get.toNamed(Routes.PAYMENT_SUMMARY);
+  void onTapSinglePendingPayment(int id) {
+    log('id id id  $id');
+    Get.toNamed(Routes.PAYMENT_SUMMARY, arguments: id);
   }
 
-  void onTapSinglePaidView() {}
+  void onTapSinglePaidView(int id) {
+    Get.toNamed(Routes.PAYMENT_SUMMARY, arguments: id);
+  }
 
   Future<void> loadData() async {
     await loadProcessingPayments();

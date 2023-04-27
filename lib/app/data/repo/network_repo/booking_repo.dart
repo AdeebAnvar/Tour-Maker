@@ -34,7 +34,7 @@ class BookingRepository {
     try {
       final Map<String, dynamic>? authHeader = await Client().getAuthHeader();
       final Response<Map<String, dynamic>> res = await dio.getUri(
-          Uri.parse('user//order?id=$id'),
+          Uri.parse('user/order?id=$id'),
           options: Options(headers: authHeader));
       if (res.statusCode == 200) {
         singleBookingList =

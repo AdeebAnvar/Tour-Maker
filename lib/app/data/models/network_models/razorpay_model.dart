@@ -15,12 +15,9 @@ class RazorPayModel {
   String? packageId;
   String? orderId;
   Map<String, dynamic> toJson() => <String, dynamic>{
-        'amount': amount,
         'currency': currency,
-        'name': name,
-        'email': email,
         'contact': contact,
-        'order_id': orderId,
+        'name': name,
       };
   static RazorPayModel fromJson(Map<String, dynamic> json) => RazorPayModel(
         packageId: json['id'] as String,
@@ -28,11 +25,9 @@ class RazorPayModel {
 }
 
 class OrderPaymentModel {
-  OrderPaymentModel(
-      {this.currency, this.orderId, this.contact, this.paymentID, this.id});
+  OrderPaymentModel({this.currency, this.orderId, this.paymentID, this.id});
   String? currency;
   int? orderId;
-  String? contact;
   String? paymentID;
   String? id;
   static OrderPaymentModel fromJson(Map<String, dynamic> json) =>
@@ -43,6 +38,5 @@ class OrderPaymentModel {
   Map<String, dynamic> toJson() => <String, dynamic>{
         'currency': currency,
         'order_id': orderId,
-        'contact': contact,
       };
 }

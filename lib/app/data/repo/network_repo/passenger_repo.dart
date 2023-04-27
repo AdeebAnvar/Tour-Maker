@@ -101,7 +101,7 @@ class PassengerRepository {
           Uri.parse('createpayment?payment_type=remaining'),
           data: orderPaymentModel.toJson(),
           options: Options(headers: authHeader));
-      log('hayavan 1');
+      log('createRemainingAmountPayment repo ${response.statusMessage}');
       if (response.statusCode == 200) {
         final OrderPaymentModel razorpay = OrderPaymentModel.fromJson(
             response.data!['result'] as Map<String, dynamic>);

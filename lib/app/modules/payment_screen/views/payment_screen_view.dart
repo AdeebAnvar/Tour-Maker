@@ -95,7 +95,8 @@ class PaymentScreenView extends GetView<PaymentScreenController> {
                 itemCount: controller.processingPayments.length,
                 itemBuilder: (BuildContext context, int index) =>
                     GestureDetector(
-                  onTap: () => controller.onTapSingleProcessingPayment(),
+                  onTap: () => controller.onTapSingleProcessingPayment(
+                      controller.processingPayments[index].id!),
                   child: PaymentTile(
                     tourName: controller.processingPayments[index].tourName
                         .toString(),
@@ -124,7 +125,8 @@ class PaymentScreenView extends GetView<PaymentScreenController> {
                 itemCount: controller.pendingPayments.length,
                 itemBuilder: (BuildContext context, int index) =>
                     GestureDetector(
-                  onTap: () => controller.onTapSinglePendingPayment(),
+                  onTap: () => controller.onTapSinglePendingPayment(
+                      controller.pendingPayments[index].id!),
                   child: PaymentTile(
                     tourName:
                         controller.pendingPayments[index].tourName.toString(),
@@ -152,7 +154,8 @@ class PaymentScreenView extends GetView<PaymentScreenController> {
                 itemCount: controller.paidPayments.length,
                 itemBuilder: (BuildContext context, int index) =>
                     GestureDetector(
-                  onTap: () => controller.onTapSinglePaidView(),
+                  onTap: () => controller
+                      .onTapSinglePaidView(controller.paidPayments[index].id!),
                   child: PaymentTile(
                     tourName:
                         controller.paidPayments[index].tourName.toString(),

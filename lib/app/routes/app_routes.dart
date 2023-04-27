@@ -13,7 +13,7 @@ abstract class Routes {
   static const String LUCKY_DRAW = _Paths.LUCKY_DRAW;
   static const String PROFILE = _Paths.PROFILE;
   static const String PAYMENT_SCREEN = _Paths.PAYMENT_SCREEN;
-  static const String PAYMENT_SUMMARY = _Paths.PAYMENT_SUMMARY;
+  static const String BOOKING_SUMMARY = _Paths.BOOKING_SUMMARY;
   static const String FAVOURITES_SCREEN = _Paths.FAVOURITES_SCREEN;
   static const String BOOKING_SCREEN = _Paths.BOOKING_SCREEN;
   static const String TRIP_DETAILS = _Paths.TRIP_DETAILS;
@@ -45,6 +45,7 @@ abstract class Routes {
   static const String TRAVELLERS_SCREEN = _Paths.TRAVELLERS_SCREEN;
   static const String SINGLE_PASSENGER = _Paths.SINGLE_PASSENGER;
   static const String MAANGAATHOLI = _Paths.MAANGAATHOLI;
+  static const String PAYMENT_SUMMARY = _Paths.PAYMENT_SUMMARY;
 }
 
 abstract class _Paths {
@@ -59,7 +60,7 @@ abstract class _Paths {
   static const String LUCKY_DRAW = '/lucky-draw';
   static const String PROFILE = '/profile';
   static const String PAYMENT_SCREEN = '/payment-screen';
-  static const String PAYMENT_SUMMARY = '/payment-summary';
+  static const String BOOKING_SUMMARY = '/booking-summary';
   static const String FAVOURITES_SCREEN = '/favourites-screen';
   static const String BOOKING_SCREEN = '/booking-screen';
   static const String TRIP_DETAILS = '/trip-details';
@@ -91,4 +92,5 @@ abstract class _Paths {
   static const String TRAVELLERS_SCREEN = '/travellers-screen';
   static const String SINGLE_PASSENGER = '/single-passenger';
   static const String MAANGAATHOLI = '/maangaatholi';
+  static const String PAYMENT_SUMMARY = '/payment-summary';
 }

@@ -222,7 +222,7 @@ class UserRegisterscreenView extends GetView<UserRegisterscreenController> {
                                   controller.selectedCategoryType.value =
                                       newValue!;
                                 },
-                                hint: const Text('Select categoryType '),
+                                hint: const Text('Select Category'),
                                 items: CategoryType.values
                                     .map((CategoryType categoryType) {
                                   return DropdownMenuItem<CategoryType>(
@@ -230,9 +230,7 @@ class UserRegisterscreenView extends GetView<UserRegisterscreenController> {
                                     child: Text(categoryType
                                         .toString()
                                         .split('.')
-                                        .last
-                                        .split('_')
-                                        .join(' ')),
+                                        .last),
                                   );
                                 }).toList(),
                               ),

@@ -6,24 +6,27 @@ import 'package:sizer/sizer.dart';
 
 import '../../../../core/theme/style.dart';
 import '../../../../core/tour_maker_icons.dart';
+
 import '../../../../core/utils/date_utils.dart';
 import '../../../../core/utils/string_utils.dart';
 import '../../../widgets/custom_appbar.dart';
 import '../../../widgets/custom_elevated_button.dart';
 import '../../../widgets/custom_errorscreen.dart';
 import '../../../widgets/custom_loadinscreen.dart';
-import '../controllers/payment_summary_controller.dart';
+import '../controllers/booking_summary_controller.dart';
 
-class PaymentSummaryView extends GetView<PaymentSummaryController> {
-  const PaymentSummaryView({super.key});
+class BookingSummaryView extends GetView<BookingSummaryController> {
+  const BookingSummaryView({super.key});
   @override
   Widget build(BuildContext context) {
+    final BookingSummaryController controller =
+        Get.put(BookingSummaryController());
     return Scaffold(
-        appBar: const CustomAppBar(title: Text('Payment Summary')),
+        appBar: const CustomAppBar(title: Text('Booking Summary')),
         body: controller.obx(
           onEmpty: const CustomErrorScreen(errorText: 'Nothing found....'),
           onLoading: const CustomLoadingScreen(),
-          (PaymentSummaryView? state) => Padding(
+          (BookingSummaryView? state) => Padding(
             padding: const EdgeInsets.all(18.0),
             child: ListView(
               children: <Widget>[
@@ -48,12 +51,12 @@ class PaymentSummaryView extends GetView<PaymentSummaryController> {
                               Column(
                                 children: <Widget>[
                                   Text(
-                                      controller.paymentList[0].tourName
+                                      controller.bookingList[0].tourName
                                           .toString(),
                                       style: subheading3),
                                   const SizedBox(height: 2),
                                   Text(
-                                      controller.paymentList[0].tourCode
+                                      controller.bookingList[0].tourCode
                                           .toString(),
                                       style: paragraph4),
                                 ],
@@ -63,7 +66,7 @@ class PaymentSummaryView extends GetView<PaymentSummaryController> {
                                   Text('Booked Date', style: subheading3),
                                   const SizedBox(height: 2),
                                   Text(
-                                      controller.paymentList[0].createdAt
+                                      controller.bookingList[0].createdAt
                                           .toString()
                                           .parseFromIsoDate()
                                           .toDateTime(),
@@ -75,7 +78,7 @@ class PaymentSummaryView extends GetView<PaymentSummaryController> {
                                   Text('Tour Date', style: subheading3),
                                   const SizedBox(height: 2),
                                   Text(
-                                      controller.paymentList[0].dateOfTravel
+                                      controller.bookingList[0].dateOfTravel
                                           .toString()
                                           .parseFromIsoDate()
                                           .toDate(),
@@ -88,7 +91,7 @@ class PaymentSummaryView extends GetView<PaymentSummaryController> {
                         const Spacer(),
                         GestureDetector(
                           onTap: () => controller
-                              .onClickPassengers(controller.paymentList[0].id),
+                              .onClickPassengers(controller.bookingList[0].id),
                           child: Column(
                             children: <Widget>[
                               Container(
@@ -179,7 +182,7 @@ class PaymentSummaryView extends GetView<PaymentSummaryController> {
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: <Widget>[
                               Text('Package Amount     :', style: subheading3),
-                              Text('₹ ${controller.paymentList[0].totalAmount}',
+                              Text('₹ ${controller.bookingList[0].totalAmount}',
                                   style: subheading2),
                             ],
                           ),
@@ -196,10 +199,10 @@ class PaymentSummaryView extends GetView<PaymentSummaryController> {
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: <Widget>[
-                              Text('GST(${controller.paymentList[0].gst}%):',
+                              Text('GST(${controller.bookingList[0].gst}%):',
                                   style: subheading3),
                               Text(
-                                  '₹ ${controller.getPackageGSTamount(controller.paymentList[0].totalAmount!, controller.paymentList[0].gst!)}',
+                                  '₹ ${controller.getPackageGSTamount(controller.bookingList[0].totalAmount!, controller.bookingList[0].gst!)}',
                                   style: subheading2),
                             ],
                           ),
@@ -209,7 +212,7 @@ class PaymentSummaryView extends GetView<PaymentSummaryController> {
                             children: <Widget>[
                               Text('Total Amount      :', style: subheading3),
                               Text(
-                                  '₹ ${controller.paymentList[0].payableAmount}',
+                                  '₹ ${controller.bookingList[0].payableAmount}',
                                   style: subheading2),
                             ],
                           ),
@@ -228,7 +231,7 @@ class PaymentSummaryView extends GetView<PaymentSummaryController> {
                           //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           //   children: <Widget>[
                           //     const Text('Payable Amount         :'),
-                          //     Text(controller.paymentList[0].payableAmount
+                          //     Text(controller.bookingList[0].payableAmount
                           //         .toString()),
                           //   ],
                           // ),
@@ -236,7 +239,7 @@ class PaymentSummaryView extends GetView<PaymentSummaryController> {
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: <Widget>[
                               const Text('Paid Amount     :'),
-                              Text(controller.paymentList[0].amountPaid
+                              Text(controller.bookingList[0].amountPaid
                                   .toString()),
                             ],
                           ),
@@ -257,7 +260,7 @@ class PaymentSummaryView extends GetView<PaymentSummaryController> {
                                 text: 'Pay Remaining Amount',
                                 onPressed: () =>
                                     controller.onClickPayRemainingAmount(
-                                        controller.paymentList[0].orderId!),
+                                        controller.bookingList[0].id!),
                               );
                             }),
                         ],

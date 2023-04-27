@@ -315,7 +315,8 @@ class BookingScreenView extends GetView<BookingScreenController> {
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: <Widget>[
                       Text(
-                          controller.upcomingList[index].tourName ?? 'tourname',
+                          controller.completedList[index].tourName ??
+                              'tourname',
                           style: paragraph2),
                       Text('Paid Amount : ',
                           style: GoogleFonts.montserrat(

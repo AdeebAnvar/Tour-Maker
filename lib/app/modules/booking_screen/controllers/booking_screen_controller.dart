@@ -49,7 +49,9 @@ class BookingScreenController extends GetxController
 
     final ApiResponse<List<BookingsModel>> res =
         await BookingRepository().getAllBookings('pending');
-    log('getAllUpcomingBookings ${res.message}');
+    log('getAllUpcomingBookings m ${res.message}');
+    // log('getAllUpcomingBookings d ${res.data}');
+    log('getAllUpcomingBookings  s ${res.status}');
     if (res.data != null) {
       upcomingList.value = res.data!;
     }
@@ -60,10 +62,11 @@ class BookingScreenController extends GetxController
     isLoading.value = true;
 
     final ApiResponse<List<BookingsModel>> res =
-        await BookingRepository().getAllBookings('completed');
-
+        await BookingRepository().getAllBookings('confirm');
+    log('getAllCompletedBookings m ${res.message}');
+    log('getAllCompletedBookings d ${res.data}');
+    log('getAllCompletedBookings s  ${res.status}');
     if (res.data != null) {
-      log('getAllCompletedBookings ${res.message}');
       completedList.value = res.data!;
     }
     isLoading.value = false;
@@ -75,8 +78,8 @@ class BookingScreenController extends GetxController
     final ApiResponse<List<BookingsModel>> res =
         await BookingRepository().getAllBookings('cancelled');
 
+    log('getAllCancelledBookings ${res.message}');
     if (res.data != null) {
-      log('getAllCancelledBookings ${res.message}');
       cancelledList.value = res.data!;
     }
     isLoading.value = false;
@@ -95,7 +98,7 @@ class BookingScreenController extends GetxController
   }
 
   void onTapSingleUpComingBooking(BookingsModel upcomingList) {
-    Get.toNamed(Routes.PAYMENT_SUMMARY, arguments: upcomingList.id)!
+    Get.toNamed(Routes.BOOKING_SUMMARY, arguments: upcomingList.id)!
         .whenComplete(() => loadData());
   }
 
@@ -105,7 +108,7 @@ class BookingScreenController extends GetxController
   }
 
   void onTapSingleCompletedBooking(BookingsModel completedList) {
-    Get.toNamed(Routes.PAYMENT_SUMMARY, arguments: completedList.id)!
+    Get.toNamed(Routes.BOOKING_SUMMARY, arguments: completedList.id)!
         .whenComplete(() => loadData());
   }
 
@@ -115,7 +118,7 @@ class BookingScreenController extends GetxController
   }
 
   void onTapSingleCancelledBooking(BookingsModel cancelledList) {
-    Get.toNamed(Routes.PAYMENT_SUMMARY, arguments: cancelledList.id)!
+    Get.toNamed(Routes.BOOKING_SUMMARY, arguments: cancelledList.id)!
         .whenComplete(() => loadData());
   }
 

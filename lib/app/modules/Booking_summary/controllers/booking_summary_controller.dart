@@ -1,3 +1,5 @@
+// ignore_for_file: unnecessary_overrides
+
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
@@ -6,17 +8,17 @@ import 'package:razorpay_flutter/razorpay_flutter.dart';
 
 import '../../../../core/theme/style.dart';
 import '../../../data/models/network_models/razorpay_model.dart';
-import '../../../data/models/network_models/single_payment_model.dart';
+import '../../../data/models/network_models/single_booking_model.dart';
+import '../../../data/repo/network_repo/booking_repo.dart';
 import '../../../data/repo/network_repo/passenger_repo.dart';
-import '../../../data/repo/network_repo/payment_repo.dart';
 import '../../../data/repo/network_repo/razorpay_repo.dart';
 import '../../../routes/app_pages.dart';
 import '../../../services/network_services/dio_client.dart';
-import '../views/payment_summary_view.dart';
+import '../views/booking_summary_view.dart';
 
-class PaymentSummaryController extends GetxController
-    with StateMixin<PaymentSummaryView> {
-  RxList<SinglePaymentModel> paymentList = <SinglePaymentModel>[].obs;
+class BookingSummaryController extends GetxController
+    with StateMixin<BookingSummaryView> {
+  RxList<SingleBookingModel> bookingList = <SingleBookingModel>[].obs;
   Rx<bool> isLoading = false.obs;
   Rx<OrderPaymentModel> orderPaymentModel = OrderPaymentModel().obs;
   late Razorpay razorPay;
@@ -31,20 +33,30 @@ class PaymentSummaryController extends GetxController
     razorPay.on(Razorpay.EVENT_EXTERNAL_WALLET, _handleExternalWallet);
   }
 
+  @override
+  void onReady() {
+    super.onReady();
+  }
+
+  @override
+  void onClose() {
+    super.onClose();
+  }
+
   void loadData() {
     change(null, status: RxStatus.loading());
     if (Get.arguments != null) {
       id = Get.arguments as int;
       log('sfg $id');
-      loadPaymentDetails(id!);
+      loadBookingDetails(id!);
     }
   }
 
-  Future<void> loadPaymentDetails(int id) async {
-    final ApiResponse<List<SinglePaymentModel>> res =
-        await PaymentRepository().getSinglePayment(id);
+  Future<void> loadBookingDetails(int id) async {
+    final ApiResponse<List<SingleBookingModel>> res =
+        await BookingRepository().getSingleBooking(id);
     if (res.data != null) {
-      paymentList.value = res.data!;
+      bookingList.value = res.data!;
       change(null, status: RxStatus.success());
     } else {
       change(null, status: RxStatus.empty());
@@ -52,12 +64,12 @@ class PaymentSummaryController extends GetxController
   }
 
   int getTotalTravellersCount() {
-    final int sum = paymentList[0].noOfAdults! + paymentList[0].noOfKids!;
+    final int sum = bookingList[0].noOfAdults! + bookingList[0].noOfKids!;
     return sum;
   }
 
   num getRemainingAmount() {
-    final num sum = paymentList[0].payableAmount! - paymentList[0].amountPaid!;
+    final num sum = bookingList[0].payableAmount! - bookingList[0].amountPaid!;
     return sum;
   }
 
@@ -140,7 +152,7 @@ class PaymentSummaryController extends GetxController
             .then(
           (value) => Get.snackbar(
             'Success ',
-            'Payment Suucess for the tour ${paymentList[0].tourName}',
+            'Payment Suucess for the tour ${bookingList[0].tourName}',
             backgroundColor: englishViolet,
             colorText: Colors.white,
           ),

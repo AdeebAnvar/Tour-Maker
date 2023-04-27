@@ -13,7 +13,7 @@ class RazorPayRepository {
     try {
       final Map<String, dynamic>? authHeader = await Client().getAuthHeader();
       final Response<Map<String, dynamic>> response = await dio.postUri(
-          Uri.parse('createInitialpayment'),
+          Uri.parse('createinitialpayment'),
           options: Options(headers: authHeader),
           data: razorPayModel.toJson());
       if (response.statusCode == 200) {
