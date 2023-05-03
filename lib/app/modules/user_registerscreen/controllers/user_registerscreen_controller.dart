@@ -5,9 +5,9 @@ import 'package:flutter/material.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:razorpay_flutter/razorpay_flutter.dart';
 
-import '../../../../core/utils/constants.dart';
 import '../../../data/models/network_models/razorpay_model.dart';
 import '../../../data/models/network_models/user_model.dart';
 import '../../../data/repo/network_repo/razorpay_repo.dart';
@@ -20,7 +20,10 @@ class UserRegisterscreenController extends GetxController
     with StateMixin<UserRegisterscreenView> {
   GlobalKey<FormState> formKey = GlobalKey<FormState>();
   Rx<UserModel> user = UserModel().obs;
+  GetStorage getStorage = GetStorage();
   late Razorpay razorPay;
+  // final TextEditingController userAddressController = TextEditingController();
+
   Rx<RazorPayModel> razorPayModel = RazorPayModel().obs;
   Rx<Country> selectedCountry = Country(
     phoneCode: '91',
@@ -35,8 +38,10 @@ class UserRegisterscreenController extends GetxController
     e164Key: '',
   ).obs;
   Rx<Gender> selectedGender = Gender.Male.obs;
+  // var currentUserPhoneNumber;
   Rx<CategoryType> selectedCategoryType = CategoryType.standard.obs;
   RxBool isloading = false.obs;
+  RxBool isPaidInitial = false.obs;
   Rx<bool> isFindingAddressOfUser = false.obs;
   Rx<String> userAddress = ''.obs;
   Rx<String> userCountry = ''.obs;
@@ -46,9 +51,15 @@ class UserRegisterscreenController extends GetxController
   Rx<String> userEmail = ''.obs;
   Rx<String> userPhone = ''.obs;
   Rx<String> usereEnterpriseName = ''.obs;
+  RxString userType = ''.obs;
   @override
-  void onInit() {
+  Future<void> onInit() async {
     super.onInit();
+    userType.value = await getStorage.read('initialPayment') as String;
+    // currentUserPhoneNumber =
+    //     await getStorage.read('currentUserPhoneNumber') as String;
+    // userType.value = '';
+    log('message $userType');
     loadData();
     razorPay = Razorpay();
     razorPay.on(Razorpay.EVENT_PAYMENT_SUCCESS, _handlePaymentSuccess);
@@ -170,9 +181,29 @@ class UserRegisterscreenController extends GetxController
   }
 
   Future<void> onRegisterClicked() async {
+    // log(userType.value);
     if (formKey.currentState!.validate()) {
       isloading.value = true;
-      await saveUserInfo();
+      if (userType.value == 'paid' ||
+          selectedCategoryType.value == CategoryType.standard) {
+        await saveUserInfo();
+        isloading.value = false;
+      } else {
+        await CustomDialog().showCustomDialog(
+            'Register as an agent of TourMaker',
+            'You have to pay \n424+GST \nto apply as an\n agent of TourMaker',
+            cancelText: 'Go Back',
+            confirmText: 'Pay rs 424 + GST', onCancel: () {
+          selectedCategoryType.value = CategoryType.standard;
+          Get.back();
+          isloading.value = false;
+        }, onConfirm: () async {
+          log('Kirubuib confirm payamount');
+          Get.back();
+          await payAmount();
+          isloading.value = false;
+        });
+      }
       // if (selectedCategoryType.value != CategoryType.standard) {
       //   log('not standard');
       //   await CustomDialog().showCustomDialog(
@@ -195,35 +226,41 @@ class UserRegisterscreenController extends GetxController
 
   Future<void> payAmount() async {
     log('Kirubuib payAmount');
-    final RazorPayModel razorPaymodel = RazorPayModel(
-      contact: userPhone.value,
-      currency: 'INR',
-      name: userName.value,
-    );
-    final ApiResponse<RazorPayModel> res =
-        await RazorPayRepository().createPayment(razorPaymodel);
-    try {
-      log('Kirubuib craete payment ');
-      if (res.data != null) {
-        razorPayModel.value = res.data!;
-        log('Kirubuib package id ${razorPayModel.value.packageId}');
-        await openRazorPay(razorPayModel.value.packageId.toString());
-      } else {
-        log(' adeeb raz emp ');
+    isloading.value = true;
+    if (formKey.currentState!.validate()) {
+      final RazorPayModel razorPaymodel = RazorPayModel(
+        contact: userPhone.value,
+        currency: 'INR',
+        name: userName.value,
+      );
+      final ApiResponse<RazorPayModel> res =
+          await RazorPayRepository().createPayment(razorPaymodel);
+      try {
+        log('Kirubuib craete payment ');
+        if (res.data != null) {
+          razorPayModel.value = res.data!;
+          log('Kirubuib package id ${razorPayModel.value.packageId}');
+          await openRazorPay(razorPayModel.value.packageId.toString());
+        } else {
+          log(' adeeb raz emp ');
+        }
+        isloading.value = false;
+      } catch (e) {
+        log('raz catch $e');
       }
-    } catch (e) {
-      log('raz catch $e');
+    } else {
+      isloading.value = false;
     }
   }
 
   Future<void> openRazorPay(String orderId) async {
     final Map<String, Object?> options = <String, Object?>{
       'key': 'rzp_test_yAFypxWUiCD7H7',
-      'name': currentUserName,
+      'name': 'Tour Maker',
       'description': 'Test Payment',
       'order_id': orderId,
       'prefill': <String, Object?>{
-        'contact': currentUserPhoneNumber,
+        'contact': userPhone.value,
       },
       'external': <String, Object?>{
         'wallets': <String>['paytm'],
@@ -232,6 +269,7 @@ class UserRegisterscreenController extends GetxController
 
     try {
       razorPay.open(options);
+      log('kkmvk $options');
     } catch (e) {
       log('Error opening Razorpay checkout: $e');
     }
@@ -252,18 +290,24 @@ class UserRegisterscreenController extends GetxController
       if (res.status == ApiResponseStatus.completed) {
         log('Payment verification succeeded.');
         log('Kirubuib ver success ');
-
-        await saveUserInfo();
+        isPaidInitial.value = true;
+        await getStorage.write('initialPayment', 'paid');
+        userType.value = 'paid';
+        log('message ${userType.value}');
+        // await saveUserInfo();
       } else {
         log('Payment verification failed: ${res.message}');
+        userType.value = '';
       }
     } catch (e) {
       log('Payment verification  Error while handling payment success: $e');
+      userType.value = '';
     }
   }
 
   void _handlePaymentError(PaymentFailureResponse response) {
     log('Payment error: ${response.code} - ${response.message}');
+    selectedCategoryType.value = CategoryType.standard;
   }
 
   void _handleExternalWallet(ExternalWalletResponse response) {
@@ -272,39 +316,44 @@ class UserRegisterscreenController extends GetxController
 
   Future<void> saveUserInfo() async {
     log('Kirubuib save user info ');
+    isloading.value = true;
+    if (formKey.currentState!.validate()) {
+      final String categoryOFuser = selectedCategoryType.value
+          .toString()
+          .split('.')
+          .last
+          .split('_')
+          .join(' ');
+      final String districtOFuser = userCity.value;
+      final String emailOFuser = userEmail.value;
+      final String genderOFuser =
+          selectedGender.value.toString().split('.').last.split('_').join(' ');
+      final String nameOFuser = userName.value;
+      final String stateOFuser = userState.value;
+      final String phoneNumberOfuser = userPhone.value;
+      final String addressOFuser = userAddress.value;
+      final String enterpriseNameOFuser = usereEnterpriseName.value;
+      final String countryOFuser = userCountry.value;
 
-    final String categoryOFuser = selectedCategoryType.value
-        .toString()
-        .split('.')
-        .last
-        .split('_')
-        .join(' ');
-    final String districtOFuser = userCity.value;
-    final String emailOFuser = userEmail.value;
-    final String genderOFuser =
-        selectedGender.value.toString().split('.').last.split('_').join(' ');
-    final String nameOFuser = userName.value;
-    final String stateOFuser = userState.value;
-    final String phoneNumberOfuser = userPhone.value;
-    final String addressOFuser = userAddress.value;
-    final String enterpriseNameOFuser = usereEnterpriseName.value;
-    final String countryOFuser = userCountry.value;
-
-    try {
-      await updateUser(
-        categoryOFuser: categoryOFuser,
-        countryOFuser: countryOFuser,
-        districtOFuser: districtOFuser,
-        emailOFuser: emailOFuser,
-        genderOFuser: genderOFuser,
-        nameOFuser: nameOFuser,
-        stateOFuser: stateOFuser,
-        phoneNumberOfuser: phoneNumberOfuser,
-        addressOFuser: addressOFuser,
-        enterpriseNameOFuser: enterpriseNameOFuser,
-      );
-    } catch (e) {
-      log('Kirubuib catch update $e');
+      try {
+        await updateUser(
+          categoryOFuser: categoryOFuser,
+          countryOFuser: countryOFuser,
+          districtOFuser: districtOFuser,
+          emailOFuser: emailOFuser,
+          genderOFuser: genderOFuser,
+          nameOFuser: nameOFuser,
+          stateOFuser: stateOFuser,
+          phoneNumberOfuser: phoneNumberOfuser,
+          addressOFuser: addressOFuser,
+          enterpriseNameOFuser: enterpriseNameOFuser,
+        );
+        isloading.value = false;
+      } catch (e) {
+        log('Kirubuib catch update $e');
+      }
+    } else {
+      isloading.value = false;
     }
   }
 
@@ -338,17 +387,30 @@ class UserRegisterscreenController extends GetxController
     try {
       if (res.status == ApiResponseStatus.completed) {
         log('Adeeb updated');
-        currentUserName = nameOFuser;
-        currentUserPhoneNumber = phoneNumberOfuser;
-        currentUserState = stateOFuser;
-        currentUserCategory = categoryOFuser;
+        // currentUserName = nameOFuser;
+        // currentUserPhoneNumber = phoneNumberOfuser;
+        // currentUserState = stateOFuser;
+        // currentUserCategory = categoryOFuser;
+        await getStorage.write('currentUserAddress', addressOFuser);
+
+        await getStorage.write('currentUserCategory', categoryOFuser);
+        await getStorage.write('currentUserName', nameOFuser);
+        await getStorage.write('currentUserCountry', countryOFuser);
+        await getStorage.write('currentUserDistrict', districtOFuser);
+        await getStorage.write('currentUserEmail', emailOFuser);
+        await getStorage.write(
+            'currentUserEnterpriseName', enterpriseNameOFuser);
+        await getStorage.write('currentUserGender', genderOFuser);
+        await getStorage.write('currentUserPhoneNumber', phoneNumberOfuser);
+        await getStorage.write('currentUserState', stateOFuser);
         log('Adeeb update user category $categoryOFuser');
-        currentUserAddress = addressOFuser;
+        // currentUserAddress = addressOFuser;
         isloading.value = false;
         Get.back();
       } else {
-        log('Kirubuib Adeeb not updated');
+        log('not updated');
         isloading.value = false;
+        // userType.value = '';
       }
     } catch (e) {
       log('Kirubuib update user $e');

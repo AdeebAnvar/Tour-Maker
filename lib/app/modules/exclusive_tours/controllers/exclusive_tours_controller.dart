@@ -53,7 +53,7 @@ class ExclusiveToursController extends GetxController
     log('Kumbalangi wish data ${res.data}');
     if (res.status == ApiResponseStatus.completed) {
       wishList.value = res.data! as List<WishListModel>;
-    }
+    } else {}
   }
 
   Future<void> toggleFavorite(int productId) async {

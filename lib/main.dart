@@ -38,10 +38,11 @@ Future<void> main() async {
       return GetMaterialApp(
         debugShowCheckedModeBanner: false,
         theme: ThemeData(
-            scaffoldBackgroundColor: Colors.grey.shade100,
-            inputDecorationTheme: const InputDecorationTheme(
-              alignLabelWithHint: true, // center both hint text and prefix icon
-            )),
+          scaffoldBackgroundColor: Colors.grey.shade100,
+          inputDecorationTheme: const InputDecorationTheme(
+            alignLabelWithHint: true,
+          ),
+        ),
         title: 'Application',
         initialRoute: AppPages.INITIAL,
         getPages: AppPages.routes,

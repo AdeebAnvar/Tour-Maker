@@ -32,7 +32,7 @@ class FavouritesScreenController extends GetxController
     final res = await WishListRepo().getAllFav();
     log('ihdiv getAllFav ${res.message}');
     if (res.data != null) {
-      favouritesList.value = res.data! as List<WishListModel>;
+      favouritesList.value = res.data!;
       change(null, status: RxStatus.success());
     } else {
       change(null, status: RxStatus.empty());

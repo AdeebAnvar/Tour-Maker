@@ -6,11 +6,10 @@ import 'package:get/get.dart';
 import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
 
 import '../../../widgets/custom_appbar.dart';
-import '../../pdf_view/views/pdf_view_view.dart';
 import '../controllers/invoice_pdf_controller.dart';
 
 class InvoicePdfView extends GetView<InvoicePdfController> {
-  const InvoicePdfView({Key? key}) : super(key: key);
+  const InvoicePdfView({super.key});
   @override
   Widget build(BuildContext context) {
     return Scaffold(

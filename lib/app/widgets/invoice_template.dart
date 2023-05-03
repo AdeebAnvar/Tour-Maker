@@ -1,5 +1,3 @@
-import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart' as pw;
 
@@ -17,11 +15,11 @@ class InvoiceTemplate {
     required int adults,
     required int kids,
   }) {
-    final textStyle = TextStyle(
-      fontSize: 14,
-      fontWeight: FontWeight.w500,
-      color: Colors.black,
-    );
+    // final TextStyle textStyle = const TextStyle(
+    //   fontSize: 14,
+    //   fontWeight: FontWeight.w500,
+    //   color: Colors.black,
+    // );
 
     return pw.Container(
       padding: const pw.EdgeInsets.all(16),

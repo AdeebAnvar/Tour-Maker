@@ -20,11 +20,14 @@ import '../modules/get_started/bindings/get_started_binding.dart';
 import '../modules/get_started/views/get_started_view.dart';
 import '../modules/home/bindings/home_binding.dart';
 import '../modules/home/views/home_view.dart';
+import '../modules/invoice_pdf/bindings/invoice_pdf_binding.dart';
+import '../modules/invoice_pdf/views/invoice_pdf_view.dart';
+import '../modules/jnnjf/bindings/jnnjf_binding.dart';
+import '../modules/jnnjf/views/jnnjf_view.dart';
 import '../modules/login/bindings/login_binding.dart';
 import '../modules/login/views/login_view.dart';
 import '../modules/lucky_draw/bindings/lucky_draw_binding.dart';
 import '../modules/lucky_draw/views/lucky_draw_view.dart';
-
 import '../modules/main_screen/bindings/main_screen_binding.dart';
 import '../modules/main_screen/views/main_screen_view.dart';
 import '../modules/nointernet/bindings/nointernet_binding.dart';
@@ -311,6 +314,16 @@ class AppPages {
       name: _Paths.BOOKING_SUMMARY,
       page: () => const BookingSummaryView(),
       binding: BookingSummaryBinding(),
+    ),
+    GetPage(
+      name: _Paths.INVOICE_PDF,
+      page: () => const InvoicePdfView(),
+      binding: InvoicePdfBinding(),
+    ),
+    GetPage(
+      name: _Paths.JNNJF,
+      page: () => const JnnjfView(),
+      binding: JnnjfBinding(),
     ),
   ];
 }

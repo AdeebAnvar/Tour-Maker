@@ -53,10 +53,10 @@ class SplashScreenController extends GetxController with StateMixin<dynamic> {
 
     try {
       if (currentUser != null) {
-        log('adeeb phn ${currentUser?.phoneNumber}');
-        currentUserPhoneNumber = currentUser?.phoneNumber;
-        currentUserAddress = getStorage.read('currentUserAddress');
-        currentUserCategory = getStorage.read('currentUserCategory');
+        log('New Loogin splsh${currentUser?.phoneNumber}');
+        // final CurrentUserModel cm =
+        //     CurrentUserModel(userPhoneNumber: currentUser?.phoneNumber);
+        // await CurrentUserRepository.saveUserData(cm);
         final String token = await currentUser!.getIdToken(true);
         await getStorage.write('token', token);
         log('adeeb token frm splsh $token');
@@ -99,14 +99,8 @@ class SplashScreenController extends GetxController with StateMixin<dynamic> {
     final ApiResponse<UserModel> res = await UserRepository().getUserDetails();
     if (res.data != null) {
       await Get.offAllNamed(Routes.HOME);
-      final UserModel user = res.data!;
-      currentUserAddress = user.address;
-      getStorage.write('currentUserAddress', user.address);
-      getStorage.write('currentUserCategory', user.category);
-      log('currentUserAddress $currentUserAddress');
-      // Get.offAllNamed(Routes.TOKEN_SCREEN, arguments: [token, fcmToken]);
     } else {
-      await Get.offAllNamed(Routes.LOGIN);
+      await Get.offAllNamed(Routes.LOGIN, arguments: currentUser?.phoneNumber);
 
       postFcm();
     }

@@ -83,7 +83,8 @@ class UserRepository {
         log('sts code');
         final UserModel user = UserModel.fromJson(
             response.data!['result'] as Map<String, dynamic>);
-        // log('adeeb rep ${response.}');
+        log('adeeb rep ${response.data}');
+        log('adeeb rep ${user.address}');
         return ApiResponse<UserModel>.completed(user);
       } else {
         return ApiResponse<UserModel>.error(response.statusMessage.toString());

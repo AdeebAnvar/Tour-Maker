@@ -58,7 +58,7 @@ class ProfileController extends GetxController with StateMixin<ProfileView> {
       userData.value = res.data!;
       username = userData.value.name;
 
-      if (userData.value.profileImage != null) {
+      if (userData.value.profileImage != '') {
         showUserPic.value = true;
       } else {
         showUserPic.value = false;

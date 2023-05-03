@@ -129,7 +129,7 @@ class SinglePassengerView extends GetView<SinglePassengerController> {
                       const SizedBox(height: 20),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
+                        children: <Widget>[
                           Container(
                               decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(15),

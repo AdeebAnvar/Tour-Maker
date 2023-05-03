@@ -19,7 +19,9 @@ class PaymentSummaryView extends GetView<PaymentSummaryController> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: const CustomAppBar(title: Text('Payment Summary')),
+        appBar: const CustomAppBar(
+          title: Text('Payment Summary'),
+        ),
         body: controller.obx(
           onEmpty: const CustomErrorScreen(errorText: 'Nothing found....'),
           onLoading: const CustomLoadingScreen(),
@@ -58,6 +60,7 @@ class PaymentSummaryView extends GetView<PaymentSummaryController> {
                                       style: paragraph4),
                                 ],
                               ),
+                              const SizedBox(height: 3),
                               Column(
                                 children: <Widget>[
                                   Text('Booked Date', style: subheading3),
@@ -70,6 +73,27 @@ class PaymentSummaryView extends GetView<PaymentSummaryController> {
                                       style: paragraph4),
                                 ],
                               ),
+                              const SizedBox(height: 3),
+                              if (controller.paymentList[0].orderConfirmed !=
+                                  '')
+                                Column(
+                                  children: <Widget>[
+                                    Text('Order confirmed on',
+                                        style: subheading3.copyWith(
+                                            color: Colors.green)),
+                                    const SizedBox(height: 2),
+                                    Text(
+                                      controller.paymentList[0].orderConfirmed
+                                          .toString()
+                                          .parseFromIsoDate()
+                                          .toDateTime(),
+                                      style: paragraph4.copyWith(
+                                        color: Colors.green,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              const SizedBox(height: 3),
                               Column(
                                 children: <Widget>[
                                   Text('Tour Date', style: subheading3),
@@ -158,110 +182,176 @@ class PaymentSummaryView extends GetView<PaymentSummaryController> {
                     ],
                   ),
                 ),
-                Expanded(
-                  child: Card(
-                    color: Colors.white,
-                    shape: RoundedRectangleBorder(
+                Card(
+                  color: Colors.white,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(30),
+                  ),
+                  child: Container(
+                    width: 100.w,
+                    padding: const EdgeInsets.symmetric(
+                        vertical: 22, horizontal: 25),
+                    decoration: BoxDecoration(
+                      color: Colors.white,
                       borderRadius: BorderRadius.circular(30),
                     ),
-                    child: Container(
-                      width: 100.w,
-                      padding: const EdgeInsets.symmetric(
-                          vertical: 22, horizontal: 25),
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(30),
-                      ),
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: <Widget>[
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: <Widget>[
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: <Widget>[
+                            Text('Package Amount     :', style: subheading2),
+                            Text('₹ ${controller.paymentList[0].totalAmount}',
+                                style: subheading2),
+                          ],
+                        ),
+                        const SizedBox(height: 10),
+                        if (controller.paymentList[0].reward != 0)
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: <Widget>[
-                              Text('Package Amount     :', style: subheading3),
-                              Text('₹ ${controller.paymentList[0].totalAmount}',
-                                  style: subheading2),
-                            ],
-                          ),
-                          // const SizedBox(height: 10),
-                          // if (currentUserCategory == 'standard')
-                          //   Row(
-                          //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          //     children: const <Widget>[
-                          //       Text('discount      :'),
-                          //       Text('500'),
-                          //     ],
-                          //   ),
-                          const SizedBox(height: 10),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: <Widget>[
-                              Text('GST(${controller.paymentList[0].gst}%):',
-                                  style: subheading3),
                               Text(
-                                  '₹ ${controller.getPackageGSTamount(controller.paymentList[0].totalAmount!, controller.paymentList[0].gst!)}',
-                                  style: subheading2),
+                                'Discount      :',
+                                style: subheading2.copyWith(
+                                  color: Colors.green,
+                                ),
+                              ),
+                              Text(controller.paymentList[0].reward.toString(),
+                                  style: subheading2.copyWith(
+                                      color: Colors.green)),
                             ],
                           ),
-                          const SizedBox(height: 10),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: <Widget>[
-                              Text('Total Amount      :', style: subheading3),
-                              Text(
-                                  '₹ ${controller.paymentList[0].payableAmount}',
-                                  style: subheading2),
-                            ],
-                          ),
-                          const SizedBox(height: 10),
+                        const SizedBox(height: 10),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: <Widget>[
+                            Text('GST (${controller.paymentList[0].gst}%):',
+                                style: subheading2),
+                            Text(
+                                '₹ ${controller.getPackageGSTamount(controller.paymentList[0].totalAmount!, controller.paymentList[0].gst!)}',
+                                style: subheading2),
+                          ],
+                        ),
+                        const SizedBox(height: 10),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: <Widget>[
+                            Text('Total Amount      :', style: subheading2),
+                            Text('₹ ${controller.paymentList[0].payableAmount}',
+                                style: subheading2),
+                          ],
+                        ),
+                        const SizedBox(height: 10),
 
-                          // const SizedBox(height: 10),
-                          // Row(
-                          //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          //   children: const <Widget>[
-                          //     Text('Grand Total     :'),
-                          //     Text('500'),
-                          //   ],
-                          // ),
-                          // const SizedBox(height: 10),
-                          // Row(
-                          //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          //   children: <Widget>[
-                          //     const Text('Payable Amount         :'),
-                          //     Text(controller.paymentList[0].payableAmount
-                          //         .toString()),
-                          //   ],
-                          // ),
+                        // const SizedBox(height: 10),
+                        // Row(
+                        //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        //   children: const <Widget>[
+                        //     Text('Grand Total     :'),
+                        //     Text('500'),
+                        //   ],
+                        // ),
+                        // const SizedBox(height: 10),
+                        // Row(
+                        //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        //   children: <Widget>[
+                        //     const Text('Payable Amount         :'),
+                        //     Text(controller.paymentList[0].payableAmount
+                        //         .toString()),
+                        //   ],
+                        // ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: <Widget>[
+                            Text('Paid Amount     :', style: subheading2),
+                            Text(
+                                controller.paymentList[0].amountPaid.toString(),
+                                style: subheading2),
+                          ],
+                        ),
+                        const SizedBox(height: 10),
+                        if (controller.getRemainingAmount() == 0)
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: <Widget>[
-                              const Text('Paid Amount     :'),
-                              Text(controller.paymentList[0].amountPaid
-                                  .toString()),
+                              Text(
+                                'Remaining Amount     :',
+                                style: subheading2.copyWith(color: Colors.red),
+                              ),
+                              Text(
+                                controller.getRemainingAmount().toString(),
+                                style: subheading2.copyWith(color: Colors.red),
+                              ),
                             ],
                           ),
-                          const SizedBox(height: 10),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: <Widget>[
-                              const Text('Remaining Amount     :'),
-                              Text(controller.getRemainingAmount().toString()),
-                            ],
-                          ),
-                          const SizedBox(height: 10),
-                          const SizedBox(height: 30),
-                          if (controller.getRemainingAmount() != 0)
-                            Obx(() {
-                              return CustomButton().showButtonWithGradient(
-                                isLoading: controller.isLoading.value,
-                                text: 'Pay Remaining Amount',
-                                onPressed: () =>
-                                    controller.onClickPayRemainingAmount(
-                                        controller.paymentList[0].orderId!),
-                              );
-                            }),
-                        ],
-                      ),
+                        const SizedBox(height: 25),
+                        // ActionChip(
+                        //   label: Text(
+                        //     'Get the Invoice',
+                        //     style: paragraph4.copyWith(
+                        //       color: Colors.white,
+                        //     ),
+                        //   ),
+                        // onPressed: () => controller.invoicePdf(),
+                        // await controller.generateInvoicePDF(
+                        //   amountPaid: controller.paymentList[0].amountPaid!,
+                        //   bookedDate: controller.paymentList[0].createdAt!,
+                        //   totalAmount:
+                        //       controller.paymentList[0].payableAmount!,
+                        //   dateOfTravel:
+                        //       controller.paymentList[0].dateOfTravel!,
+                        //   gstAmount: controller.paymentList[0].gstAmount!,
+                        //   gstPercentage: controller.paymentList[0].gst!,
+                        //   packageAmount:
+                        //       controller.paymentList[0].totalAmount!,
+                        //   remainingAmount: controller.getRemainingAmount(),
+                        //   tourCode: controller.paymentList[0].tourCode!,
+                        //   tourName: controller.paymentList[0].tourName!,
+                        //   adults: controller.paymentList[0].noOfAdults!,
+                        //   kids: controller.paymentList[0].noOfKids!,
+                        // );
+
+                        // final String pdfPath = await controller.savePdf();
+
+                        // final Directory documentDirectory =
+                        //     await getApplicationDocumentsDirectory();
+                        // final String documentPath = documentDirectory.path;
+
+                        // // Set the base filename
+                        // String filename = 'TourMakerInvoice.pdf';
+
+                        // // Check if the file already exists
+                        // File file = File('$documentPath/$filename');
+                        // int suffix = 2;
+                        // while (await file.exists()) {
+                        //   // If the file exists, increment the suffix and try again
+                        //   filename = 'TourMakerInvoice$suffix.pdf';
+                        //   file = File('$documentPath/$filename');
+                        //   suffix++;
+                        // }
+                        // final String fullPath =
+                        //     '$documentPath/$filename.pdf';
+                        //   log(pdfPath);
+                        //   Get.toNamed(Routes.INVOICE_PDF,
+                        //           arguments: [pdfPath])!
+                        //       .whenComplete(() => controller.loadData());
+                        // },
+                        // backgroundColor: englishlinearViolet,
+                        // ),
+
+                        const SizedBox(height: 5),
+                        if (controller.getRemainingAmount() != 0)
+                          Obx(() {
+                            return CustomButton().showButtonWithGradient(
+                              isLoading: controller.isLoading.value,
+                              text: 'Pay Remaining Amount',
+                              onPressed: () =>
+                                  controller.onClickPayRemainingAmount(
+                                      controller.paymentList[0].id!),
+                            );
+                          }),
+                      ],
                     ),
                   ),
                 )

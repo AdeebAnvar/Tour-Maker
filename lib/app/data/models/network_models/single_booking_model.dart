@@ -1,3 +1,5 @@
+// ignore_for_file: avoid_bool_literals_in_conditional_expressions
+
 class SingleBookingModel {
   SingleBookingModel(
       {this.amountPaid,
@@ -31,7 +33,7 @@ class SingleBookingModel {
   int? noOfAdults;
   int? noOfKids;
   bool? offerApplied;
-  num? orderConfirmed;
+  String? orderConfirmed;
   String? orderStatus;
   int? packageId;
   num? payableAmount;
@@ -78,7 +80,6 @@ class SingleBookingModel {
         gst: json['gst'] == null ? 0.0 : json['gst'] as num,
         gstAmount: json['gst_amount'] == null ? 0.0 : json['gst_amount'] as num,
         id: json['id'] as int,
-        // ignore: avoid_bool_literals_in_conditional_expressions
         isCustom: json['is_custom'] == null ? false : json['is_custom'] as bool,
         noOfAdults:
             json['no_of_adults'] == null ? 0 : json['no_of_adults'] as int,
@@ -87,8 +88,8 @@ class SingleBookingModel {
             ? false
             : json['offer_applied'] as bool,
         orderConfirmed: json['order_confirmed'] == null
-            ? 0
-            : json['order_confirmed'] as num,
+            ? ''
+            : json['order_confirmed'] as String,
         orderStatus:
             json['order_status'] == null ? '' : json['order_status'] as String,
         packageId: json['package_id'] == null ? 0 : json['package_id'] as int,

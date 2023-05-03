@@ -1,3 +1,5 @@
+// ignore_for_file: avoid_bool_literals_in_conditional_expressions
+
 class SingleTourModel {
   SingleTourModel({this.tourData, this.packageData});
 

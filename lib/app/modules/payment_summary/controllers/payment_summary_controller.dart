@@ -43,6 +43,7 @@ class PaymentSummaryController extends GetxController
   Future<void> loadPaymentDetails(int id) async {
     final ApiResponse<List<SinglePaymentModel>> res =
         await PaymentRepository().getSinglePayment(id);
+    log('payment details ${res.message}');
     if (res.data != null) {
       paymentList.value = res.data!;
       change(null, status: RxStatus.success());
@@ -138,7 +139,7 @@ class PaymentSummaryController extends GetxController
           Routes.HOME,
         )!
             .then(
-          (value) => Get.snackbar(
+          (dynamic value) => Get.snackbar(
             'Success ',
             'Payment Suucess for the tour ${paymentList[0].tourName}',
             backgroundColor: englishViolet,

@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
@@ -223,12 +221,10 @@ class UserRegisterscreenView extends GetView<UserRegisterscreenController> {
                                 onChanged: (CategoryType? newValue) {
                                   controller.selectedCategoryType.value =
                                       newValue!;
-                                  if (controller.selectedCategoryType.value ==
-                                      CategoryType.standard) {
-                                    log('sfg');
-                                  } else {
-                                    controller.payAmount();
-                                  }
+                                  // if (controller.selectedCategoryType.value !=
+                                  //     CategoryType.standard) {
+                                  //   controller.payAmount();
+                                  // }
                                 },
                                 hint: const Text('Select Category'),
                                 items: CategoryType.values
@@ -263,7 +259,11 @@ class UserRegisterscreenView extends GetView<UserRegisterscreenController> {
                       height: 75,
                       width: 100.h,
                       isLoading: controller.isloading.value,
-                      text: '     Submit',
+                      text: controller.userType.value == 'paid' ||
+                              controller.selectedCategoryType.value ==
+                                  CategoryType.standard
+                          ? '     Submit'
+                          : '     Pay 424 + GST',
                       onPressed: () => controller.onRegisterClicked(),
                     );
                   })

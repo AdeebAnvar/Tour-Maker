@@ -1,12 +1,12 @@
 import 'dart:developer';
 
 import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:intl/intl.dart';
 import 'package:logger/logger.dart';
 import 'package:razorpay_flutter/razorpay_flutter.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-import '../../../../core/utils/constants.dart';
 import '../../../data/models/local_model/checkout_model.dart';
 import '../../../data/models/network_models/order_model.dart';
 import '../../../data/models/network_models/single_tour_model.dart';
@@ -24,6 +24,7 @@ class SingleTourController extends GetxController
     with StateMixin<SingleTourView> {
   // late final TabController tabcontroller =
   //     TabController(length: 2, vsync: this);
+  final GetStorage getStorage = GetStorage();
   late int totalAmount;
   late Razorpay razorPay;
   final RxInt selectedDateIndex = 0.obs;
@@ -43,12 +44,22 @@ class SingleTourController extends GetxController
   Rx<String> formattedDate = ''.obs;
   int? tourID;
   int? order;
-
+  String? currentUserAddress;
+  String? currentUserCategory;
   @override
   Future<void> onInit() async {
     super.onInit();
+    log('htybhhb init');
     await fetchData();
+    // await getStorage.remove('currentUserAddress');
+    currentUserAddress = await getStorage.read('currentUserAddress') as String;
+    currentUserCategory =
+        await getStorage.read('currentUserCategory') as String;
     log('useradress $currentUserAddress');
+    log('uscurrentUserCategory $currentUserCategory');
+    final String currentUserPoneNumber =
+        await getStorage.read('currentUserPhoneNumber') as String;
+    log('dfghfgfdfaghfds $currentUserPoneNumber');
   }
 
   Future<void> fetchData() async {
@@ -195,21 +206,23 @@ class SingleTourController extends GetxController
       if (sd.difference(today).inDays <= 7) {
         CustomDialog().showCustomDialog('Warning ! !',
             'The selected date is very near \nso you need to pay full amount and\n you have to contact and confirm the tour',
-            onConfirm: () {
-          confirmPayment(package.iD!, package);
+            onConfirm: () async {
+          await confirmPayment(package.iD!, package);
           Get.back();
-        }, onCancel: () {
+        }, onCancel: () async {
           Get.back();
         }, confirmText: 'OK', cancelText: 'back');
       } else {
-        confirmPayment(package.iD!, package);
+        await confirmPayment(package.iD!, package);
       }
     } else {
-      Get.toNamed(Routes.USER_REGISTERSCREEN)!.whenComplete(() => loadData());
+      log('fsgsfdv $currentUserAddress');
+      await Get.toNamed(Routes.USER_REGISTERSCREEN)!
+          .whenComplete(() => loadData());
     }
   }
 
-  Future<int> createUserOrder(int packageID, PackageData package) async {
+  Future<int?> createUserOrder(int packageID, PackageData package) async {
     final OrderModel om = OrderModel(
       noOfAdults: adult.value,
       noOfChildren: children.value,
@@ -225,7 +238,7 @@ class SingleTourController extends GetxController
     } else {
       log('not fno');
     }
-    return order!;
+    return order;
   }
 
   Future<void> onClickAddToFavourites() async {
@@ -267,7 +280,7 @@ class SingleTourController extends GetxController
       int adultCount, int childcount, PackageData packageData, int index) {
     int adultAmount;
     int childAmount;
-    packageData.extraOffer != true
+    packageData.offerAmount == 0
         ? adultAmount = packageData.amount!
         : adultAmount = packageData.offerAmount!;
     packageData.kidsOfferAmount != 0
@@ -291,39 +304,54 @@ class SingleTourController extends GetxController
   }
 
   Future<void> onWhatsAppClicked() async {
-    final Uri whtNum = Uri.parse('https://wa.me/918606131909');
-    launchUrl(whtNum);
+    const String phone =
+        '+918606131909'; // Replace with the phone number you want to chat with
+    const String message =
+        'Hi'; // Replace with the initial message you want to send
+    final String url = 'https://wa.me/$phone?text=${Uri.encodeFull(message)}';
+
+    if (await canLaunchUrl(Uri.parse(url))) {
+      await launchUrl(Uri.parse(url));
+    } else {
+      Get.snackbar('Error', 'Could not launch WhatsApp');
+    }
   }
 
   Future<void> confirmPayment(int packageID, PackageData packageData) async {
     isLoading.value = true;
     order = await createUserOrder(packageID, packageData);
-    final CheckOutModel cm = CheckOutModel(
-      adultCount: adult.value,
-      amount: packageData.amount,
-      childrenCount: children.value,
-      commission: packageData.agentCommission,
-      dateOfTravel: packageData.dateOfTravel,
-      gst: packageData.gstPercent,
-      tourID: singleTour.value.tourData?.iD,
-      kidsAmount: packageData.kidsAmount,
-      kidsOfferAmount: packageData.kidsOfferAmount,
-      offerAmount: packageData.offerAmount,
-      orderID: order,
-      tourCode: singleTour.value.tourData?.tourCode,
-      tourItinerary: singleTour.value.tourData?.itinerary,
-      tourName: singleTour.value.tourData?.name,
-      transportationMode: packageData.transportationMode,
-      advanceAmount: packageData.advanceAmount,
-    );
-    try {
-      await CheckOutRepositoy.saveData(cm);
-      log(' Data saved successfully');
-    } catch (e) {
-      log('Error saving data: $e');
+    if (order != null) {
+      final CheckOutModel cm = CheckOutModel(
+        adultCount: adult.value,
+        amount: packageData.amount,
+        childrenCount: children.value,
+        commission: packageData.agentCommission,
+        dateOfTravel: packageData.dateOfTravel,
+        gst: packageData.gstPercent,
+        tourID: singleTour.value.tourData?.iD,
+        kidsAmount: packageData.kidsAmount,
+        kidsOfferAmount: packageData.kidsOfferAmount,
+        offerAmount: packageData.offerAmount,
+        orderID: order,
+        tourCode: singleTour.value.tourData?.tourCode,
+        tourItinerary: singleTour.value.tourData?.itinerary,
+        tourName: singleTour.value.tourData?.name,
+        transportationMode: packageData.transportationMode,
+        advanceAmount: packageData.advanceAmount,
+      );
+      try {
+        await CheckOutRepositoy.saveData(cm);
+        log(' Data saved successfully');
+      } catch (e) {
+        log('Error saving data: $e');
+      }
+      final int passengers = totaltravellers();
+      Get.toNamed(Routes.ADD_PASSENGER,
+          arguments: <dynamic>[order, passengers]);
+    } else {
+      CustomDialog().showCustomDialog('Order Not Placed',
+          "Sorry your order didn't placed from our side . please order again");
     }
-    final int passengers = totaltravellers();
-    Get.toNamed(Routes.ADD_PASSENGER, arguments: <dynamic>[order, passengers]);
     log('kunukunnu confirm single tour $order');
     isLoading.value = false;
   }

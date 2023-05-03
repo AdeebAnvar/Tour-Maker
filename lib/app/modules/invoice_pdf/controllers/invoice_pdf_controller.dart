@@ -6,6 +6,7 @@ import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
+import 'package:image_picker/image_picker.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:share/share.dart';
 import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
@@ -59,14 +60,8 @@ class InvoicePdfController extends GetxController
   Future<void> sharePdf() async {
     log('share pdf');
     try {
-      final http.Response response = await http.get(Uri.parse(url.value));
-      final Uint8List bytes = response.bodyBytes;
-
-      final Directory directory = await getTemporaryDirectory();
-      final File file = File('${directory.path}/pdf.pdf');
-      await file.writeAsBytes(bytes);
-
-      await Share.shareFiles(<String>[file.path], text: 'Check out this PDF!');
+      final XFile file = XFile(url.value);
+      await Share.shareFiles(<String>[file.path]);
     } catch (e) {
       log('share $e');
     }

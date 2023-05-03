@@ -2,10 +2,10 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:razorpay_flutter/razorpay_flutter.dart';
 
 import '../../../../core/theme/style.dart';
-import '../../../../core/utils/constants.dart';
 import '../../../data/models/local_model/checkout_model.dart';
 import '../../../data/models/network_models/razorpay_model.dart';
 import '../../../data/repo/local_repo/checkout_repo.dart';
@@ -21,11 +21,16 @@ class CheckoutScreenController extends GetxController
   Rx<CheckOutModel?> checkOutModel = Rx<CheckOutModel?>(null);
   Rx<OrderPaymentModel> orderPaymentModel = OrderPaymentModel().obs;
   Rx<OrderPaymentModel> orderAdvPaymentModel = OrderPaymentModel().obs;
+  GetStorage getStorage = GetStorage();
+  String? currentUserCategory;
   late Razorpay razorPay;
   // Rx<RazorPayModel> razorPayModel = RazorPayModel().obs;
   @override
-  void onInit() {
+  Future<void> onInit() async {
     super.onInit();
+    currentUserCategory =
+        await getStorage.read('currentUserCategory') as String;
+    log('message $currentUserCategory');
     loadData();
     razorPay = Razorpay();
     razorPay.on(Razorpay.EVENT_PAYMENT_SUCCESS, _handlePaymentSuccess);
@@ -255,7 +260,7 @@ class CheckoutScreenController extends GetxController
           Routes.HOME,
         )!
             .then(
-          (value) => Get.snackbar(
+          (dynamic value) => Get.snackbar(
             'Success ',
             'Payment Suucess for the tour ${checkOutModel.value!.tourName}',
             backgroundColor: englishViolet,

@@ -9,7 +9,7 @@ class WishListRepo {
   final Dio dio = Client().init();
   List<WishListModel> wishList = <WishListModel>[];
 
-  Future<ApiResponse<dynamic>> getAllFav() async {
+  Future<ApiResponse<List<WishListModel>>> getAllFav() async {
     try {
       final Map<String, dynamic>? authHeader = await Client().getAuthHeader();
       final Response<Map<String, dynamic>> res = await dio.getUri(
@@ -20,18 +20,20 @@ class WishListRepo {
           wishList = (res.data!['result'] as List<dynamic>).map((dynamic e) {
             return WishListModel.fromJson(e as Map<String, dynamic>);
           }).toList();
-          return ApiResponse<dynamic>.completed(wishList);
+          return ApiResponse<List<WishListModel>>.completed(wishList);
         } else {
-          return ApiResponse<dynamic>.completed(null);
+          log('message $wishList');
+
+          return ApiResponse<List<WishListModel>>.completed(wishList);
         }
       } else {
         log('message ${res.statusMessage}');
-        return ApiResponse<dynamic>.error(res.statusMessage);
+        return ApiResponse<List<WishListModel>>.error(res.statusMessage);
       }
     } on DioError catch (de) {
-      return ApiResponse<dynamic>.error(de.error.toString());
+      return ApiResponse<List<WishListModel>>.error(de.error.toString());
     } catch (e) {
-      return ApiResponse<dynamic>.error(e.toString());
+      return ApiResponse<List<WishListModel>>.error(e.toString());
     }
   }
 

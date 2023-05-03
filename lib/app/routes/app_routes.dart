@@ -46,6 +46,8 @@ abstract class Routes {
   static const String SINGLE_PASSENGER = _Paths.SINGLE_PASSENGER;
   static const String MAANGAATHOLI = _Paths.MAANGAATHOLI;
   static const String PAYMENT_SUMMARY = _Paths.PAYMENT_SUMMARY;
+  static const String INVOICE_PDF = _Paths.INVOICE_PDF;
+  static const JNNJF = _Paths.JNNJF;
 }
 
 abstract class _Paths {
@@ -93,4 +95,6 @@ abstract class _Paths {
   static const String SINGLE_PASSENGER = '/single-passenger';
   static const String MAANGAATHOLI = '/maangaatholi';
   static const String PAYMENT_SUMMARY = '/payment-summary';
+  static const String INVOICE_PDF = '/invoice-pdf';
+  static const JNNJF = '/jnnjf';
 }

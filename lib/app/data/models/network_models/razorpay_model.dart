@@ -32,8 +32,9 @@ class OrderPaymentModel {
   String? id;
   static OrderPaymentModel fromJson(Map<String, dynamic> json) =>
       OrderPaymentModel(
-        id: json['id'] as String,
-        paymentID: json['payment_id'] as String,
+        id: json['id'] == null ? '' : json['id'] as String,
+        paymentID:
+            json['payment_id'] == null ? '' : json['payment_id'] as String,
       );
   Map<String, dynamic> toJson() => <String, dynamic>{
         'currency': currency,

@@ -1,28 +1,4 @@
 class SinglePaymentModel {
-  num? amountPaid;
-  String? createdAt;
-  int? customTourId;
-  String? dateOfTravel;
-  int? gst;
-  num? gstAmount;
-  int? id;
-  bool? isCustom;
-  int? noOfAdults;
-  int? noOfKids;
-  bool? offerApplied;
-  String? orderConfirmed;
-  String? orderDate;
-  int? orderId;
-  String? orderStatus;
-  int? packageId;
-  num? payableAmount;
-  String? paymentStatus;
-  num? reward;
-  num? totalAmount;
-  String? tourCode;
-  String? tourName;
-  String? userId;
-
   SinglePaymentModel(
       {this.amountPaid,
       this.createdAt,
@@ -47,6 +23,29 @@ class SinglePaymentModel {
       this.tourCode,
       this.tourName,
       this.userId});
+  num? amountPaid;
+  String? createdAt;
+  int? customTourId;
+  String? dateOfTravel;
+  int? gst;
+  num? gstAmount;
+  int? id;
+  bool? isCustom;
+  int? noOfAdults;
+  int? noOfKids;
+  bool? offerApplied;
+  String? orderConfirmed;
+  String? orderDate;
+  int? orderId;
+  String? orderStatus;
+  int? packageId;
+  num? payableAmount;
+  String? paymentStatus;
+  num? reward;
+  num? totalAmount;
+  String? tourCode;
+  String? tourName;
+  String? userId;
 
   Map<String, dynamic> toJson() => <String, dynamic>{
         'amount_paid': amountPaid,
@@ -80,7 +79,8 @@ class SinglePaymentModel {
             json['amount_paid'] == null ? 0 : json['amount_paid'] as num,
         createdAt:
             json['created_at'] == null ? '' : json['created_at'] as String,
-        customTourId: json['custom_tour_id'] as int,
+        customTourId:
+            json['custom_tour_id'] == null ? 0 : json['custom_tour_id'] as int,
         dateOfTravel: json['date_of_travel'] == null
             ? ''
             : json['date_of_travel'] as String,

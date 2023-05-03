@@ -2,7 +2,7 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import '../../../../core/utils/constants.dart';
+import 'package:get_storage/get_storage.dart';
 
 import '../../../data/models/network_models/user_model.dart';
 import '../../../data/repo/network_repo/user_repo.dart';
@@ -13,6 +13,7 @@ class LoginController extends GetxController with StateMixin<dynamic> {
   GlobalKey<FormState> formKey = GlobalKey();
   UserRepository userRepo = UserRepository();
   late List<String> states = userRepo.getStates();
+  final GetStorage getStorage = GetStorage();
   @override
   RxString state = ''.obs;
   RxString name = ''.obs;
@@ -40,14 +41,17 @@ class LoginController extends GetxController with StateMixin<dynamic> {
       }
       final UserModel user = UserModel(
         name: name.value,
-        phoneNumber: currentUserPhoneNumber,
+        phoneNumber: phone.value,
         state: state.value,
-        // category: 'standard',
+        category: 'standard',
       );
-      log('$currentUserPhoneNumber');
-      currentUserName = name.value;
-      // currentUserState = state.value;
-      currentUserCategory = 'standard';
+      await getStorage.write('currentUserCategory', 'standard');
+      await getStorage.write('currentUserName', name.value);
+      await getStorage.write('currentUserState', user.state);
+      await getStorage.write('initialPayment', '');
+      // currentUserName = name.value;
+      // // currentUserState = state.value;
+      // currentUserCategory = 'standard';
       final ApiResponse<Map<String, dynamic>> res =
           await userRepo.loginTheUser(user);
       if (res.status == ApiResponseStatus.completed) {

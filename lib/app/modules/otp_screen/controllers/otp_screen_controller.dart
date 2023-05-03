@@ -21,7 +21,7 @@ class OtpScreenController extends GetxController
     with StateMixin<OtpScreenView> {
   CountdownController countDownController = CountdownController();
   TextEditingController textEditorController = TextEditingController();
-  GetStorage storage = GetStorage();
+  GetStorage getStorage = GetStorage();
   String? phone;
   String? verID;
   // int? forceToken;
@@ -77,7 +77,7 @@ class OtpScreenController extends GetxController
         // Generate Token and store it
         final IdTokenResult idTokenResult = await user.getIdTokenResult(true);
         final String token = idTokenResult.token!;
-        await storage.write('token', token);
+        await getStorage.write('token', token);
         // Check if the user exists or not
         await checkUserExistsORnot(token, fcmtoken);
       }
@@ -140,15 +140,28 @@ class OtpScreenController extends GetxController
   Future<void> checkUserExistsORnot(dynamic token, dynamic fcmtok) async {
     log('adeeb check user');
     final ApiResponse<UserModel> res = await UserRepository().getUserDetails();
+    log('adeeb home ${res.data}');
     if (res.status == ApiResponseStatus.completed) {
-      if (res.data != null) {
+      final UserModel user = res.data!;
+      if (user.phoneNumber == phone) {
         log('adeeb home');
         putFCM();
-        final user = res.data!;
-        currentUserAddress = user.address;
-        currentUserCategory = user.category;
-        await storage.write('currentUserAddress', user.address);
-        await storage.write('currentUserCategory', user.category);
+
+        await getStorage.write('currentUserAddress', user.address);
+        await getStorage.write('currentUserCategory', user.category);
+        // final String ca =
+        //     await getStorage.read('currentUserCategory') as String;
+        // log('udjknyghedbcn $ca');
+        // await getStorage.write('currentUserName', user.name);
+        // await getStorage.write('currentUserCountry', user.country);
+        // await getStorage.write('currentUserDistrict', user.district);
+        // await getStorage.write('currentUserEmail', user.email);
+        // await getStorage.write(`
+        //     'currentUserEnterpriseName', user.enterpriseName);
+        // await getStorage.write('currentUserGender', user.gender);
+        // await getStorage.write('currentUserPhoneNumber', user.phoneNumber);
+        // await getStorage.write('currentUserState', user.state);
+
         await Get.offAllNamed(Routes.HOME);
         isLoading.value = false;
 

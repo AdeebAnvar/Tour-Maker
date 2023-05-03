@@ -1,3 +1,5 @@
+// ignore_for_file: avoid_bool_literals_in_conditional_expressions
+
 class PaymentModel {
   PaymentModel(
       {this.amountPaid,
@@ -75,7 +77,9 @@ class PaymentModel {
         offerApplied: json['offer_applied'] == null
             ? false
             : json['offer_applied'] as bool,
-        orderConfirmed: json['order_confirmed'] as String,
+        orderConfirmed: json['order_confirmed'] == null
+            ? ''
+            : json['order_confirmed'] as String,
         orderDate:
             json['order_date'] == null ? '' : json['order_date'] as String,
         orderId: json['order_id'] == null ? 0 : json['order_id'] as int,
