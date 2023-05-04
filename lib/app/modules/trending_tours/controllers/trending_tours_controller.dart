@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:get/get.dart';
 
 import '../../../data/models/network_models/single_trenidng_tour_model.dart';
@@ -8,6 +6,7 @@ import '../../../data/repo/network_repo/trending_tours_rep.dart';
 import '../../../data/repo/network_repo/wishlist_repo.dart';
 import '../../../routes/app_pages.dart';
 import '../../../services/network_services/dio_client.dart';
+import '../../../widgets/custom_dialogue.dart';
 import '../views/trending_tours_view.dart';
 
 class TrendingToursController extends GetxController
@@ -59,7 +58,6 @@ class TrendingToursController extends GetxController
   }
 
   Future<void> toggleFavorite(int productId) async {
-    log('kumbalangi  toggled');
     try {
       final bool isInWishList =
           wishList.any((WishListModel package) => package.id == productId);
@@ -67,7 +65,6 @@ class TrendingToursController extends GetxController
         await WishListRepo().deleteFav(productId);
         wishList
             .removeWhere((WishListModel package) => package.id == productId);
-        log('kumbalangi isinWishlist =true ');
       } else {
         await WishListRepo().createFav(productId);
         // final PackageModel package = singleCategoryList
@@ -81,11 +78,9 @@ class TrendingToursController extends GetxController
           // add any other properties that are required for the wishlist item
         );
         wishList.add(wishlistItem);
-
-        log('kumbalangi  isinwishlist nott true');
       }
     } catch (e) {
-      log('kumbalangi  Error toggling favorite: $e');
+      CustomDialog().showCustomDialog('Error !', e.toString());
     }
   }
 

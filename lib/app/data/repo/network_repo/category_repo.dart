@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:dio/dio.dart';
 
 import '../../../services/network_services/dio_client.dart';
@@ -38,22 +36,16 @@ class CategoryRepository {
       final Response<Map<String, dynamic>> response = await dio.getUri(
           Uri.parse('tours/packages?category=$categoryname'),
           options: Options(headers: authHeader));
-      log('Adeeb rep resdata ${response.data}');
-      log('Adeeb rep resd msg ${response.statusMessage}');
       if (response.statusCode == 200) {
-        log('response 200');
         if (response.data!['result'] != null) {
           singleCategoryList =
               (response.data!['result'] as List<dynamic>).map((dynamic e) {
             return PackageModel.fromJson(e as Map<String, dynamic>);
           }).toList();
-          log('kulsitham ${singleCategoryList.length}');
         }
-        log('Adeeb rep ${response.data}');
-        log('Adeeb rep ${singleCategoryList[0].name}');
+
         return ApiResponse<List<PackageModel>>.completed(singleCategoryList);
       } else {
-        log('adeeb rep errr ${response.statusMessage}');
         return ApiResponse<List<PackageModel>>.error(response.statusMessage);
       }
     } on DioError catch (de) {

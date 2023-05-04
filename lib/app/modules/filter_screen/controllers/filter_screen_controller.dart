@@ -1,9 +1,5 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-
-import '../../../../core/theme/style.dart';
 
 import '../../../data/models/local_model/budget_models.dart';
 import '../../../data/models/network_models/category_model.dart';
@@ -15,6 +11,7 @@ import '../../../data/repo/network_repo/filter_repo.dart';
 import '../../../routes/app_pages.dart';
 import '../../../services/network_services/dio_client.dart';
 import '../../../widgets/custom_appbar.dart';
+import '../../../widgets/custom_dialogue.dart';
 import '../../../widgets/custom_errorscreen.dart';
 import '../views/filter_screen_view.dart';
 
@@ -61,7 +58,7 @@ class FilterScreenController extends GetxController
         change(null, status: RxStatus.error());
       }
     } catch (e) {
-      log('catch error $e');
+      CustomDialog().showCustomDialog('Error !', e.toString());
     }
   }
 
@@ -78,83 +75,62 @@ class FilterScreenController extends GetxController
         change(null, status: RxStatus.error());
       }
     } catch (e) {
-      log('catch error $e');
+      CustomDialog().showCustomDialog('Error !', e.toString());
     }
   }
 
   Future<void> filterbyDestinations() async {
-    log('destinations');
     isLoading.value = true;
-
     if (selectedDestinationsList != null) {
-      log('selected destination');
       final ApiResponse<List<PackageModel>> res =
           await FilterRepository().getDestination(selectedDestinationsList);
-      log('adeeb ${res.status}');
-      log('adeeb ${res.message}');
-      log('adeeb ${res.data}');
       if (res.status == ApiResponseStatus.completed) {
         Get.toNamed(Routes.TOURS_VIEW, arguments: res.data)!
             .whenComplete(() => loadData());
         selectedDestinations.clear();
         change(null, status: RxStatus.success());
       } else {
-        Get.to(
-          const Scaffold(
-            appBar: CustomAppBar(),
-            body: Center(
-              child: CustomErrorScreen(
-                errorText: 'sorry Nothing \n Found here',
-              ),
-            ),
-          ),
-        )!
+        Get.to(const Scaffold(
+                appBar: CustomAppBar(),
+                body: Center(
+                    child: CustomErrorScreen(
+                        errorText: 'sorry Nothing \n Found here'))))!
             .whenComplete(() => loadData());
         change(null, status: RxStatus.empty());
       }
     } else if (showDomesticTours.value == true) {
       change(null, status: RxStatus.loading());
-
-      log('show domestic');
       final ApiResponse<List<PackageModel>> res =
           await FilterRepository().getDomesticTours();
       if (res.status == ApiResponseStatus.completed) {
-        log('dafa');
         final List<PackageModel> domesticTours = res.data!;
         Get.toNamed(Routes.TOURS_VIEW, arguments: domesticTours)!
             .whenComplete(() => loadData());
         change(null, status: RxStatus.success());
       } else {
-        Get.to(
-          const Scaffold(
-            appBar: CustomAppBar(),
-            body: Center(
-              child: CustomErrorScreen(
-                errorText: 'sorry Nothing \n Found here',
-              ),
-            ),
-          ),
-        )!
+        Get.to(const Scaffold(
+                appBar: CustomAppBar(),
+                body: Center(
+                    child: CustomErrorScreen(
+                        errorText: 'sorry Nothing \n Found here'))))!
             .whenComplete(() => loadData());
         change(null, status: RxStatus.empty());
       }
     } else {
-      log('empty');
-      Get.snackbar(
-        'Please Select a destination',
-        'select atleast one destination',
-        backgroundColor: englishViolet,
-        colorText: Colors.white,
+      CustomDialog().showCustomDialog(
+        'Please Select Destination!',
+        'Atleast One Destination is \n need to be selected.',
+        onCancel: () {
+          Get.back();
+        },
+        cancelText: 'go back',
       );
     }
-
     isLoading.value = false;
   }
 
   Future<void> filterbyBudget() async {
-    log('budget');
     change(null, status: RxStatus.loading());
-
     final ApiResponse<List<PackageModel>> res =
         await FilterRepository().getToursbyBudget(selectedBudget.value.value);
     if (res.status == ApiResponseStatus.completed) {
@@ -162,26 +138,18 @@ class FilterScreenController extends GetxController
           .whenComplete(() => loadData());
       change(null, status: RxStatus.success());
     } else {
-      Get.to(
-        const Scaffold(
-          appBar: CustomAppBar(),
-          body: Center(
-            child: CustomErrorScreen(
-              errorText: 'sorry Nothing \n Found here',
-            ),
-          ),
-        ),
-      )!
+      Get.to(const Scaffold(
+              appBar: CustomAppBar(),
+              body: Center(
+                  child: CustomErrorScreen(
+                      errorText: 'sorry Nothing \n Found here'))))!
           .whenComplete(() => loadData());
       change(null, status: RxStatus.empty());
     }
   }
 
   Future<void> filterbyCategory() async {
-    log('category');
-    log('budget');
     change(null, status: RxStatus.loading());
-
     final ApiResponse<List<PackageModel>> res =
         await FilterRepository().getCategory(selectedCategoryList);
     if (res.status == ApiResponseStatus.completed) {
@@ -190,16 +158,11 @@ class FilterScreenController extends GetxController
       selectedCategories.clear();
       change(null, status: RxStatus.success());
     } else {
-      Get.to(
-        const Scaffold(
-          appBar: CustomAppBar(),
-          body: Center(
-            child: CustomErrorScreen(
-              errorText: 'sorry Nothing \n Found here',
-            ),
-          ),
-        ),
-      )!
+      Get.to(const Scaffold(
+              appBar: CustomAppBar(),
+              body: Center(
+                  child: CustomErrorScreen(
+                      errorText: 'sorry Nothing \n Found here'))))!
           .whenComplete(() => loadData());
       change(null, status: RxStatus.empty());
     }
@@ -207,7 +170,6 @@ class FilterScreenController extends GetxController
 
   Future<void> filterbyDuration() async {
     change(null, status: RxStatus.loading());
-
     final ApiResponse<List<PackageModel>> res =
         await FilterRepository().getToursByDuration(duration.value);
     if (res.status == ApiResponseStatus.completed) {
@@ -215,16 +177,11 @@ class FilterScreenController extends GetxController
           .whenComplete(() => loadData());
       change(null, status: RxStatus.success());
     } else {
-      Get.to(
-        const Scaffold(
-          appBar: CustomAppBar(),
-          body: Center(
-            child: CustomErrorScreen(
-              errorText: 'sorry Nothing \n Found here',
-            ),
-          ),
-        ),
-      )!
+      Get.to(const Scaffold(
+              appBar: CustomAppBar(),
+              body: Center(
+                  child: CustomErrorScreen(
+                      errorText: 'sorry Nothing \n Found here'))))!
           .whenComplete(() => loadData());
       change(null, status: RxStatus.empty());
     }
@@ -232,12 +189,9 @@ class FilterScreenController extends GetxController
 
   void onDestinationCheck(bool? value, int index) {
     isSelectedDestinations[index] = value ?? false;
-
     if (value != null && value) {
       if (selectedDestinations.length < 5) {
         selectedDestinations.add(destinationList[index]);
-        final DestinationsModel res = selectedDestinations.last;
-        log('last selected destination: $res');
       } else {
         // Automatically remove the first selected item
         final DestinationsModel removedItem = selectedDestinations.removeAt(0);
@@ -245,7 +199,6 @@ class FilterScreenController extends GetxController
         // Add the newly selected item to the end of the list
         selectedDestinations.add(destinationList[index]);
       }
-
       // If "Show Domestic Tours" is selected, clear it
       if (showDomesticTours.value) {
         showDomesticTours.value = false;
@@ -253,7 +206,6 @@ class FilterScreenController extends GetxController
     } else {
       selectedDestinations.remove(destinationList[index]);
     }
-
     printSelectedDestinations();
   }
 
@@ -262,8 +214,6 @@ class FilterScreenController extends GetxController
     if (value != null && value) {
       if (selectedCategories.length < 5) {
         selectedCategories.add(categoryList[index]);
-        final CategoryModel res = selectedCategories.last;
-        log('last selected destination: $res');
       } else {
         // Automatically remove the first selected item
         final CategoryModel removedItem = selectedCategories.removeAt(0);
@@ -279,20 +229,17 @@ class FilterScreenController extends GetxController
   void onBudgetCheck(bool? value, Budget budget) {
     if (value ?? false) {
       selectedBudget.value = budget;
-      log(selectedBudget.value.value);
     }
   }
 
   void printSelectedCategories() {
     selectedCategoryList =
         selectedCategories.map((CategoryModel d) => d.name).join(',');
-    log('Selected category: $selectedCategoryList');
   }
 
   void printSelectedDestinations() {
     selectedDestinationsList = selectedDestinations
         .map((DestinationsModel d) => d.destination)
         .join(',');
-    log('Selected category: $selectedDestinationsList');
   }
 }

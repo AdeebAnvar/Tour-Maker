@@ -5,6 +5,7 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:sizer/sizer.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../../core/theme/style.dart';
@@ -187,6 +188,17 @@ class MyDrawer extends StatelessWidget {
   }
 
   Future<void> logout() async {
+    final GetStorage storage = GetStorage();
+    await storage.write('currentUserAddress', '');
+    await storage.write('currentUserCategory', '');
+    await storage.write('currentUserName', '');
+    await storage.write('currentUserCountry', '');
+    await storage.write('currentUserDistrict', '');
+    await storage.write('currentUserEmail', '');
+    await storage.write('currentUserEnterpriseName', '');
+    await storage.write('currentUserGender', '');
+    await storage.write('currentUserPhoneNumber', '');
+    await storage.write('currentUserState', '');
     await FirebaseAuth.instance.signOut().then(
           (dynamic value) => Get.offAllNamed(
             Routes.GET_STARTED,

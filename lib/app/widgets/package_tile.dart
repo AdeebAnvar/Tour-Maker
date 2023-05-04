@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_cache_manager/flutter_cache_manager.dart';
@@ -39,13 +37,13 @@ class PackageTile extends StatelessWidget {
         // width: 160,
         height: 165,
         child: Card(
-          margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+          margin: const EdgeInsets.symmetric(horizontal: 24, vertical: 10),
           elevation: 2,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(15),
           ),
           child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            // mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: <Widget>[
               Column(
                 children: <Widget>[
@@ -54,7 +52,6 @@ class PackageTile extends StatelessWidget {
                     useOldImageOnUrlChange: true,
                     errorWidget:
                         (BuildContext context, String url, dynamic error) {
-                      log('cache nertwrk $error');
                       return const Icon(Icons.error);
                     },
                     placeholder: (BuildContext context, String url) =>
@@ -82,29 +79,34 @@ class PackageTile extends StatelessWidget {
                   )
                 ],
               ),
-              Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[
-                  Text(
-                    tourName.split(' ').join('\n'),
-                    style: GoogleFonts.montserrat(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 16,
-                      color: fontColor,
+              Padding(
+                padding: const EdgeInsets.only(left: 3.0),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    Text(
+                      tourName.split(' ').join('\n'),
+                      style: GoogleFonts.montserrat(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 16,
+                        color: fontColor,
+                      ),
+                      overflow: TextOverflow.ellipsis,
                     ),
-                    overflow: TextOverflow.ellipsis,
-                  ),
-                  const SizedBox(height: 5),
-                  Text('( $tourCode )', style: paragraph1),
-                  const SizedBox(height: 12),
-                  Text(
-                    '$tourDays Days / $tournights Nights',
-                    style: subheading3,
-                  ),
-                  const SizedBox(height: 13),
-                  Text('₹ $tourAmount', style: heading3),
-                ],
+                    const SizedBox(height: 5),
+                    Text('( $tourCode )', style: paragraph1),
+                    const SizedBox(height: 12),
+                    Text(
+                      '$tourDays Days / $tournights Nights',
+                      style: subheading3,
+                    ),
+                    const SizedBox(height: 13),
+                    Text('₹ $tourAmount', style: heading3),
+                  ],
+                ),
               ),
+              const Spacer(),
               Container(
                 height: 180,
                 margin: const EdgeInsets.only(right: 16, top: 15),

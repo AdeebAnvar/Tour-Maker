@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
@@ -7,7 +5,7 @@ import 'package:razorpay_flutter/razorpay_flutter.dart';
 
 import '../../../../core/theme/style.dart';
 import '../../../data/models/local_model/checkout_model.dart';
-import '../../../data/models/network_models/razorpay_model.dart';
+import '../../../data/models/network_models/order_payment_model.dart';
 import '../../../data/repo/local_repo/checkout_repo.dart';
 import '../../../data/repo/network_repo/passenger_repo.dart';
 import '../../../data/repo/network_repo/razorpay_repo.dart';
@@ -30,7 +28,6 @@ class CheckoutScreenController extends GetxController
     super.onInit();
     currentUserCategory =
         await getStorage.read('currentUserCategory') as String;
-    log('message $currentUserCategory');
     loadData();
     razorPay = Razorpay();
     razorPay.on(Razorpay.EVENT_PAYMENT_SUCCESS, _handlePaymentSuccess);
@@ -42,11 +39,9 @@ class CheckoutScreenController extends GetxController
     change(null, status: RxStatus.loading());
     try {
       checkOutModel.value = await CheckOutRepositoy.getData();
-      final int? orderID = checkOutModel.value!.orderID;
-      log('bfhvb $orderID');
       change(null, status: RxStatus.success());
     } catch (e) {
-      log('error loading data $e');
+      CustomDialog().showCustomDialog('Error !', '$e');
     }
   }
 
@@ -153,27 +148,16 @@ class CheckoutScreenController extends GetxController
   }
 
   Future<void> payAdvanceAmount(int id) async {
-    log('Payment pay adv amount id $id');
-    //CreatePayment
     orderAdvPaymentModel.value = await createAdvancePayment(id);
-    log('Payment pay adv amount orderPayment ${orderPaymentModel.value.id}');
-    log('kunukunu ${orderPaymentModel.value}');
-    // //open razorpay
     openRazorPay(orderAdvPaymentModel.value.id.toString());
   }
 
   Future<void> payFullAmount(int id) async {
-    log('Payment pay full amount id $id');
-    //CreatePayment
     orderPaymentModel.value = await createPayment(id);
-    log('Payment pay full amount orderPayment ${orderPaymentModel.value.id}');
-    log('kunukunu ${orderPaymentModel.value}');
-    // //open razorpay
     openRazorPay(orderPaymentModel.value.id.toString());
   }
 
   Future<OrderPaymentModel> createPayment(int iD) async {
-    log('Payment xcreate $iD');
     final OrderPaymentModel omp = OrderPaymentModel(
       orderId: iD,
       currency: 'INR',
@@ -182,21 +166,16 @@ class CheckoutScreenController extends GetxController
     try {
       final ApiResponse<OrderPaymentModel> res =
           await PassengerRepository().createPayment(omp);
-      log('dsgaefv d ${res.status}');
-      log('dsgaefv d ms${res.message}');
       if (res.data != null) {
         orderPaymentModel.value = res.data!;
-      } else {
-        // log(' adeeb raz emp ');
-      }
+      } else {}
     } catch (e) {
-      log('raz catch $e');
+      CustomDialog().showCustomDialog('Error !', '$e');
     }
     return orderPaymentModel.value;
   }
 
   Future<OrderPaymentModel> createAdvancePayment(int iD) async {
-    log('kunukunu xcreate ');
     final OrderPaymentModel omp = OrderPaymentModel(
       orderId: iD,
       currency: 'INR',
@@ -207,17 +186,14 @@ class CheckoutScreenController extends GetxController
           await PassengerRepository().createAdvancePayment(omp);
       if (res.data != null) {
         orderAdvPaymentModel.value = res.data!;
-      } else {
-        // log(' adeeb raz emp ');
-      }
+      } else {}
     } catch (e) {
-      log('raz catch $e');
+      CustomDialog().showCustomDialog('Error !', '$e');
     }
     return orderAdvPaymentModel.value;
   }
 
   void openRazorPay(String paymentID) {
-    log('Payment openRazorPay $paymentID');
     final Map<String, Object?> options = <String, Object?>{
       'key': 'rzp_test_yAFypxWUiCD7H7',
       'name': 'TourMaker',
@@ -227,14 +203,10 @@ class CheckoutScreenController extends GetxController
         'wallets': <String>['paytm'],
       },
     };
-    log('adeeb anvar $options');
-
     try {
       razorPay.open(options);
-      log('adeeb anvar raz op');
     } catch (e) {
-      log('kunukunu error op $e');
-      log('Error opening Razorpay checkout: $e');
+      CustomDialog().showCustomDialog('Error !', '$e');
     }
   }
 
@@ -247,19 +219,11 @@ class CheckoutScreenController extends GetxController
       orderId = orderPaymentModel.value.id;
     }
     final String? paymentId = response.paymentId;
-    log('Payment bbddibdi sing $signature');
-    log('Payment bbddibdi id $orderId');
-    log('Payment bbddibdi payid $paymentId');
-
     final ApiResponse<bool> res = await RazorPayRepository()
         .verifyOrderPayment(paymentId, signature, orderId);
     try {
       if (res.status == ApiResponseStatus.completed && res.data!) {
-        log('kunukunu completed payment fro the tour');
-        Get.offAllNamed(
-          Routes.HOME,
-        )!
-            .then(
+        Get.offAllNamed(Routes.HOME)!.then(
           (dynamic value) => Get.snackbar(
             'Success ',
             'Payment Suucess for the tour ${checkOutModel.value!.tourName}',
@@ -267,22 +231,19 @@ class CheckoutScreenController extends GetxController
             colorText: Colors.white,
           ),
         );
-      } else {
-        log('kunukunu Payment verification failed: ${res.message}');
-      }
+      } else {}
     } catch (e) {
-      log('kunukunu Error while handling payment success: $e');
+      CustomDialog().showCustomDialog('Error !', '$e');
     }
   }
 
   void _handlePaymentError(PaymentFailureResponse response) {
-    Get.snackbar('Payment error: ${response.code}', '${response.message}');
-    log('kunukunu Payment error: ${response.code} - ${response.message}');
+    CustomDialog().showCustomDialog(
+        'Payment error: ${response.code}', '${response.message}');
   }
 
   void _handleExternalWallet(ExternalWalletResponse response) {
-    Get.snackbar('kunukunu Payment successed: ', 'on : ${response.walletName}');
-
-    log('External wallet: ${response.walletName}');
+    CustomDialog()
+        .showCustomDialog('Payment successed: ', 'on : ${response.walletName}');
   }
 }

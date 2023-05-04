@@ -7,6 +7,7 @@ class RecentSearch {
         'keyword': keyword,
       };
 
-  static RecentSearch fromJson(Map<String, dynamic> json) =>
-      RecentSearch(keyword: json['keyword'] as String);
+  static RecentSearch fromJson(Map<String, dynamic> json) => RecentSearch(
+        keyword: json['keyword'] as String,
+      );
 }

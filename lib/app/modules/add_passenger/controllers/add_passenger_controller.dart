@@ -1,12 +1,10 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 
 import '../../../../core/theme/style.dart';
 
-import '../../../data/models/network_models/razorpay_model.dart';
+import '../../../data/models/network_models/order_payment_model.dart';
 import '../../../data/models/network_models/travellers_model.dart';
 import '../../../data/repo/network_repo/passenger_repo.dart';
 import '../../../routes/app_pages.dart';
@@ -97,7 +95,6 @@ class AddPassengerController extends GetxController
 
     if (pickedFile != null) {
       image.value = pickedFile.path;
-      log('pickedfile ${pickedFile.path.split('/').last}');
     }
   }
 

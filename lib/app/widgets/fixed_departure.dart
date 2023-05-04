@@ -101,16 +101,17 @@ class FixedDepartures extends StatelessWidget {
                   borderRadius: BorderRadius.circular(15)),
               color: backgroundColor,
               child: Padding(
-                padding: const EdgeInsets.all(15.0),
+                padding:
+                    const EdgeInsets.symmetric(vertical: 15.0, horizontal: 10),
                 child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
                     Text(
                       'Available seats : ${controller.batchTours.value.packageData![controller.selectedBatchIndex.value].availableSeats}/${controller.batchTours.value.packageData![controller.selectedBatchIndex.value].totalSeats}',
                       style: subheading1,
                     ),
-
                     const SizedBox(height: 10),
-
                     RichText(
                       text: TextSpan(
                         text: controller.adult.value.toString(),
@@ -250,25 +251,23 @@ class FixedDepartures extends StatelessWidget {
               ),
             ),
             Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
-                Text('For Direct Booking',
-                    style: GoogleFonts.montserrat(color: Colors.grey.shade800)),
+                Text(
+                  'For Direct Booking',
+                  style: GoogleFonts.montserrat(
+                    color: Colors.grey.shade800,
+                  ),
+                ),
+                const SizedBox(width: 40),
                 if (controller.currentUserCategory != 'standard')
                   Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
                     children: <Widget>[
-                      Container(
-                        width: 35,
-                        height: 35,
-                        decoration: BoxDecoration(
-                            color: backgroundColor, shape: BoxShape.circle),
-                        child: Center(
-                          child: IconButton(
-                            onPressed: controller.onCallClicked,
-                            icon: Icon(TourMaker.call,
-                                color: Colors.grey.shade800, size: 20),
-                          ),
-                        ),
+                      IconButton(
+                        onPressed: controller.onCallClicked,
+                        icon: Icon(TourMaker.call,
+                            color: Colors.grey.shade800, size: 20),
                       ),
                       const SizedBox(width: 50),
                       GestureDetector(

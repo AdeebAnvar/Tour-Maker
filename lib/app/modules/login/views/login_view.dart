@@ -52,7 +52,7 @@ class LoginView extends GetView<LoginController> {
                             controller.usernameValidator(value),
                         onChanged: (String? value) =>
                             controller.name.value = value.toString(),
-                        hintText: 'NAME',
+                        hintText: 'name',
                       ),
                       const SizedBox(height: 10),
                       CustomDropDownButton(

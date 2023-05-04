@@ -51,9 +51,15 @@ class BookingScreenView extends GetView<BookingScreenController> {
                     ),
                   ),
                   tabs: const <Widget>[
-                    Tab(child: Text('Upcoming')),
-                    Tab(child: Text('Completed')),
-                    Tab(child: Text('Cancelled')),
+                    Tab(
+                      child: Text('Upcoming'),
+                    ),
+                    Tab(
+                      child: Text('Completed'),
+                    ),
+                    Tab(
+                      child: Text('Cancelled'),
+                    ),
                   ],
                 ),
               )),

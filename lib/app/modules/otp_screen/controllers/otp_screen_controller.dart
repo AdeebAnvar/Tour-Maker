@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
@@ -53,15 +51,11 @@ class OtpScreenController extends GetxController
     if (Get.arguments != null) {
       verID = Get.arguments[0] as String;
       phone = Get.arguments[1] as String;
-      // forceToken = Get.arguments[2] as int;
-      log('ver id $verID');
-      log('phone $phone');
     }
     change(null, status: RxStatus.success());
   }
 
   Future<void> signIn() async {
-    log('sign in otp contr');
     isLoading.value = true;
     final FirebaseAuth auth = FirebaseAuth.instance;
     final AuthCredential credential = PhoneAuthProvider.credential(
@@ -96,23 +90,18 @@ class OtpScreenController extends GetxController
           Get.offAllNamed(Routes.GET_STARTED);
         },
       );
-      log('Invalid OTP');
       isLoading.value = false;
     }
   }
 
   Future<void> onResendinOTP() async {
-    log('resend pressed');
     change(null, status: RxStatus.loading());
     final FirebaseAuth auth = FirebaseAuth.instance;
     void verificationCompleted(AuthCredential phoneAuthCredential) {}
-
     void verificationFailed(FirebaseAuthException exception) {}
-
     Future<void> codeSent(String verificationId,
         [int? forceResendingToken]) async {
       final String verificationid = verificationId;
-      log(phone.toString());
       Get.toNamed(
         Routes.OTP_SCREEN,
         arguments: <dynamic>[
@@ -124,7 +113,6 @@ class OtpScreenController extends GetxController
     }
 
     void codeAutoRetrievalTimeout(String verificationId) {}
-
     await auth.verifyPhoneNumber(
       phoneNumber: phone.toString(),
       timeout: const Duration(seconds: 60),
@@ -138,48 +126,24 @@ class OtpScreenController extends GetxController
   }
 
   Future<void> checkUserExistsORnot(dynamic token, dynamic fcmtok) async {
-    log('adeeb check user');
     final ApiResponse<UserModel> res = await UserRepository().getUserDetails();
-    log('adeeb home ${res.data}');
     if (res.status == ApiResponseStatus.completed) {
       final UserModel user = res.data!;
       if (user.phoneNumber == phone) {
-        log('adeeb home');
         putFCM();
-
         await getStorage.write('currentUserAddress', user.address);
         await getStorage.write('currentUserCategory', user.category);
-        // final String ca =
-        //     await getStorage.read('currentUserCategory') as String;
-        // log('udjknyghedbcn $ca');
-        // await getStorage.write('currentUserName', user.name);
-        // await getStorage.write('currentUserCountry', user.country);
-        // await getStorage.write('currentUserDistrict', user.district);
-        // await getStorage.write('currentUserEmail', user.email);
-        // await getStorage.write(`
-        //     'currentUserEnterpriseName', user.enterpriseName);
-        // await getStorage.write('currentUserGender', user.gender);
-        // await getStorage.write('currentUserPhoneNumber', user.phoneNumber);
-        // await getStorage.write('currentUserState', user.state);
-
         await Get.offAllNamed(Routes.HOME);
         isLoading.value = false;
-
-        //Get.offAllNamed(Routes.TOKEN_SCREEN,arguments:[token,fcmtok]);
       } else {
-        log('adeeb login');
         postFcm();
-
         Get.offAllNamed(Routes.LOGIN, arguments: phone);
         isLoading.value = false;
       }
-    } else {
-      log('adeeb errrrrrooorr');
-    }
+    } else {}
   }
 
   Future<void> putFCM() async {
-    log('adeeb put otp fcm');
     final FirebaseMessaging messaging = FirebaseMessaging.instance;
     final NotificationSettings settings = await messaging.requestPermission();
     if (settings.authorizationStatus == AuthorizationStatus.authorized) {
@@ -187,18 +151,15 @@ class OtpScreenController extends GetxController
       isNotificationON = true;
       final String? fcmToken = await messaging.getToken();
       final ApiResponse<Map<String, dynamic>> res =
-          await UserRepository().putFCMToken(fcmToken);
+          await UserRepository().putFCMToken(fcmToken!);
       if (res.status == ApiResponseStatus.completed) {
-      } else {
-        log('req not send');
-      }
+      } else {}
     } else {
       isNotificationON = false;
     }
   }
 
   Future<void> postFcm() async {
-    log('adeeb post fcm');
     final FirebaseMessaging messaging = FirebaseMessaging.instance;
     final NotificationSettings settings = await messaging.requestPermission();
     if (settings.authorizationStatus == AuthorizationStatus.authorized) {
@@ -208,9 +169,7 @@ class OtpScreenController extends GetxController
       final ApiResponse<Map<String, dynamic>> res =
           await UserRepository().postFCMToken(fcmToken!);
       if (res.status == ApiResponseStatus.completed) {
-      } else {
-        log('req not send');
-      }
+      } else {}
     } else {
       //not authorized
       isNotificationON = false;

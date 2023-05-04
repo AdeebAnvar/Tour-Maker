@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:get/get.dart';
 
 import '../../../data/models/network_models/single_exclusive_tour_model.dart';
@@ -8,6 +6,7 @@ import '../../../data/repo/network_repo/exclusive_repo.dart';
 import '../../../data/repo/network_repo/wishlist_repo.dart';
 import '../../../routes/app_pages.dart';
 import '../../../services/network_services/dio_client.dart';
+import '../../../widgets/custom_dialogue.dart';
 import '../views/exclusive_tours_view.dart';
 
 class ExclusiveToursController extends GetxController
@@ -49,15 +48,12 @@ class ExclusiveToursController extends GetxController
 
   Future<void> getWishList() async {
     final ApiResponse<dynamic> res = await WishListRepo().getAllFav();
-    log('Kumbalangi wish msg ${res.message}');
-    log('Kumbalangi wish data ${res.data}');
     if (res.status == ApiResponseStatus.completed) {
       wishList.value = res.data! as List<WishListModel>;
     } else {}
   }
 
   Future<void> toggleFavorite(int productId) async {
-    log('kumbalangi  toggled');
     try {
       final bool isInWishList =
           wishList.any((WishListModel package) => package.id == productId);
@@ -65,7 +61,6 @@ class ExclusiveToursController extends GetxController
         await WishListRepo().deleteFav(productId);
         wishList
             .removeWhere((WishListModel package) => package.id == productId);
-        log('kumbalangi isinWishlist =true ');
       } else {
         await WishListRepo().createFav(productId);
         // final PackageModel package = singleCategoryList
@@ -79,11 +74,9 @@ class ExclusiveToursController extends GetxController
           // add any other properties that are required for the wishlist item
         );
         wishList.add(wishlistItem);
-
-        log('kumbalangi  isinwishlist nott true');
       }
     } catch (e) {
-      log('kumbalangi  Error toggling favorite: $e');
+      CustomDialog().showCustomDialog('Error !', e.toString());
     }
   }
 

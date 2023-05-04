@@ -1,5 +1,7 @@
 class DestinationsModel {
-  DestinationsModel({this.destination});
+  DestinationsModel({
+    this.destination,
+  });
   String? destination;
 
   Map<String, dynamic> toJson() => <String, dynamic>{
@@ -7,6 +9,7 @@ class DestinationsModel {
       };
   static DestinationsModel fromJson(Map<String, dynamic> json) =>
       DestinationsModel(
-        destination:  json['destination'] ==null?'':json['destination'] as String,
+        destination:
+            json['destination'] == null ? '' : json['destination'] as String,
       );
 }

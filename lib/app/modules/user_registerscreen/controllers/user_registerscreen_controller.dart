@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:country_picker/country_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:geocoding/geocoding.dart';
@@ -8,6 +6,8 @@ import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:razorpay_flutter/razorpay_flutter.dart';
 
+import '../../../../core/theme/style.dart';
+import '../../../../core/utils/constants.dart';
 import '../../../data/models/network_models/razorpay_model.dart';
 import '../../../data/models/network_models/user_model.dart';
 import '../../../data/repo/network_repo/razorpay_repo.dart';
@@ -22,8 +22,6 @@ class UserRegisterscreenController extends GetxController
   Rx<UserModel> user = UserModel().obs;
   GetStorage getStorage = GetStorage();
   late Razorpay razorPay;
-  // final TextEditingController userAddressController = TextEditingController();
-
   Rx<RazorPayModel> razorPayModel = RazorPayModel().obs;
   Rx<Country> selectedCountry = Country(
     phoneCode: '91',
@@ -38,7 +36,6 @@ class UserRegisterscreenController extends GetxController
     e164Key: '',
   ).obs;
   Rx<Gender> selectedGender = Gender.Male.obs;
-  // var currentUserPhoneNumber;
   Rx<CategoryType> selectedCategoryType = CategoryType.standard.obs;
   RxBool isloading = false.obs;
   RxBool isPaidInitial = false.obs;
@@ -56,10 +53,6 @@ class UserRegisterscreenController extends GetxController
   Future<void> onInit() async {
     super.onInit();
     userType.value = await getStorage.read('initialPayment') as String;
-    // currentUserPhoneNumber =
-    //     await getStorage.read('currentUserPhoneNumber') as String;
-    // userType.value = '';
-    log('message $userType');
     loadData();
     razorPay = Razorpay();
     razorPay.on(Razorpay.EVENT_PAYMENT_SUCCESS, _handlePaymentSuccess);
@@ -87,9 +80,11 @@ class UserRegisterscreenController extends GetxController
   Future<void> loadData() async {
     change(null, status: RxStatus.loading());
     user.value = await getCurrentUserDetails();
+    user.value.paymentStatus != '' && user.value.paymentStatus != null
+        ? await getStorage.write('initialPayment', 'paid')
+        : await getStorage.write('initialPayment', '');
     userEmail.value = user.value.email.toString();
     usereEnterpriseName.value = user.value.enterpriseName.toString();
-    log('Gender value: ${user.value.gender}');
     selectedGender.value = user.value.gender != ''
         ? Gender.values.firstWhere(
             (Gender gender) =>
@@ -98,11 +93,8 @@ class UserRegisterscreenController extends GetxController
             orElse: () => Gender.Male,
           )
         : Gender.Male;
-    log('user category: ${user.value.category}');
-    log('CategoryType values: ${CategoryType.values}');
     // selectedCategoryType.value =
     //     categoryTypeMap[user.value.category] ?? CategoryType.standard;
-    // log('CategoryType values: ${categoryTypeMap[user.value.category]}');
     selectedCategoryType.value = user.value.category != ''
         ? CategoryType.values.firstWhere(
             (CategoryType categoryType) =>
@@ -130,12 +122,10 @@ class UserRegisterscreenController extends GetxController
   }
 
   Future<void> getAddressofUser() async {
-    log('clicked');
     isFindingAddressOfUser.value = true;
     final Position position = await getGeoLocationPosition();
     final List<Placemark> placemarks =
         await placemarkFromCoordinates(position.latitude, position.longitude);
-    log(placemarks.toString());
     final Placemark place = placemarks[0];
     userAddress.value =
         '${place.street}, ${place.subLocality}, ${place.locality}, ${place.postalCode}, ${place.country}';
@@ -181,7 +171,6 @@ class UserRegisterscreenController extends GetxController
   }
 
   Future<void> onRegisterClicked() async {
-    // log(userType.value);
     if (formKey.currentState!.validate()) {
       isloading.value = true;
       if (userType.value == 'paid' ||
@@ -198,34 +187,15 @@ class UserRegisterscreenController extends GetxController
           Get.back();
           isloading.value = false;
         }, onConfirm: () async {
-          log('Kirubuib confirm payamount');
           Get.back();
           await payAmount();
           isloading.value = false;
         });
       }
-      // if (selectedCategoryType.value != CategoryType.standard) {
-      //   log('not standard');
-      //   await CustomDialog().showCustomDialog(
-      //       'Register as an agent of TourMaker',
-      //       'You have to pay \n424+GST \nto apply as an\n agent of TourMaker',
-      //       cancelText: 'Go Back',
-      //       confirmText: 'Pay rs 424 + GST', onCancel: () {
-      //     Get.back();
-      //   }, onConfirm: () async {
-      //     log('Kirubuib confirm payamount');
-      //     Get.back();
-      //     await payAmount();
-      //   });
-      // } else {
-      //   await saveUserInfo();
-      //   log(' standard');
-      // }
     }
   }
 
   Future<void> payAmount() async {
-    log('Kirubuib payAmount');
     isloading.value = true;
     if (formKey.currentState!.validate()) {
       final RazorPayModel razorPaymodel = RazorPayModel(
@@ -236,17 +206,13 @@ class UserRegisterscreenController extends GetxController
       final ApiResponse<RazorPayModel> res =
           await RazorPayRepository().createPayment(razorPaymodel);
       try {
-        log('Kirubuib craete payment ');
         if (res.data != null) {
           razorPayModel.value = res.data!;
-          log('Kirubuib package id ${razorPayModel.value.packageId}');
           await openRazorPay(razorPayModel.value.packageId.toString());
-        } else {
-          log(' adeeb raz emp ');
-        }
+        } else {}
         isloading.value = false;
       } catch (e) {
-        log('raz catch $e');
+        CustomDialog().showCustomDialog('Error !', e.toString());
       }
     } else {
       isloading.value = false;
@@ -269,53 +235,43 @@ class UserRegisterscreenController extends GetxController
 
     try {
       razorPay.open(options);
-      log('kkmvk $options');
     } catch (e) {
-      log('Error opening Razorpay checkout: $e');
+      CustomDialog().showCustomDialog('Error !', e.toString());
     }
   }
 
   Future<void> _handlePaymentSuccess(PaymentSuccessResponse response) async {
-    log('Payment success: ${response.signature}');
-    log('Kirubuib payment suces');
-
     final String? signature = response.signature;
     final String? orderId = razorPayModel.value.packageId;
     final String? paymentId = response.paymentId;
-
     final ApiResponse<bool> res = await RazorPayRepository()
         .verifyInitialPayment(paymentId, signature, orderId);
     try {
-      log('cer payme ${res.status}');
       if (res.status == ApiResponseStatus.completed) {
-        log('Payment verification succeeded.');
-        log('Kirubuib ver success ');
         isPaidInitial.value = true;
         await getStorage.write('initialPayment', 'paid');
         userType.value = 'paid';
-        log('message ${userType.value}');
-        // await saveUserInfo();
       } else {
-        log('Payment verification failed: ${res.message}');
         userType.value = '';
       }
     } catch (e) {
-      log('Payment verification  Error while handling payment success: $e');
+      CustomDialog().showCustomDialog('Error !', e.toString());
       userType.value = '';
     }
   }
 
-  void _handlePaymentError(PaymentFailureResponse response) {
-    log('Payment error: ${response.code} - ${response.message}');
-    selectedCategoryType.value = CategoryType.standard;
-  }
+  void _handlePaymentError(PaymentFailureResponse response) =>
+      CustomDialog().showCustomDialog(
+          'Payment error: ${response.code}', '${response.message}');
 
-  void _handleExternalWallet(ExternalWalletResponse response) {
-    log('External wallet: ${response.walletName}');
-  }
+  void _handleExternalWallet(ExternalWalletResponse response) => Get.snackbar(
+        'Payment successed: ',
+        'on : ${response.walletName}',
+        backgroundColor: englishViolet,
+        colorText: Colors.white,
+      );
 
   Future<void> saveUserInfo() async {
-    log('Kirubuib save user info ');
     isloading.value = true;
     if (formKey.currentState!.validate()) {
       final String categoryOFuser = selectedCategoryType.value
@@ -350,7 +306,7 @@ class UserRegisterscreenController extends GetxController
         );
         isloading.value = false;
       } catch (e) {
-        log('Kirubuib catch update $e');
+        CustomDialog().showCustomDialog('Error !', e.toString());
       }
     } else {
       isloading.value = false;
@@ -382,17 +338,9 @@ class UserRegisterscreenController extends GetxController
       addressOFuser: addressOFuser,
       enterpriseNameOFuser: enterpriseNameOFuser,
     );
-    log('Kirubuib update user mes${res.message}');
-    log('Kirubuib uppdate user status ${res.status}');
     try {
       if (res.status == ApiResponseStatus.completed) {
-        log('Adeeb updated');
-        // currentUserName = nameOFuser;
-        // currentUserPhoneNumber = phoneNumberOfuser;
-        // currentUserState = stateOFuser;
-        // currentUserCategory = categoryOFuser;
         await getStorage.write('currentUserAddress', addressOFuser);
-
         await getStorage.write('currentUserCategory', categoryOFuser);
         await getStorage.write('currentUserName', nameOFuser);
         await getStorage.write('currentUserCountry', countryOFuser);
@@ -403,41 +351,13 @@ class UserRegisterscreenController extends GetxController
         await getStorage.write('currentUserGender', genderOFuser);
         await getStorage.write('currentUserPhoneNumber', phoneNumberOfuser);
         await getStorage.write('currentUserState', stateOFuser);
-        log('Adeeb update user category $categoryOFuser');
-        // currentUserAddress = addressOFuser;
         isloading.value = false;
         Get.back();
       } else {
-        log('not updated');
         isloading.value = false;
-        // userType.value = '';
       }
     } catch (e) {
-      log('Kirubuib update user $e');
+      CustomDialog().showCustomDialog('Error !', e.toString());
     }
   }
 }
-
-enum Gender {
-  Male,
-  Female,
-  Other,
-}
-
-enum CategoryType {
-  Freelancer,
-  shop,
-  TravelAgency,
-  ContactCarriage,
-  eServiceCentre,
-  standard,
-}
-
-// final Map<String, CategoryType> categoryTypeMap = <String, CategoryType>{
-//   'Freelancer': CategoryType.Freelancer,
-//   'Shop': CategoryType.Shop,
-//   'Travel_Agency': CategoryType.Travel_Agency,
-//   'Contact_Carriage': CategoryType.Contact_Carriage,
-//   'E_Service_Centre': CategoryType.E_Service_Centre,
-//   'Standard_User': CategoryType.standard,
-// };

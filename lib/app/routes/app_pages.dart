@@ -22,8 +22,6 @@ import '../modules/home/bindings/home_binding.dart';
 import '../modules/home/views/home_view.dart';
 import '../modules/invoice_pdf/bindings/invoice_pdf_binding.dart';
 import '../modules/invoice_pdf/views/invoice_pdf_view.dart';
-import '../modules/jnnjf/bindings/jnnjf_binding.dart';
-import '../modules/jnnjf/views/jnnjf_view.dart';
 import '../modules/login/bindings/login_binding.dart';
 import '../modules/login/views/login_view.dart';
 import '../modules/lucky_draw/bindings/lucky_draw_binding.dart';
@@ -32,8 +30,6 @@ import '../modules/main_screen/bindings/main_screen_binding.dart';
 import '../modules/main_screen/views/main_screen_view.dart';
 import '../modules/nointernet/bindings/nointernet_binding.dart';
 import '../modules/nointernet/views/nointernet_view.dart';
-import '../modules/notifications/bindings/notifications_binding.dart';
-import '../modules/notifications/views/notifications_view.dart';
 import '../modules/otp_screen/bindings/otp_screen_binding.dart';
 import '../modules/otp_screen/views/otp_screen_view.dart';
 import '../modules/payment_screen/bindings/payment_screen_binding.dart';
@@ -84,6 +80,7 @@ class AppPages {
 
   static final List<GetPage<dynamic>> routes = <GetPage<dynamic>>[
     GetPage<dynamic>(
+      transitionDuration: const Duration(milliseconds: 600),
       transition: Transition.fadeIn,
       curve: Curves.easeInOut,
       name: _Paths.HOME,
@@ -91,6 +88,7 @@ class AppPages {
       binding: HomeBinding(),
     ),
     GetPage<dynamic>(
+      transitionDuration: const Duration(milliseconds: 600),
       transition: Transition.fadeIn,
       curve: Curves.easeInOut,
       name: _Paths.SPLASH_SCREEN,
@@ -98,6 +96,7 @@ class AppPages {
       binding: SplashScreenBinding(),
     ),
     GetPage<dynamic>(
+      transitionDuration: const Duration(milliseconds: 600),
       transition: Transition.leftToRightWithFade,
       curve: Curves.easeInOut,
       name: _Paths.GET_STARTED,
@@ -105,6 +104,7 @@ class AppPages {
       binding: GetStartedBinding(),
     ),
     GetPage<dynamic>(
+      transitionDuration: const Duration(milliseconds: 600),
       transition: Transition.rightToLeftWithFade,
       curve: Curves.easeInOut,
       name: _Paths.LOGIN,
@@ -112,6 +112,7 @@ class AppPages {
       binding: LoginBinding(),
     ),
     GetPage<dynamic>(
+      transitionDuration: const Duration(milliseconds: 600),
       transition: Transition.fadeIn,
       curve: Curves.easeInOut,
       name: _Paths.MAIN_SCREEN,
@@ -119,6 +120,7 @@ class AppPages {
       binding: MainScreenBinding(),
     ),
     GetPage<dynamic>(
+      transitionDuration: const Duration(milliseconds: 600),
       transition: Transition.fade,
       curve: Curves.easeInOut,
       name: _Paths.OTP_SCREEN,
@@ -126,6 +128,7 @@ class AppPages {
       binding: OtpScreenBinding(),
     ),
     GetPage<dynamic>(
+      transitionDuration: const Duration(milliseconds: 600),
       transition: Transition.rightToLeft,
       curve: Curves.easeInOut,
       name: _Paths.TERMS_AND_CONDITIONS,
@@ -133,6 +136,7 @@ class AppPages {
       binding: TermsAndConditionsBinding(),
     ),
     GetPage<dynamic>(
+      transitionDuration: const Duration(milliseconds: 600),
       transition: Transition.fadeIn,
       curve: Curves.easeInOut,
       name: _Paths.LUCKY_DRAW,
@@ -140,6 +144,7 @@ class AppPages {
       binding: LuckyDrawBinding(),
     ),
     GetPage<dynamic>(
+      transitionDuration: const Duration(milliseconds: 600),
       transition: Transition.fadeIn,
       curve: Curves.easeInOut,
       name: _Paths.PROFILE,
@@ -147,6 +152,7 @@ class AppPages {
       binding: ProfileBinding(),
     ),
     GetPage<dynamic>(
+      transitionDuration: const Duration(milliseconds: 600),
       transition: Transition.topLevel,
       curve: Curves.easeInOut,
       name: _Paths.PAYMENT_SCREEN,
@@ -154,6 +160,7 @@ class AppPages {
       binding: PaymentScreenBinding(),
     ),
     GetPage<dynamic>(
+      transitionDuration: const Duration(milliseconds: 600),
       transition: Transition.fadeIn,
       curve: Curves.easeInOut,
       name: _Paths.FAVOURITES_SCREEN,
@@ -161,6 +168,7 @@ class AppPages {
       binding: FavouritesScreenBinding(),
     ),
     GetPage<dynamic>(
+      transitionDuration: const Duration(milliseconds: 600),
       transition: Transition.fadeIn,
       curve: Curves.easeInOut,
       name: _Paths.BOOKING_SCREEN,
@@ -168,6 +176,7 @@ class AppPages {
       binding: BookingScreenBinding(),
     ),
     GetPage<dynamic>(
+      transitionDuration: const Duration(milliseconds: 600),
       transition: Transition.fadeIn,
       curve: Curves.easeInOut,
       name: _Paths.FILTER_SCREEN,
@@ -175,6 +184,7 @@ class AppPages {
       binding: FilterScreenBinding(),
     ),
     GetPage<dynamic>(
+      transitionDuration: const Duration(milliseconds: 600),
       transition: Transition.circularReveal,
       curve: Curves.easeInOut,
       name: _Paths.SEARCH_VIEW,
@@ -182,6 +192,7 @@ class AppPages {
       binding: SearchViewBinding(),
     ),
     GetPage<dynamic>(
+      transitionDuration: const Duration(milliseconds: 600),
       transition: Transition.fadeIn,
       curve: Curves.easeInOut,
       name: _Paths.TOKEN_SCREEN,
@@ -189,6 +200,7 @@ class AppPages {
       binding: TokenScreenBinding(),
     ),
     GetPage<dynamic>(
+      transitionDuration: const Duration(milliseconds: 600),
       transition: Transition.fade,
       curve: Curves.easeInOut,
       name: _Paths.REWARDS,
@@ -196,6 +208,7 @@ class AppPages {
       binding: RewardsBinding(),
     ),
     GetPage(
+      transitionDuration: const Duration(milliseconds: 600),
       transition: Transition.leftToRightWithFade,
       curve: Curves.bounceIn,
       name: _Paths.SINGLE_TOUR,
@@ -203,6 +216,7 @@ class AppPages {
       binding: SingleTourBinding(),
     ),
     GetPage(
+      transitionDuration: const Duration(milliseconds: 600),
       transition: Transition.fadeIn,
       curve: Curves.easeInOut,
       name: _Paths.SINGLE_CATEGORY,
@@ -210,6 +224,7 @@ class AppPages {
       binding: SingleCategoryBinding(),
     ),
     GetPage(
+      transitionDuration: const Duration(milliseconds: 600),
       transition: Transition.leftToRightWithFade,
       curve: Curves.easeInOut,
       name: _Paths.SEARCH_DETAILS,
@@ -217,13 +232,7 @@ class AppPages {
       binding: SearchDetailsBinding(),
     ),
     GetPage(
-      transition: Transition.fadeIn,
-      curve: Curves.easeInOut,
-      name: _Paths.NOTIFICATIONS,
-      page: () => const NotificationsView(),
-      binding: NotificationsBinding(),
-    ),
-    GetPage(
+      transitionDuration: const Duration(milliseconds: 600),
       transition: Transition.fadeIn,
       curve: Curves.easeInOut,
       name: _Paths.NOINTERNET,
@@ -231,6 +240,7 @@ class AppPages {
       binding: NointernetBinding(),
     ),
     GetPage(
+      transitionDuration: const Duration(milliseconds: 600),
       transition: Transition.fadeIn,
       curve: Curves.easeInOut,
       name: _Paths.TOURS_VIEW,
@@ -238,6 +248,7 @@ class AppPages {
       binding: ToursViewBinding(),
     ),
     GetPage(
+      transitionDuration: const Duration(milliseconds: 600),
       transition: Transition.fadeIn,
       curve: Curves.easeInOut,
       name: _Paths.ADD_PASSENGER,
@@ -245,6 +256,7 @@ class AppPages {
       binding: AddPassengerBinding(),
     ),
     GetPage(
+      transitionDuration: const Duration(milliseconds: 600),
       transition: Transition.fadeIn,
       curve: Curves.easeInOut,
       name: _Paths.PDF_VIEW,
@@ -252,14 +264,15 @@ class AppPages {
       binding: PdfViewBinding(),
     ),
     GetPage(
+      transitionDuration: const Duration(milliseconds: 600),
       transition: Transition.fadeIn,
       curve: Curves.easeInOut,
-      transitionDuration: const Duration(milliseconds: 400),
       name: _Paths.USER_REGISTERSCREEN,
       page: () => const UserRegisterscreenView(),
       binding: UserRegisterscreenBinding(),
     ),
     GetPage(
+      transitionDuration: const Duration(milliseconds: 600),
       transition: Transition.fadeIn,
       curve: Curves.easeInOut,
       name: _Paths.TRENDING_TOURS,
@@ -267,6 +280,7 @@ class AppPages {
       binding: TrendingToursBinding(),
     ),
     GetPage(
+      transitionDuration: const Duration(milliseconds: 600),
       transition: Transition.fadeIn,
       curve: Curves.easeInOut,
       name: _Paths.EXCLUSIVE_TOURS,
@@ -274,6 +288,7 @@ class AppPages {
       binding: ExclusiveToursBinding(),
     ),
     GetPage(
+      transitionDuration: const Duration(milliseconds: 600),
       transition: Transition.fadeIn,
       curve: Curves.easeInOut,
       name: _Paths.TRAVEL_TYPES,
@@ -281,6 +296,7 @@ class AppPages {
       binding: TravelTypesBinding(),
     ),
     GetPage(
+      transitionDuration: const Duration(milliseconds: 600),
       transition: Transition.fadeIn,
       curve: Curves.easeInOut,
       name: _Paths.CHECKOUT_SCREEN,
@@ -288,6 +304,7 @@ class AppPages {
       binding: CheckoutScreenBinding(),
     ),
     GetPage(
+      transitionDuration: const Duration(milliseconds: 600),
       transition: Transition.fadeIn,
       curve: Curves.easeInOut,
       name: _Paths.TRAVELLERS_SCREEN,
@@ -295,6 +312,7 @@ class AppPages {
       binding: TravellersScreenBinding(),
     ),
     GetPage(
+      transitionDuration: const Duration(milliseconds: 600),
       transition: Transition.fadeIn,
       curve: Curves.easeInOut,
       name: _Paths.SINGLE_PASSENGER,
@@ -302,6 +320,7 @@ class AppPages {
       binding: SinglePassengerBinding(),
     ),
     GetPage(
+      transitionDuration: const Duration(milliseconds: 600),
       transition: Transition.downToUp,
       curve: Curves.easeInOut,
       name: _Paths.PAYMENT_SUMMARY,
@@ -309,6 +328,7 @@ class AppPages {
       binding: PaymentSummaryBinding(),
     ),
     GetPage(
+      transitionDuration: const Duration(milliseconds: 600),
       transition: Transition.fadeIn,
       curve: Curves.easeInOut,
       name: _Paths.BOOKING_SUMMARY,
@@ -316,14 +336,10 @@ class AppPages {
       binding: BookingSummaryBinding(),
     ),
     GetPage(
+      transitionDuration: const Duration(milliseconds: 600),
       name: _Paths.INVOICE_PDF,
       page: () => const InvoicePdfView(),
       binding: InvoicePdfBinding(),
-    ),
-    GetPage(
-      name: _Paths.JNNJF,
-      page: () => const JnnjfView(),
-      binding: JnnjfBinding(),
     ),
   ];
 }

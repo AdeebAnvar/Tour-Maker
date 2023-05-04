@@ -237,19 +237,23 @@ class CustomDeparture extends StatelessWidget {
               ),
             ),
             Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
-                Text('For Direct Booking',
-                    style: GoogleFonts.montserrat(color: Colors.grey.shade800)),
+                Text(
+                  'For Direct Booking',
+                  style: GoogleFonts.montserrat(
+                    color: Colors.grey.shade800,
+                  ),
+                ),
+                const SizedBox(width: 40),
                 if (controller.currentUserCategory != 'standard')
                   Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
                     children: <Widget>[
-                      Center(
-                        child: IconButton(
-                          onPressed: controller.onCallClicked,
-                          icon: Icon(TourMaker.call,
-                              color: Colors.grey.shade800, size: 20),
-                        ),
+                      IconButton(
+                        onPressed: controller.onCallClicked,
+                        icon: Icon(TourMaker.call,
+                            color: Colors.grey.shade800, size: 20),
                       ),
                       const SizedBox(width: 50),
                       GestureDetector(

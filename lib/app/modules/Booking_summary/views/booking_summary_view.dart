@@ -244,23 +244,6 @@ class BookingSummaryView extends GetView<BookingSummaryController> {
                         ),
                         const SizedBox(height: 10),
 
-                        // const SizedBox(height: 10),
-                        // Row(
-                        //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        //   children: const <Widget>[
-                        //     Text('Grand Total     :'),
-                        //     Text('500'),
-                        //   ],
-                        // ),
-                        // const SizedBox(height: 10),
-                        // Row(
-                        //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        //   children: <Widget>[
-                        //     const Text('Payable Amount         :'),
-                        //     Text(controller.bookingList[0].payableAmount
-                        //         .toString()),
-                        //   ],
-                        // ),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: <Widget>[

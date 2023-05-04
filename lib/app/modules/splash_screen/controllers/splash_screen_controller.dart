@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:developer';
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
@@ -12,6 +11,7 @@ import '../../../data/models/network_models/user_model.dart';
 import '../../../data/repo/network_repo/user_repo.dart';
 import '../../../routes/app_pages.dart';
 import '../../../services/network_services/dio_client.dart';
+import '../../../widgets/custom_dialogue.dart';
 
 dynamic fcmtoken;
 
@@ -35,13 +35,10 @@ class SplashScreenController extends GetxController with StateMixin<dynamic> {
   @override
   Future<void> onReady() async {
     super.onReady();
-    // print('dsf');
-    log('re');
     await checkUserLoggedInORnOT();
   }
 
   Future<void> isInternetConnectFunction() async {
-    log('inernet');
     isInternetConnect.value = await InternetConnectionChecker().hasConnection;
     isInternetConnect.value != true
         ? Get.toNamed(Routes.NOINTERNET)
@@ -49,30 +46,20 @@ class SplashScreenController extends GetxController with StateMixin<dynamic> {
   }
 
   Future<void> checkUserLoggedInORnOT() async {
-    log('checking. . . . ');
-
     try {
       if (currentUser != null) {
-        log('New Loogin splsh${currentUser?.phoneNumber}');
-        // final CurrentUserModel cm =
-        //     CurrentUserModel(userPhoneNumber: currentUser?.phoneNumber);
-        // await CurrentUserRepository.saveUserData(cm);
         final String token = await currentUser!.getIdToken(true);
         await getStorage.write('token', token);
-        log('adeeb token frm splsh $token');
-        // sendFCM(token);
         checkUserExistsOnDB(token);
       } else {
-        log(' user is not logged in firebase');
         await Get.offAllNamed(Routes.GET_STARTED);
       }
     } catch (e) {
-      log('catch $e');
+      CustomDialog().showCustomDialog('Error !', e.toString());
     }
   }
 
   Future<void> putFcm() async {
-    log('send fcm');
     final FirebaseMessaging messaging = FirebaseMessaging.instance;
     final NotificationSettings settings = await messaging.requestPermission();
     if (settings.authorizationStatus == AuthorizationStatus.authorized) {
@@ -80,14 +67,10 @@ class SplashScreenController extends GetxController with StateMixin<dynamic> {
       isNotificationON = true;
       final String? fcmToken = await messaging.getToken();
       fcmtoken = fcmToken;
-      log('fcm $fcmToken');
       final ApiResponse<Map<String, dynamic>> res =
-          await UserRepository().putFCMToken(fcmToken);
+          await UserRepository().putFCMToken(fcmToken!);
       if (res.status == ApiResponseStatus.completed) {
-        // checkUserExistsOnDB(token, fcmToken);
-      } else {
-        log('req not send');
-      }
+      } else {}
     } else {
       //not authorized
       isNotificationON = false;
@@ -95,19 +78,16 @@ class SplashScreenController extends GetxController with StateMixin<dynamic> {
   }
 
   Future<void> checkUserExistsOnDB(dynamic token) async {
-    log('check user');
     final ApiResponse<UserModel> res = await UserRepository().getUserDetails();
     if (res.data != null) {
       await Get.offAllNamed(Routes.HOME);
     } else {
       await Get.offAllNamed(Routes.LOGIN, arguments: currentUser?.phoneNumber);
-
       postFcm();
     }
   }
 
   Future<void> postFcm() async {
-    log('send fcm');
     final FirebaseMessaging messaging = FirebaseMessaging.instance;
     final NotificationSettings settings = await messaging.requestPermission();
     if (settings.authorizationStatus == AuthorizationStatus.authorized) {
@@ -115,19 +95,13 @@ class SplashScreenController extends GetxController with StateMixin<dynamic> {
       isNotificationON = true;
       final String? fcmToken = await messaging.getToken();
       fcmtoken = fcmToken;
-      log('fcm $fcmToken');
       final ApiResponse<Map<String, dynamic>> res =
           await UserRepository().postFCMToken(fcmToken!);
       if (res.status == ApiResponseStatus.completed) {
-        // checkUserExistsOnDB(token, fcmToken);
-      } else {
-        log('req not send');
-      }
+      } else {}
     } else {
       //not authorized
       isNotificationON = false;
     }
   }
 }
-
-// String? tndc;

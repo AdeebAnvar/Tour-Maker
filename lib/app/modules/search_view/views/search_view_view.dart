@@ -42,10 +42,10 @@ class SearchViewView extends GetView<SearchViewController> {
                                 padding: const EdgeInsets.only(
                                     top: 18.0, left: 23, right: 23),
                                 child: ListTile(
-                                  title: Text(package.name.toString(),
+                                  title: Text(package.destination.toString(),
                                       style: subheading1),
-                                  onTap: () => controller
-                                      .onSubmitSearch(package.name.toString()),
+                                  onTap: () => controller.onSubmitSearch(
+                                      package.destination.toString()),
                                 ),
                               );
                             },
@@ -111,10 +111,11 @@ class SearchViewView extends GetView<SearchViewController> {
                                     padding: const EdgeInsets.only(
                                         top: 18.0, left: 23, right: 23),
                                     child: ListTile(
-                                      title: Text(package.name.toString(),
+                                      title: Text(
+                                          package.destination.toString(),
                                           style: subheading1),
                                       onTap: () => controller.onSubmitSearch(
-                                          package.name.toString()),
+                                          package.destination.toString()),
                                     ),
                                   );
                                 },

@@ -7,8 +7,6 @@ list(APPEND FLUTTER_PLUGIN_LIST
   connectivity_plus
   geolocator_windows
   permission_handler_windows
-  printing
-  smart_auth
   syncfusion_pdfviewer_windows
   url_launcher_windows
 )

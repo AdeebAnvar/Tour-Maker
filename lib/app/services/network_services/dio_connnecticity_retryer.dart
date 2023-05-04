@@ -1,7 +1,4 @@
-// ignore_for_file: strict_raw_type, always_specify_types
-
 import 'dart:async';
-import 'dart:developer';
 
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:dio/dio.dart';
@@ -15,16 +12,14 @@ class DioConnectivityRequestRetryer {
   final Dio dio;
   final Connectivity connectivity;
 
-  Future<Response> scheduleRequestRetry(RequestOptions requestOptions) async {
-    log('DioConnectivityRequestRetryer scheduleRequestRetry ');
-
-    StreamSubscription? streamSubscription;
-    final Completer<Response> responseCompleter = Completer<Response>();
+  Future<Response<dynamic>> scheduleRequestRetry(
+      RequestOptions requestOptions) async {
+    StreamSubscription<dynamic>? streamSubscription;
+    final Completer<Response<dynamic>> responseCompleter =
+        Completer<Response<dynamic>>();
     streamSubscription = connectivity.onConnectivityChanged.listen(
       (ConnectivityResult connectivityResult) {
         if (connectivityResult != ConnectivityResult.none) {
-          log('DioConnectivityRequestRetryer scheduleRequestRetry connectivityResult != ConnectivityResult.none ');
-
           streamSubscription?.cancel();
           responseCompleter.complete(
             dio.request(

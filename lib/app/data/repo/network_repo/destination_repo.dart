@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:dio/dio.dart';
 
 import '../../../services/network_services/dio_client.dart';
@@ -14,7 +12,6 @@ class DestinationRepository {
       final Map<String, dynamic>? authorHeader = await Client().getAuthHeader();
       final Response<Map<String, dynamic>> res = await dio
           .get('tours/destination', options: Options(headers: authorHeader));
-      log('try');
       if (res.statusCode == 200) {
         destinationsList =
             (res.data!['result'] as List<dynamic>).map((dynamic e) {

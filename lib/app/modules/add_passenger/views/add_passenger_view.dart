@@ -31,14 +31,19 @@ class AddPassengerView extends GetView<AddPassengerController> {
             resizeToAvoidBottomInset: true,
             body: controller.obx(
               onEmpty: const CustomErrorScreen(
-                  errorText: 'Please Add \nPassengers Details'),
+                errorText: 'Please Add \nPassengers Details',
+              ),
               onLoading: const CustomLoadingScreen(),
               (AddPassengerView? state) => Column(
                 children: <Widget>[
                   const SizedBox(height: 16),
-                  Text('Travellers', style: heading2),
                   Text(
-                      '${controller.travellers.length}/${controller.totalTravellers} passengers added'),
+                    'Travellers',
+                    style: heading2,
+                  ),
+                  Text(
+                    '${controller.travellers.length}/${controller.totalTravellers} passengers added',
+                  ),
                   const SizedBox(height: 8),
                   Obx(
                     () {
@@ -51,13 +56,14 @@ class AddPassengerView extends GetView<AddPassengerController> {
                                 itemBuilder:
                                     (BuildContext context, int index) =>
                                         PassengerCard(
-                                            travellers:
-                                                controller.travellers[index]),
+                                  travellers: controller.travellers[index],
+                                ),
                               ),
                             )
                           : const Expanded(
                               child: CustomErrorScreen(
-                                  errorText: 'Please Add \nPassengers Details'),
+                                errorText: 'Please Add \nPassengers Details',
+                              ),
                             );
                     },
                   ),
@@ -201,9 +207,7 @@ class AddPassengerView extends GetView<AddPassengerController> {
                           : Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: <Widget>[
-                                const Text(
-                                  '      ID PROOF',
-                                ),
+                                const Text('      ID PROOF'),
                                 IconButton(
                                   icon: const Icon(Icons.camera_alt),
                                   onPressed: () {

@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:get/get.dart';
 
 import '../../../data/models/network_models/package_model.dart';
@@ -8,6 +6,7 @@ import '../../../data/repo/network_repo/category_repo.dart';
 import '../../../data/repo/network_repo/wishlist_repo.dart';
 import '../../../routes/app_pages.dart';
 import '../../../services/network_services/dio_client.dart';
+import '../../../widgets/custom_dialogue.dart';
 import '../views/single_category_view.dart';
 
 class SingleCategoryController extends GetxController
@@ -38,23 +37,18 @@ class SingleCategoryController extends GetxController
     if (Get.arguments != null) {
       categoryName.value = Get.arguments[0] as String;
       categoryImage.value = Get.arguments[1] as String;
-      log('catname $categoryName');
       await loadCategoryPackages(categoryName.value);
-    } else {
-      log('no arguments');
-    }
+    } else {}
   }
 
   Future<void> getWishList() async {
     final ApiResponse<dynamic> res = await WishListRepo().getAllFav();
-    log('ihdiv singlecategory ${res.message}');
     if (res.data != null) {
       wishList.value = res.data! as List<WishListModel>;
     } else {}
   }
 
   Future<void> toggleFavorite(int productId) async {
-    log('kumbalangi  toggled');
     try {
       final bool isInWishList =
           wishList.any((WishListModel package) => package.id == productId);
@@ -62,7 +56,6 @@ class SingleCategoryController extends GetxController
         await WishListRepo().deleteFav(productId);
         wishList
             .removeWhere((WishListModel package) => package.id == productId);
-        log('kumbalangi isinWishlist =true ');
       } else {
         await WishListRepo().createFav(productId);
         // final PackageModel package = singleCategoryList
@@ -76,11 +69,9 @@ class SingleCategoryController extends GetxController
           // add any other properties that are required for the wishlist item
         );
         wishList.add(wishlistItem);
-
-        log('kumbalangi  isinwishlist nott true');
       }
     } catch (e) {
-      log('kumbalangi  Error toggling favorite: $e');
+      CustomDialog().showCustomDialog('Error !', e.toString());
     }
   }
 
@@ -91,9 +82,6 @@ class SingleCategoryController extends GetxController
     try {
       final ApiResponse<List<PackageModel>> res =
           await CategoryRepository().getCategorybycategoryName(categoryName);
-      log('Adeeb categ sts ${res.status}');
-      log('Adeeb categ msg ${res.message}');
-      log('Adeeb categ  data ${res.data}');
       if (res.status == ApiResponseStatus.completed) {
         if (res.data!.isNotEmpty) {
           packageList.value = res.data!;
@@ -105,7 +93,7 @@ class SingleCategoryController extends GetxController
         change(null, status: RxStatus.empty());
       }
     } catch (e) {
-      log('catch $e');
+      CustomDialog().showCustomDialog('Error !', e.toString());
     }
   }
 }

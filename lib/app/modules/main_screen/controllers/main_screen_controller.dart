@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:internet_connection_checker/internet_connection_checker.dart';
@@ -15,6 +13,7 @@ import '../../../data/repo/network_repo/traveltypes_repo.dart';
 import '../../../data/repo/network_repo/trending_tours_rep.dart';
 import '../../../routes/app_pages.dart';
 import '../../../services/network_services/dio_client.dart';
+import '../../../widgets/custom_dialogue.dart';
 import '../../../widgets/custom_search_delegate.dart';
 import '../views/main_screen_view.dart';
 
@@ -37,7 +36,6 @@ class MainScreenController extends GetxController
   }
 
   Future<void> loadData() async {
-    log('laopd');
     change(null, status: RxStatus.loading());
     await getCategory();
     await getTrending();
@@ -46,7 +44,6 @@ class MainScreenController extends GetxController
   }
 
   Future<void> checkNetwork() async {
-    log('inernet');
     isInternetConnect.value = await InternetConnectionChecker().hasConnection;
     isInternetConnect.value != true
         ? Get.toNamed(Routes.NOINTERNET)
@@ -59,19 +56,16 @@ class MainScreenController extends GetxController
   }
 
   Future<void> getCategory() async {
-    log('get cate');
     await CategoryRepository()
         .getAllCategory()
         .then((ApiResponse<List<CategoryModel>> res) async {
-      log('Adeeb res data${res.data}');
       try {
         if (res.status == ApiResponseStatus.completed) {
           categoryList.value = res.data!;
-          log('cygd ${categoryList.length}');
           change(null, status: RxStatus.success());
         }
       } catch (e) {
-        log('MainScreen catrgory $e');
+        CustomDialog().showCustomDialog('Error !', e.toString());
       }
     });
   }
@@ -80,15 +74,13 @@ class MainScreenController extends GetxController
     await TrendingToursRepository()
         .getAllTrendingTours()
         .then((ApiResponse<List<TrendingToursModel>> res) async {
-      log('Adeeb res data${res.data}');
       try {
         if (res.status == ApiResponseStatus.completed) {
           trendingToursList.value = res.data!;
-          log('cygd ${trendingToursList.length}');
           change(null, status: RxStatus.success());
         }
       } catch (e) {
-        log('MainScreen trending $e');
+        CustomDialog().showCustomDialog('Error !', e.toString());
       }
     });
   }
@@ -97,15 +89,13 @@ class MainScreenController extends GetxController
     await ExclusiveTourRepository()
         .getAllExclusiveTours()
         .then((ApiResponse<List<ExclusiveToursModel>> res) async {
-      log('Adeeb res data${res.data}');
       try {
         if (res.status == ApiResponseStatus.completed) {
           exclusiveToursList.value = res.data!;
-          log('cygd ${exclusiveToursList.length}');
           change(null, status: RxStatus.success());
         }
       } catch (e) {
-        log('MainScreen exxclusive $e');
+        CustomDialog().showCustomDialog('Error !', e.toString());
       }
     });
   }
@@ -114,15 +104,13 @@ class MainScreenController extends GetxController
     await TravelTypesRepository()
         .getAllTravelTypesTours()
         .then((ApiResponse<List<TravelTypesModel>> res) async {
-      log('Adeeb res data${res.data}');
       try {
         if (res.status == ApiResponseStatus.completed) {
           travelTypesToursList.value = res.data!;
-          log('cygd ${travelTypesToursList.length}');
           change(null, status: RxStatus.success());
         }
       } catch (e) {
-        log('MainScreen travel types $e');
+        CustomDialog().showCustomDialog('Error !', e.toString());
       }
     });
   }

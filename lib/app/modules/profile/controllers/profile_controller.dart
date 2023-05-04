@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'dart:developer';
 import 'package:expansion_tile_card/expansion_tile_card.dart';
 
 import 'package:flutter/material.dart';
@@ -15,6 +14,7 @@ import '../../../data/repo/network_repo/razorpay_repo.dart';
 import '../../../data/repo/network_repo/user_repo.dart';
 import '../../../routes/app_pages.dart';
 import '../../../services/network_services/dio_client.dart';
+import '../../../widgets/custom_dialogue.dart';
 import '../views/profile_view.dart';
 
 class ProfileController extends GetxController with StateMixin<ProfileView> {
@@ -52,12 +52,9 @@ class ProfileController extends GetxController with StateMixin<ProfileView> {
   Future<void> getData() async {
     change(null, status: RxStatus.loading());
     final ApiResponse<UserModel> res = await userRepo.getUserDetails();
-    log('getData hguyyu${res.message}');
-
     if (res.status == ApiResponseStatus.completed && res.data != null) {
       userData.value = res.data!;
       username = userData.value.name;
-
       if (userData.value.profileImage != '') {
         showUserPic.value = true;
       } else {
@@ -73,7 +70,6 @@ class ProfileController extends GetxController with StateMixin<ProfileView> {
     final String? signature = response.signature;
     final String? orderId = razorPayModel.value.packageId;
     final String? paymentId = response.paymentId;
-
     final ApiResponse<bool> res = await RazorPayRepository()
         .verifyOrderPayment(paymentId, signature, orderId);
     try {
@@ -82,23 +78,20 @@ class ProfileController extends GetxController with StateMixin<ProfileView> {
             userData.value.name.toString(),
             userData.value.state.toString(),
             userData.value.phoneNumber.toString());
-      } else {
-        log('Payment verification failed: ${res.message}');
-      }
+      } else {}
     } catch (e) {
-      log('Error while handling payment success: $e');
+      CustomDialog().showCustomDialog('Error !', e.toString());
     }
   }
 
   void _handlePaymentError(PaymentFailureResponse response) {
-    Get.snackbar('Payment error: ${response.code}', '${response.message}');
-    log('Payment error: ${response.code} - ${response.message}');
+    CustomDialog().showCustomDialog(
+        'Payment error: ${response.code}', '${response.message}');
   }
 
   void _handleExternalWallet(ExternalWalletResponse response) {
-    Get.snackbar('Payment successed: ', 'on : ${response.walletName}');
-
-    log('External wallet: ${response.walletName}');
+    CustomDialog()
+        .showCustomDialog('Payment successed: ', 'on : ${response.walletName}');
   }
 
   Future<void> onClickPayment() async {
@@ -113,17 +106,12 @@ class ProfileController extends GetxController with StateMixin<ProfileView> {
     final ApiResponse<RazorPayModel> res =
         await RazorPayRepository().createPayment(razorPaymodel);
     try {
-      log('adeeb ${res.message}');
-      log('adeeb ${res.data}');
       if (res.data != null) {
         razorPayModel.value = res.data!;
-        log('adeeb razorpa ${razorPayModel.value.packageId}');
         openRazorPay(razorPayModel.value.packageId.toString());
-      } else {
-        log(' adeeb raz emp ');
-      }
+      } else {}
     } catch (e) {
-      log('raz catch $e');
+      CustomDialog().showCustomDialog('Error !', e.toString());
     }
     isloading.value = false;
   }
@@ -135,7 +123,6 @@ class ProfileController extends GetxController with StateMixin<ProfileView> {
       'description': 'Test Payment',
       'order_id': orderId,
       'prefill': <String, Object?>{
-        // 'email': widget.email,
         'contact': userData.value.phoneNumber,
       },
       'external': <String, Object?>{
@@ -157,7 +144,7 @@ class ProfileController extends GetxController with StateMixin<ProfileView> {
     try {
       razorPay.open(options);
     } catch (e) {
-      log('Error opening Razorpay checkout: $e');
+      CustomDialog().showCustomDialog('Error !', e.toString());
     }
   }
 
@@ -181,14 +168,14 @@ class ProfileController extends GetxController with StateMixin<ProfileView> {
           );
         } else {
           // handle error
-          log('errrr');
         }
       } else {
         // user did not pick an image
-        Get.snackbar('No image Selected', 'Please add you pic');
+        Get.snackbar('No image Selected', 'Please add you pic',
+            backgroundColor: englishViolet, colorText: Colors.white);
       }
     } catch (e) {
-      // handle error
+      CustomDialog().showCustomDialog('Error !', e.toString());
     }
   }
 

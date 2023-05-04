@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:developer';
 import 'dart:io';
 import 'dart:typed_data';
 
@@ -10,6 +9,7 @@ import 'package:path_provider/path_provider.dart';
 import 'package:share/share.dart';
 import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
 
+import '../../../widgets/custom_dialogue.dart';
 import '../views/pdf_view_view.dart';
 
 class PdfViewController extends GetxController with StateMixin<PdfViewView> {
@@ -29,7 +29,6 @@ class PdfViewController extends GetxController with StateMixin<PdfViewView> {
     change(null, status: RxStatus.loading());
     if (Get.arguments != null) {
       url.value = Get.arguments[0] as String;
-      log('remotePDFpath : ${url.value}');
     }
     change(null, status: RxStatus.success());
   }
@@ -40,7 +39,6 @@ class PdfViewController extends GetxController with StateMixin<PdfViewView> {
   }
 
   Future<void> downloadPdf() async {
-    log('download Pdf');
     try {
       final http.Response response = await http.get(Uri.parse(url.value));
       final Uint8List bytes = response.bodyBytes;
@@ -51,12 +49,11 @@ class PdfViewController extends GetxController with StateMixin<PdfViewView> {
 
       Get.snackbar('PDF Downloaded', 'The PDF has been downloaded.');
     } catch (e) {
-      log('download $e');
+      CustomDialog().showCustomDialog('Error !', e.toString());
     }
   }
 
   Future<void> sharePdf() async {
-    log('share pdf');
     try {
       final http.Response response = await http.get(Uri.parse(url.value));
       final Uint8List bytes = response.bodyBytes;
@@ -67,7 +64,7 @@ class PdfViewController extends GetxController with StateMixin<PdfViewView> {
 
       await Share.shareFiles(<String>[file.path], text: 'Check out this PDF!');
     } catch (e) {
-      log('share $e');
+      CustomDialog().showCustomDialog('Error !', e.toString());
     }
   }
 }

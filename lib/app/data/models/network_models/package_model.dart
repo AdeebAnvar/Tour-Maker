@@ -65,7 +65,7 @@ class PackageModel {
         itinerary: json['itinerary'] as String,
         name: json['name'] as String,
         nights: json['nights'] as int,
-    priority: json['priority'] != null ? json['priority'] as int : 0,
+        priority: json['priority'] != null ? json['priority'] as int : 0,
         region: json['region'] as String,
         tourCode: json['tour_code'] as String,
         travelType: json['travel_type'] as String,

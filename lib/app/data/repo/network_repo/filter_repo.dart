@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:dio/dio.dart';
 
 import '../../../services/network_services/dio_client.dart';
@@ -18,15 +16,10 @@ class FilterRepository {
           options: Options(headers: authorHeader));
 
       if (res.statusCode == 200) {
-        log('200');
-        log('adeeb rep ${res.data}');
-        log('adeeb rep ${res.statusMessage}');
-        log('adeeb rep ${res.statusCode}');
         destinationsLis =
             (res.data!['result'] as List<dynamic>).map((dynamic e) {
           return PackageModel.fromJson(e as Map<String, dynamic>);
         }).toList();
-        log(' adeeb list ${destinationsLis.length}');
         return ApiResponse<List<PackageModel>>.completed(destinationsLis);
       } else {
         return ApiResponse<List<PackageModel>>.error(res.statusMessage);
@@ -44,7 +37,6 @@ class FilterRepository {
       final Response<Map<String, dynamic>> res = await dio.get(
           'tours/packages?domestic=true',
           options: Options(headers: authorHeader));
-      log('try');
       if (res.statusCode == 200) {
         destinationsLis =
             (res.data!['result'] as List<dynamic>).map((dynamic e) {
@@ -68,7 +60,6 @@ class FilterRepository {
       final Response<Map<String, dynamic>> res = await dio.get(
           'tours/packages?amount=$amount',
           options: Options(headers: authorHeader));
-      log('try');
       if (res.statusCode == 200) {
         destinationsLis =
             (res.data!['result'] as List<dynamic>).map((dynamic e) {
@@ -92,7 +83,6 @@ class FilterRepository {
       final Response<Map<String, dynamic>> res = await dio.get(
           'tours/packages?duration=$duration',
           options: Options(headers: authorHeader));
-      log('try');
       if (res.statusCode == 200) {
         destinationsLis =
             (res.data!['result'] as List<dynamic>).map((dynamic e) {
@@ -115,7 +105,6 @@ class FilterRepository {
       final Response<Map<String, dynamic>> res = await dio.get(
           'tours/packages?category=$category',
           options: Options(headers: authorHeader));
-      log('try');
       if (res.statusCode == 200) {
         destinationsLis =
             (res.data!['result'] as List<dynamic>).map((dynamic e) {

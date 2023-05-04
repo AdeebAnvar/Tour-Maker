@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'dart:developer';
 import 'dart:typed_data';
 
 import 'package:get/get.dart';
@@ -7,6 +6,7 @@ import 'package:get/get.dart';
 import '../../../data/models/network_models/travellers_model.dart';
 import '../../../data/repo/network_repo/passenger_repo.dart';
 import '../../../services/network_services/dio_client.dart';
+import '../../../widgets/custom_dialogue.dart';
 import '../views/single_passenger_view.dart';
 
 class SinglePassengerController extends GetxController
@@ -39,7 +39,7 @@ class SinglePassengerController extends GetxController
         await loadAAdhar(passenger[0].name!, passenger[0].orderId!);
       } else {}
     } catch (e) {
-      log('cant fetch passenger detail : $e');
+      CustomDialog().showCustomDialog('Error !', e.toString());
     }
   }
 
@@ -51,7 +51,7 @@ class SinglePassengerController extends GetxController
         adhar = res.data as String;
       } else {}
     } catch (e) {
-      log('cannot fetch aadahr : $e');
+      CustomDialog().showCustomDialog('Error !', e.toString());
     }
   }
 

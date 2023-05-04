@@ -752,9 +752,10 @@ class ProfileView extends GetView<ProfileController> {
                 indent: 10,
               ),
               Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 18.0),
+                padding: const EdgeInsets.symmetric(horizontal: 7.0),
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
                     Text(label, style: paragraph3),
                     Text(data, style: subheading2),

@@ -1,7 +1,3 @@
-// ignore_for_file: unnecessary_overrides
-
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -24,39 +20,20 @@ class PaymentScreenController extends GetxController
     loadData();
   }
 
-  @override
-  void onReady() {
-    super.onReady();
-  }
+  void onTapUpcoming() => tabcontroller.animateTo(1);
 
-  @override
-  void onClose() {
-    super.onClose();
-  }
+  void onTapCompleted() => tabcontroller.animateTo(1);
 
-  void onTapUpcoming() {
-    tabcontroller.animateTo(1);
-  }
-
-  void onTapCompleted() {
-    tabcontroller.animateTo(1);
-  }
-
-  void onTapCancelled() {
-    tabcontroller.animateTo(1);
-  }
+  void onTapCancelled() => tabcontroller.animateTo(1);
 
   void onTapSingleProcessingPayment(int id) =>
       Get.toNamed(Routes.PAYMENT_SUMMARY, arguments: id);
 
-  void onTapSinglePendingPayment(int id) {
-    log('id id id  $id');
-    Get.toNamed(Routes.PAYMENT_SUMMARY, arguments: id);
-  }
+  void onTapSinglePendingPayment(int id) =>
+      Get.toNamed(Routes.PAYMENT_SUMMARY, arguments: id);
 
-  void onTapSinglePaidView(int id) {
-    Get.toNamed(Routes.PAYMENT_SUMMARY, arguments: id);
-  }
+  void onTapSinglePaidView(int id) =>
+      Get.toNamed(Routes.PAYMENT_SUMMARY, arguments: id);
 
   Future<void> loadData() async {
     await loadProcessingPayments();
@@ -68,7 +45,6 @@ class PaymentScreenController extends GetxController
   Future<void> loadProcessingPayments() async {
     final ApiResponse<List<PaymentModel>> res =
         await PaymentRepository().getAllPayments('processing');
-    log('adeeb processing  ${res.message}');
     if (res.data != null) {
       processingPayments.value = res.data!;
     }
@@ -77,8 +53,6 @@ class PaymentScreenController extends GetxController
   Future<void> loadPendingPayments() async {
     final ApiResponse<List<PaymentModel>> res =
         await PaymentRepository().getAllPayments('pending');
-    log('adeeb pending  ${res.message}');
-
     if (res.data != null) {
       pendingPayments.value = res.data!;
     } else {}
@@ -87,8 +61,6 @@ class PaymentScreenController extends GetxController
   Future<void> loadPaidPayments() async {
     final ApiResponse<List<PaymentModel>> res =
         await PaymentRepository().getAllPayments('paid');
-    log('adeeb paid  ${res.message}');
-
     if (res.data != null) {
       paidPayments.value = res.data!;
     } else {}

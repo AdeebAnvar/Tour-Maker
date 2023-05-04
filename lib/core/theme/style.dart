@@ -18,11 +18,6 @@ LinearGradient buttonColorGradient = const LinearGradient(
     Color.fromARGB(255, 97, 45, 109),
   ],
 );
-// String montserratBold = 'MontserratBold';
-// String montserratRegular = 'MontserratRegular';
-// String montserratSemiBold = 'MontserratSemiBold';
-// String montserratMedium = 'MontserratMedium';
-// String onBoardingText = 'Tahu';
 final TextStyle heading1 = GoogleFonts.montserrat(
   fontWeight: FontWeight.w600,
   fontSize: 38,

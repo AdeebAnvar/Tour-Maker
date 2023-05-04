@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
@@ -49,9 +47,6 @@ class BookingScreenController extends GetxController
 
     final ApiResponse<List<BookingsModel>> res =
         await BookingRepository().getAllBookings('pending');
-    log('getAllUpcomingBookings m ${res.message}');
-    // log('getAllUpcomingBookings d ${res.data}');
-    log('getAllUpcomingBookings  s ${res.status}');
     if (res.data != null) {
       upcomingList.value = res.data!;
     }
@@ -63,9 +58,6 @@ class BookingScreenController extends GetxController
 
     final ApiResponse<List<BookingsModel>> res =
         await BookingRepository().getAllBookings('confirm');
-    log('getAllCompletedBookings m ${res.message}');
-    log('getAllCompletedBookings d ${res.data}');
-    log('getAllCompletedBookings s  ${res.status}');
     if (res.data != null) {
       completedList.value = res.data!;
     }
@@ -77,8 +69,6 @@ class BookingScreenController extends GetxController
 
     final ApiResponse<List<BookingsModel>> res =
         await BookingRepository().getAllBookings('cancelled');
-
-    log('getAllCancelledBookings ${res.message}');
     if (res.data != null) {
       cancelledList.value = res.data!;
     }

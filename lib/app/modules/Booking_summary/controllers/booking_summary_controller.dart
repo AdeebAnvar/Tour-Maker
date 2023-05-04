@@ -1,61 +1,26 @@
-// ignore_for_file: unnecessary_overrides
-
-import 'dart:developer';
-import 'dart:io';
-
-import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-// import 'package:pdf/widgets.dart' as pw;
-import 'package:razorpay_flutter/razorpay_flutter.dart';
 
-import '../../../../core/theme/style.dart';
-import '../../../data/models/local_model/customer.dart';
-import '../../../data/models/local_model/invoice_item.dart';
-import '../../../data/models/local_model/supplier.dart';
-import '../../../data/models/network_models/razorpay_model.dart';
 import '../../../data/models/network_models/single_booking_model.dart';
-import '../../../data/repo/local_repo/pdf_api.dart';
-import '../../../data/repo/local_repo/pdf_invoice_api.dart';
 import '../../../data/repo/network_repo/booking_repo.dart';
-import '../../../data/repo/network_repo/passenger_repo.dart';
-import '../../../data/repo/network_repo/razorpay_repo.dart';
 import '../../../routes/app_pages.dart';
 import '../../../services/network_services/dio_client.dart';
 import '../views/booking_summary_view.dart';
 
 class BookingSummaryController extends GetxController
     with StateMixin<BookingSummaryView> {
-  // final pw.Document pdf = pw.Document();
   RxList<SingleBookingModel> bookingList = <SingleBookingModel>[].obs;
   Rx<bool> isLoading = false.obs;
-  Rx<OrderPaymentModel> orderPaymentModel = OrderPaymentModel().obs;
-  late Razorpay razorPay;
   int? id;
   @override
   void onInit() {
     super.onInit();
     loadData();
-    razorPay = Razorpay();
-    razorPay.on(Razorpay.EVENT_PAYMENT_SUCCESS, _handlePaymentSuccess);
-    razorPay.on(Razorpay.EVENT_PAYMENT_ERROR, _handlePaymentError);
-    razorPay.on(Razorpay.EVENT_EXTERNAL_WALLET, _handleExternalWallet);
-  }
-
-  @override
-  void onReady() {
-    super.onReady();
-  }
-
-  @override
-  void onClose() {
-    super.onClose();
   }
 
   void loadData() {
     change(null, status: RxStatus.loading());
     if (Get.arguments != null) {
       id = Get.arguments as int;
-      log('sfg $id');
       loadBookingDetails(id!);
     }
   }
@@ -63,7 +28,6 @@ class BookingSummaryController extends GetxController
   Future<void> loadBookingDetails(int id) async {
     final ApiResponse<List<SingleBookingModel>> res =
         await BookingRepository().getSingleBooking(id);
-    log('message ${res.message}');
     if (res.data != null) {
       bookingList.value = res.data!;
       change(null, status: RxStatus.success());
@@ -85,106 +49,6 @@ class BookingSummaryController extends GetxController
   void onClickPassengers(int? id) {
     Get.toNamed(Routes.TRAVELLERS_SCREEN, arguments: id)!
         .whenComplete(() => loadData());
-  }
-
-  Future<void> onClickPayRemainingAmount(int id) async {
-    isLoading.value = true;
-    log('Payment pay full amount id $id');
-    //CreatePayment
-    orderPaymentModel.value = await createPayment(id);
-    log('Payment pay full amount orderPayment ${orderPaymentModel.value.id}');
-    log('kunukunu ${orderPaymentModel.value}');
-    // //open razorpay
-    openRazorPay(orderPaymentModel.value.id.toString());
-    isLoading.value = false;
-  }
-
-  Future<OrderPaymentModel> createPayment(int iD) async {
-    log('Payment xcreate $iD');
-    final OrderPaymentModel omp =
-        OrderPaymentModel(orderId: iD, currency: 'INR');
-
-    try {
-      final ApiResponse<OrderPaymentModel> res =
-          await PassengerRepository().createRemainingAmountPayment(omp);
-      log('dsgaefv d ms${res.message}');
-      log('dsgaefv d ${res.data}');
-      log('dsgaefv d ${res.status}');
-
-      if (res.data != null) {
-        orderPaymentModel.value = res.data!;
-      } else {
-        // log(' adeeb raz emp ');
-      }
-    } catch (e) {
-      log('raz catch $e');
-    }
-    return orderPaymentModel.value;
-  }
-
-  void openRazorPay(String paymentID) {
-    log('Payment openRazorPay $paymentID');
-    final Map<String, Object?> options = <String, Object?>{
-      'key': 'rzp_test_yAFypxWUiCD7H7',
-      'name': 'TourMaker',
-      'description': 'Pay for your Package Order',
-      'order_id': paymentID,
-      'external': <String, Object?>{
-        'wallets': <String>['paytm'],
-      },
-    };
-    log('adeeb anvar $options');
-
-    try {
-      razorPay.open(options);
-      log('adeeb anvar raz op');
-    } catch (e) {
-      log('kunukunu error op $e');
-      log('Error opening Razorpay checkout: $e');
-    }
-  }
-
-  Future<void> _handlePaymentSuccess(PaymentSuccessResponse response) async {
-    final String? signature = response.signature;
-    final String? orderId = orderPaymentModel.value.id;
-    final String? paymentId = response.paymentId;
-    log('Payment bbddibdi sing $signature');
-    log('Payment bbddibdi id $orderId');
-    log('Payment bbddibdi payid $paymentId');
-
-    final ApiResponse<bool> res = await RazorPayRepository()
-        .verifyOrderPayment(paymentId, signature, orderId);
-    try {
-      if (res.status == ApiResponseStatus.completed && res.data!) {
-        log('kunukunu completed payment fro the tour');
-        Get.offAllNamed(
-          Routes.HOME,
-        )!
-            .then(
-          (dynamic value) => Get.snackbar(
-            'Success ',
-            'Payment Suucess for the tour ${bookingList[0].tourName}',
-            backgroundColor: englishViolet,
-            colorText: Colors.white,
-          ),
-        );
-      } else {
-        log('kunukunu Payment verification failed: ${res.message}');
-      }
-    } catch (e) {
-      log('kunukunu Error while handling payment success: $e');
-    }
-  }
-
-  void _handlePaymentError(PaymentFailureResponse response) {
-    Get.snackbar('Payment error: ${response.code}', '${response.message}');
-    log('kunukunu Payment error: ${response.code} - ${response.message}');
-  }
-
-  void _handleExternalWallet(ExternalWalletResponse response) {
-    Get.snackbar('Payment successed: ', 'on : ${response.walletName}');
-
-    log('External wallet: ${response.walletName}');
   }
 
   num getPackageGSTamount(num totalAmount, num gst) {
@@ -319,81 +183,81 @@ class BookingSummaryController extends GetxController
   }
 
   Future<void> invoicePdf() async {
-    final DateTime date = DateTime.now();
-    final DateTime dueDate = date.add(const Duration(days: 7));
+    // final DateTime date = DateTime.now();
+    // final DateTime dueDate = date.add(const Duration(days: 7));
 
-    final Invoice invoice = Invoice(
-      supplier: const Supplier(
-        name: 'Sarah Field',
-        address: 'Sarah Street 9, Beijing, China',
-        paymentInfo: 'https://paypal.me/sarahfieldzz',
-      ),
-      customer: const Customer(
-        name: 'Apple Inc.',
-        address: 'Apple Street, Cupertino, CA 95014',
-      ),
-      info: InvoiceInfo(
-        date: date,
-        dueDate: dueDate,
-        description: 'My description...',
-        number: '${DateTime.now().year}-9999',
-      ),
-      items: <InvoiceItem>[
-        InvoiceItem(
-          description: 'Coffee',
-          date: DateTime.now(),
-          quantity: 3,
-          vat: 0.19,
-          unitPrice: 5.99,
-        ),
-        InvoiceItem(
-          description: 'Water',
-          date: DateTime.now(),
-          quantity: 8,
-          vat: 0.19,
-          unitPrice: 0.99,
-        ),
-        InvoiceItem(
-          description: 'Orange',
-          date: DateTime.now(),
-          quantity: 3,
-          vat: 0.19,
-          unitPrice: 2.99,
-        ),
-        InvoiceItem(
-          description: 'Apple',
-          date: DateTime.now(),
-          quantity: 8,
-          vat: 0.19,
-          unitPrice: 3.99,
-        ),
-        InvoiceItem(
-          description: 'Mango',
-          date: DateTime.now(),
-          quantity: 1,
-          vat: 0.19,
-          unitPrice: 1.59,
-        ),
-        InvoiceItem(
-          description: 'Blue Berries',
-          date: DateTime.now(),
-          quantity: 5,
-          vat: 0.19,
-          unitPrice: 0.99,
-        ),
-        InvoiceItem(
-          description: 'Lemon',
-          date: DateTime.now(),
-          quantity: 4,
-          vat: 0.19,
-          unitPrice: 1.29,
-        ),
-      ],
-    );
+    // final Invoice invoice = Invoice(
+    //   supplier: const Supplier(
+    //     name: 'Sarah Field',
+    //     address: 'Sarah Street 9, Beijing, China',
+    //     paymentInfo: 'https://paypal.me/sarahfieldzz',
+    //   ),
+    //   customer: const Customer(
+    //     name: 'Apple Inc.',
+    //     address: 'Apple Street, Cupertino, CA 95014',
+    //   ),
+    //   info: InvoiceInfo(
+    //     date: date,
+    //     dueDate: dueDate,
+    //     description: 'My description...',
+    //     number: '${DateTime.now().year}-9999',
+    //   ),
+    //   items: <InvoiceItem>[
+    //     InvoiceItem(
+    //       description: 'Coffee',
+    //       date: DateTime.now(),
+    //       quantity: 3,
+    //       vat: 0.19,
+    //       unitPrice: 5.99,
+    //     ),
+    //     InvoiceItem(
+    //       description: 'Water',
+    //       date: DateTime.now(),
+    //       quantity: 8,
+    //       vat: 0.19,
+    //       unitPrice: 0.99,
+    //     ),
+    //     InvoiceItem(
+    //       description: 'Orange',
+    //       date: DateTime.now(),
+    //       quantity: 3,
+    //       vat: 0.19,
+    //       unitPrice: 2.99,
+    //     ),
+    //     InvoiceItem(
+    //       description: 'Apple',
+    //       date: DateTime.now(),
+    //       quantity: 8,
+    //       vat: 0.19,
+    //       unitPrice: 3.99,
+    //     ),
+    //     InvoiceItem(
+    //       description: 'Mango',
+    //       date: DateTime.now(),
+    //       quantity: 1,
+    //       vat: 0.19,
+    //       unitPrice: 1.59,
+    //     ),
+    //     InvoiceItem(
+    //       description: 'Blue Berries',
+    //       date: DateTime.now(),
+    //       quantity: 5,
+    //       vat: 0.19,
+    //       unitPrice: 0.99,
+    //     ),
+    //     InvoiceItem(
+    //       description: 'Lemon',
+    //       date: DateTime.now(),
+    //       quantity: 4,
+    //       vat: 0.19,
+    //       unitPrice: 1.29,
+    //     ),
+    //   ],
+    // );
 
-    final File pdfFile = await PdfInvoiceApi.generate(invoice);
+    // final File pdfFile = await PdfInvoiceApi.generate(invoice);
 
-    PdfApi.openFile(pdfFile);
+    // PdfApi.openFile(pdfFile);
   }
 
   // Future<String> savePdf() async {

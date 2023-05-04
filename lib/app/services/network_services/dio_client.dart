@@ -1,4 +1,3 @@
-import 'dart:developer';
 import 'dart:io';
 
 import 'package:connectivity_plus/connectivity_plus.dart';
@@ -6,14 +5,12 @@ import 'package:dio/dio.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:pretty_dio_logger/pretty_dio_logger.dart';
 
+import '../../widgets/custom_dialogue.dart';
 import 'dio_connnecticity_retryer.dart';
 
 class Client {
   GetStorage storage = GetStorage();
-  Dio init(
-      {String baseUrl =
-          'https://api.tourmakerapp.com/'}) {
-            //https://uuuhc8u0vk.execute-api.ap-south-1.amazonaws.com/development_api/
+  Dio init({String baseUrl = 'https://api.tourmakerapp.com/'}) {
     final Dio dio = Dio();
 
     dio.interceptors.add(
@@ -35,7 +32,6 @@ class Client {
         followRedirects: true,
         baseUrl: baseUrl,
         validateStatus: (int? status) {
-          log('inside dio client');
           if (status != null) {
             return status < 500;
           } else {
@@ -43,29 +39,18 @@ class Client {
           }
         },
         contentType: 'application/json',
-        headers: <String, dynamic>{
-          // "X-Requested-With": "XMLHttpRequest",
-          // HttpHeaders.contentTypeHeader: "application/json",
-          // HttpHeaders.authorizationHeader: "Bearer ${getToken()}"
-        });
+        headers: <String, dynamic>{});
 
     return dio;
   }
 
   Future<Map<String, dynamic>?> getAuthHeader() async {
     final dynamic tok = await storage.read('token');
-    // var t=  storage.;
-    log('token in client $tok');
-
     if (tok != null) {
-      log('tokenn != null');
-
       final Map<String, dynamic> header = <String, dynamic>{
-        // "X-Requested-With": "XMLHttpRequest",
         HttpHeaders.contentTypeHeader: 'application/json',
         HttpHeaders.authorizationHeader: 'Bearer $tok',
       };
-      log('header $header');
 
       return header;
     } else {
@@ -75,20 +60,12 @@ class Client {
 
   Future<Map<String, String>?> getMultiPartAuthHeader() async {
     final dynamic tok = await storage.read('token');
-    // var t=  storage.;
-    log('token in client $tok');
-
     if (tok != null) {
-      log('tokenn != null');
-
       final Map<String, String> header = <String, String>{
-        // "X-Requested-With": "XMLHttpRequest",
         HttpHeaders.contentTypeHeader: 'multipart/form-data',
         HttpHeaders.acceptHeader: 'application/json',
         HttpHeaders.authorizationHeader: 'Bearer $tok',
       };
-      log('header $header');
-
       return header;
     } else {
       return null;
@@ -122,27 +99,19 @@ class RetryOnConnectionChangeInterceptor extends Interceptor {
   @override
   Future<void> onError(DioError err, ErrorInterceptorHandler handler) async {
     if (_shouldRetry(err)) {
-      log('RetryOnConnectionChangeInterceptor shouldretry true');
       try {
-        log('RetryOnConnectionChangeInterceptor shouldretry true try');
-
         handler.next((await requestRetryer
             .scheduleRequestRetry(err.requestOptions)) as DioError);
       } catch (e) {
-        log('RetryOnConnectionChangeInterceptor shouldretry true catch $e');
-
+        CustomDialog().showCustomDialog('Error !', e.toString());
         handler.next(e as DioError);
       }
     } else {
-      log('RetryOnConnectionChangeInterceptor shouldretry false next $err');
-
       handler.next(err);
     }
   }
 
   bool _shouldRetry(DioError err) {
-    log('RetryOnConnectionChangeInterceptor dioerror $err');
-
     return err.type == DioErrorType.unknown &&
         err.error != null &&
         err.error is SocketException;

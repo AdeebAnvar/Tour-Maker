@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:dio/dio.dart';
 
 import '../../../services/network_services/dio_client.dart';
@@ -51,7 +49,6 @@ class ExclusiveTourRepository {
         return ApiResponse<List<SingleExclusiveTourModel>>.completed(
             singleexclusiveToursList);
       } else {
-        log('affairscjjh ${res.statusMessage}');
         return ApiResponse<List<SingleExclusiveTourModel>>.error(
             res.statusMessage);
       }
