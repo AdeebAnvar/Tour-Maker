@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:dio/dio.dart';
 
 import '../../../services/network_services/dio_client.dart';
@@ -5,7 +7,7 @@ import '../../models/network_models/single_tour_model.dart';
 
 class SingleTourRepository {
   SingleTourModel tourData = SingleTourModel();
-  List<SingleTourModel> packageData = <SingleTourModel>[];
+  List<PackageData> individualTours = <PackageData>[];
   final Dio dio = Client().init();
   Future<ApiResponse<SingleTourModel>> getSingleTour(int id) async {
     try {
@@ -35,10 +37,34 @@ class SingleTourRepository {
       final Response<Map<String, dynamic>> res = await dio.getUri(
           Uri.parse('tours/packages/$id?option=individual'),
           options: Options(headers: authHeader));
+      log('Adeeb rep res data ${res.data}');
+      log('Adeeb rep res statusCode ${res.statusCode}');
+      log('Adeeb rep res statusMessage ${res.statusMessage}');
       if (res.statusCode == 200) {
-        tourData = SingleTourModel.fromJson(
+        final SingleTourModel customDepartureToures = SingleTourModel.fromJson(
             res.data!['result'] as Map<String, dynamic>);
-        return ApiResponse<SingleTourModel>.completed(tourData);
+
+        log('Adeeb rep res statusge ${customDepartureToures.packageData!}');
+        // if (customDepartureToures.packageData != null) {
+        //   individualTours = customDepartureToures.packageData!;
+        // } else {
+        //   individualTours = <PackageData>[];
+        // }
+        // individualTours = customDepartureToures.packageData!;
+        return ApiResponse<SingleTourModel>.completed(customDepartureToures);
+
+        // if (res.data!['result'] != null) {
+        //   final SingleTourModel customDepartureToures =
+        //       SingleTourModel.fromJson(
+        //           res.data!['result'] as Map<String, dynamic>);
+
+        //   log('Adeeb rep res statusge ${customDepartureToures.packageData!}');
+
+        //   individualTours = customDepartureToures.packageData!;
+        //   return ApiResponse<SingleTourModel>.completed(individualTours);
+        // } else {
+        //   return ApiResponse<SingleTourModel>.completed(res.da);
+        // }
       } else {
         return ApiResponse<SingleTourModel>.error(res.statusMessage);
       }

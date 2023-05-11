@@ -11,6 +11,7 @@ import '../../../widgets/custom_departure.dart';
 import '../../../widgets/custom_loadinscreen.dart';
 import '../../../widgets/custom_tab.dart';
 import '../../../widgets/custom_tooltip.dart';
+import '../../../widgets/customdatepicker.dart';
 import '../../../widgets/fixed_departure.dart';
 import '../controllers/single_tour_controller.dart';
 
@@ -96,13 +97,13 @@ class SingleTourView extends GetView<SingleTourController> {
                       Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 70),
                         child: Text(
-                          '${controller.singleTour.value.tourData?.tourCode}',
+                          '${controller.batchTours.value.tourData?.tourCode}',
                           style: heading2,
                         ),
                       ),
                       CustomToolTip(
                           onPressed: () => controller.onViewItineraryClicked(
-                              controller.singleTour.value.tourData!.itinerary!),
+                              controller.batchTours.value.tourData!.itinerary!),
                           label: 'VIEW ITINERARY',
                           icon: TourMaker.group_2)
                     ],
@@ -119,7 +120,7 @@ class SingleTourView extends GetView<SingleTourController> {
                   Padding(
                     padding: const EdgeInsets.all(15.0),
                     child: Text(
-                        '${controller.singleTour.value.tourData?.description}',
+                        '${controller.batchTours.value.tourData?.description}',
                         style: paragraph1),
                   ),
                   const SizedBox(height: 10),
@@ -128,7 +129,19 @@ class SingleTourView extends GetView<SingleTourController> {
                   Obx(
                     () => controller.selectedIndex.value == 0
                         ? buildFixedDeparture()
-                        : buildCustomDeparture(),
+                        : Column(
+                            children: [
+                              CustomDatePickerField(
+                                labelName: 'Select Tour Date',
+                                validator: (String? value) {
+                                  return null;
+                                },
+                                onChange: (String value) =>
+                                    controller.onSerchTextChanged(value),
+                              ),
+                              buildCustomDeparture(),
+                            ],
+                          ),
                   )
                 ],
               ),
@@ -145,7 +158,7 @@ class SingleTourView extends GetView<SingleTourController> {
       child: Padding(
         padding: const EdgeInsets.symmetric(vertical: 60.0),
         child: Text(
-          '${controller.singleTour.value.tourData?.name!.split(' ').join('\n')}',
+          '${controller.batchTours.value.tourData?.name!.split(' ').join('\n')}',
           style: const TextStyle(
             fontFamily: 'Tahu',
             color: Colors.white,
@@ -163,7 +176,7 @@ class SingleTourView extends GetView<SingleTourController> {
       decoration: BoxDecoration(
         image: DecorationImage(
           image: CachedNetworkImageProvider(
-            '${controller.singleTour.value.tourData!.image}',
+            '${controller.batchTours.value.tourData!.image}',
           ),
           fit: BoxFit.cover,
         ),
@@ -172,7 +185,7 @@ class SingleTourView extends GetView<SingleTourController> {
   }
 
   Widget buildCustomDeparture() {
-    if (controller.singleTour.value.packageData != null) {
+    if (controller.singleTours.isNotEmpty) {
       return CustomDeparture(
           controller: controller,
           countOfAdults: countOfAdults(),
@@ -184,7 +197,7 @@ class SingleTourView extends GetView<SingleTourController> {
           Image.asset('assets/empty screen.png'),
           const SizedBox(height: 10),
           const Text(
-            'No Fixed Departures \nfor this tour',
+            'No Custom Departures \nfor this tour',
             textAlign: TextAlign.center,
           )
         ],
