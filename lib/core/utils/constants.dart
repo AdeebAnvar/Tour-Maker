@@ -1,5 +1,3 @@
-bool isNotificationON = false;
-
 enum Gender {
   Male,
   Female,

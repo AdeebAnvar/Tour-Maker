@@ -1,3 +1,4 @@
+import 'dart:developer';
 import 'dart:io';
 
 import 'package:dio/dio.dart';
@@ -204,6 +205,7 @@ class UserRepository {
         options: Options(headers: authHeader),
         data: <String, dynamic>{'fcm_token': fcmToken},
       );
+      log('message ${res.statusMessage}');
       if (res.statusCode == 200) {
         return ApiResponse<Map<String, dynamic>>.completed(res.data);
       } else {
