@@ -4,11 +4,13 @@ import 'dart:developer';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:internet_connection_checker/internet_connection_checker.dart';
 
 import '../../../../core/theme/style.dart';
+import '../../../../main.dart';
 import '../../../data/models/network_models/user_model.dart';
 import '../../../data/repo/network_repo/user_repo.dart';
 import '../../../routes/app_pages.dart';
@@ -24,6 +26,7 @@ class SplashScreenController extends GetxController with StateMixin<dynamic> {
   Future<void> onInit() async {
     super.onInit();
     // check connection(Wifi/Data)
+
     await isInternetConnectFunction();
     log('message 1');
   }
@@ -60,7 +63,8 @@ class SplashScreenController extends GetxController with StateMixin<dynamic> {
         await getStorage.write('token', token);
         log(token);
         // After The Token stored We need to aSK PERMISSION TO SEND NOTIFCATION
-        await notificationPermission();
+
+        await notificationPermissionwithPutMethod();
         // After The Token stored We need to check that the user Exists on Database .  which will be checked
         // by the checkUserExistsOnDB function .  We need to pass the generated token to check user  is in Database or not .
         await checkUserExistsOnDB();
@@ -77,8 +81,37 @@ class SplashScreenController extends GetxController with StateMixin<dynamic> {
   }
 
   // If the User logged in We need to generate FCM token and update the FCM Token (Firebase Cloud Messaging)
-  Future<void> notificationPermission() async {
+  Future<void> notificationPermissionwithPutMethod() async {
     log('message 5');
+    FirebaseMessaging.onMessage.listen((RemoteMessage message) {
+      final RemoteNotification? notification = message.notification;
+      final AndroidNotification? android = message.notification?.android;
+      if (notification != null && android != null) {
+        flutterLocalNotificationsPlugin.show(
+            notification.hashCode,
+            notification.title,
+            notification.body,
+            NotificationDetails(
+              android: AndroidNotificationDetails(
+                channel.id,
+                channel.name,
+                channelDescription: channel.description,
+                color: englishViolet,
+                icon: '@mipmap/ic_launcher',
+              ),
+            ));
+      }
+    });
+
+    FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) {
+      log('A new onMessageOpenedApp event was published!');
+      final RemoteNotification? notification = message.notification;
+      final AndroidNotification? android = message.notification?.android;
+      if (notification != null && android != null) {
+        CustomDialog()
+            .showCustomDialog(notification.title!, notification.body!);
+      }
+    });
     final FirebaseMessaging messaging = FirebaseMessaging.instance;
     final NotificationSettings settings = await messaging.requestPermission();
     // Ask permission to user to send notification
@@ -88,6 +121,7 @@ class SplashScreenController extends GetxController with StateMixin<dynamic> {
       await getStorage.write('isNotificationON', 'true');
       // generate FCM token
       final String? fcmToken = await messaging.getToken();
+      messaging.onTokenRefresh;
       log(fcmToken!);
       // Send the FCM token to server to update the token to send notification to user
       final ApiResponse<Map<String, dynamic>> res =
@@ -109,6 +143,46 @@ class SplashScreenController extends GetxController with StateMixin<dynamic> {
     }
   }
 
+  // dH6uJfsiSOq92C4q7IqQID:APA91bEQKmdvICTay9xMOn6Aer7p_lm0hyyvt2QAqARXbx4cG5nlBrN5JWWDkqTypHbAcavoKl2t58eskiZwbqrLAxsqtQFKbWmeAKWEOR0dWi3xpuF6xypCFQ8_2uKzvjZkP4FZUrh9
+  //  eA7u_Mb2R0inMKU5Stvmhl:APA91bGZsnHV2_p4bi-uz7fRFNaZa00luZLu-gW51J1FaY0YC8t_tM29V_woBAKpYvYSDvIgw2Kj3ph8PkQLvo8FUPMrAXRlBjHD8g30zZieNiyhkEMpvJmbgDsEZO3ajEMZ9nNd-Hyb
+  // If the User logged in We need to generate FCM token and update the FCM Token (Firebase Cloud Messaging)
+  Future<void> notificationPermissionwithPostMethod() async {
+    log('message 5');
+    try {
+      final FirebaseMessaging messaging = FirebaseMessaging.instance;
+      final NotificationSettings settings = await messaging.requestPermission();
+      // Ask permission to user to send notification
+      if (settings.authorizationStatus == AuthorizationStatus.authorized) {
+        // When the user give permission to notification we need to store a value in getstorage that the
+        // notification accepted or not by user .  the key is isNotificationON
+        await getStorage.write('isNotificationON', 'true');
+        // generate FCM token
+        final String? fcmToken = await messaging.getToken();
+
+        log(fcmToken!);
+        // Send the FCM token to server to update the token to send notification to user
+        final ApiResponse<Map<String, dynamic>> res =
+            await UserRepository().postFCMToken(fcmToken);
+        log('message ${res.message}');
+
+        if (res.status == ApiResponseStatus.completed) {
+          // if the FCM token is updated show a snackbar
+          Get.snackbar('Notification Allowed by You',
+              'You will recieve offers nd updates from TourMaker',
+              colorText: Colors.white, backgroundColor: englishViolet);
+        }
+      } else {
+        // When user didn't allow the the permission to send notification we need to store a value in getstorage that the
+        // notification accepted or not by user .  the key is isNotificationON . and also show a snackbar
+        await getStorage.write('isNotificationON', 'false');
+        Get.snackbar('Notification Not Allowed by You', '',
+            colorText: Colors.white, backgroundColor: englishViolet);
+      }
+    } catch (e) {
+      log('iuugui $e');
+    }
+  }
+
   //  We nned to check the user is exists or Not exists in Databse by sending the
   //  firebase generated token to server
   Future<void> checkUserExistsOnDB() async {
@@ -120,36 +194,8 @@ class SplashScreenController extends GetxController with StateMixin<dynamic> {
     if (res.data != null) {
       await Get.offAllNamed(Routes.HOME);
     } else {
+      await notificationPermissionwithPostMethod();
       await Get.offAllNamed(Routes.LOGIN, arguments: currentUser?.phoneNumber);
-      await postFcm();
-    }
-  }
-
-  Future<void> postFcm() async {
-    final FirebaseMessaging messaging = FirebaseMessaging.instance;
-    final NotificationSettings settings = await messaging.requestPermission();
-    // Ask permission to user to send notification
-    if (settings.authorizationStatus == AuthorizationStatus.authorized) {
-      // When the user give permission to notification we need to store a value in getstorage that the
-      // notification accepted or not by user .  the key is isNotificationON
-      await getStorage.write('isNotificationON', 'true');
-      // generate FCM token
-      final String? fcmToken = await messaging.getToken();
-      // Send the FCM token to server to update the token to send notification to user
-      final ApiResponse<Map<String, dynamic>> res =
-          await UserRepository().postFCMToken(fcmToken!);
-      if (res.status == ApiResponseStatus.completed) {
-        // if the FCM token is updated show a snackbar
-        Get.snackbar('Notification Allowed by You',
-            'You will recieve offers nd updates from TourMaker',
-            colorText: Colors.white, backgroundColor: englishViolet);
-      }
-    } else {
-      // When user didn't allow the the permission to send notification we need to store a value in getstorage that the
-      // notification accepted or not by user .  the key is isNotificationON . and also show a snackbar
-      await getStorage.write('isNotificationON', 'false');
-      Get.snackbar('Notification Not Allowed by You', '',
-          colorText: Colors.white, backgroundColor: englishViolet);
     }
   }
 }

@@ -205,7 +205,7 @@ class UserRepository {
         options: Options(headers: authHeader),
         data: <String, dynamic>{'fcm_token': fcmToken},
       );
-      log('message ${res.statusMessage}');
+      log('jnofvn $fcmToken');
       if (res.statusCode == 200) {
         return ApiResponse<Map<String, dynamic>>.completed(res.data);
       } else {

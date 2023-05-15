@@ -200,9 +200,7 @@ class MyDrawer extends StatelessWidget {
     await storage.write('currentUserPhoneNumber', '');
     await storage.write('currentUserState', '');
     await FirebaseAuth.instance.signOut().then(
-          (dynamic value) => Get.offAllNamed(
-            Routes.GET_STARTED,
-          ),
+          (dynamic value) async => await Get.offAllNamed(Routes.GET_STARTED),
         );
   }
 

@@ -1,3 +1,4 @@
+import 'dart:developer';
 import 'dart:io';
 
 import 'package:connectivity_plus/connectivity_plus.dart';
@@ -44,8 +45,10 @@ class Client {
     return dio;
   }
 
+//fn7gKGgESoeqkGM72IvSZP:APA91bFoZ9wpnc4iTaVoqVrr28waEAQiTZU0Ft7o0EOCwp_gJ-IZG3puyCJFUCLKnThMJiZVFtxyL4vvxileOwQjhEFP4brJy6B8eIQqbnGfP3nNp1Lhb_Ln5qS_qcs7ou83t-a0PcTD
   Future<Map<String, dynamic>?> getAuthHeader() async {
     final dynamic tok = await storage.read('token');
+    log(tok.toString());
     if (tok != null) {
       final Map<String, dynamic> header = <String, dynamic>{
         HttpHeaders.contentTypeHeader: 'application/json',

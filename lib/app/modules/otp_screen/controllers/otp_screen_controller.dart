@@ -1,12 +1,16 @@
+import 'dart:developer';
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:sms_autofill/sms_autofill.dart';
 import 'package:timer_count_down/timer_controller.dart';
 
 import '../../../../core/theme/style.dart';
+import '../../../../main.dart';
 import '../../../data/models/network_models/user_model.dart';
 import '../../../data/repo/network_repo/user_repo.dart';
 import '../../../routes/app_pages.dart';
@@ -157,16 +161,18 @@ class OtpScreenController extends GetxController
       // otherwise user will be redirected to login screen
       if (user.phoneNumber == phone) {
         // send an FCM token to server
-        await notificationPermission();
+        await notificationPermissionWithPutmethod();
         // store the adddresss and category of the user for later use the key value of both are
         // currentUserAddress and currentUserCategory
         await getStorage.write('currentUserAddress', user.address);
-        await getStorage.write('currentUserCategory', user.category);
+        user.paymentStatus != '' && user.paymentStatus != null
+            ? await getStorage.write('initialPayment', 'paid')
+            : await getStorage.write('initialPayment', '');
         await Get.offAllNamed(Routes.HOME);
         isLoading.value = false; // Stop the submit button animation
       } else {
         // send an FCM token to server
-        await notificationPermission();
+        await notificationPermissionwithPostMethod();
         Get.offAllNamed(Routes.LOGIN, arguments: phone);
         // store the adddresss of the user for later use he key value of both are
         // currentUserAddress
@@ -177,7 +183,94 @@ class OtpScreenController extends GetxController
   }
 
 // Then After We need to generate FCM token and update the FCM Token (Firebase Cloud Messaging)
-  Future<void> notificationPermission() async {
+  Future<void> notificationPermissionWithPutmethod() async {
+    FirebaseMessaging.onMessage.listen((RemoteMessage message) {
+      final RemoteNotification? notification = message.notification;
+      final AndroidNotification? android = message.notification?.android;
+      if (notification != null && android != null) {
+        flutterLocalNotificationsPlugin.show(
+            notification.hashCode,
+            notification.title,
+            notification.body,
+            NotificationDetails(
+              android: AndroidNotificationDetails(
+                channel.id,
+                channel.name,
+                channelDescription: channel.description,
+                color: englishViolet,
+                icon: '@mipmap/ic_launcher',
+              ),
+            ));
+      }
+    });
+
+    FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) {
+      log('A new onMessageOpenedApp event was published!');
+      final RemoteNotification? notification = message.notification;
+      final AndroidNotification? android = message.notification?.android;
+      if (notification != null && android != null) {
+        CustomDialog()
+            .showCustomDialog(notification.title!, notification.body!);
+      }
+    });
+    final FirebaseMessaging messaging = FirebaseMessaging.instance;
+    final NotificationSettings settings = await messaging.requestPermission();
+    // Ask permission to user to send notification
+    if (settings.authorizationStatus == AuthorizationStatus.authorized) {
+      // When the user give permission to notification we need to store a value in getstorage that the
+      // notification accepted or not by user .  the key is isNotificationON
+      await getStorage.write('isNotificationON', 'true');
+      // generate FCM token
+      final String? fcmToken = await messaging.getToken();
+      // Send the FCM token to server to update the token to send notification to user
+      final ApiResponse<Map<String, dynamic>> res =
+          await UserRepository().putFCMToken(fcmToken!);
+      if (res.status == ApiResponseStatus.completed) {
+        // if the FCM token is updated show a snackbar
+        Get.snackbar('Notification Allowed by You',
+            'You will recieve offers nd updates from TourMaker',
+            colorText: Colors.white, backgroundColor: englishViolet);
+      }
+    } else {
+      // When user didn't allow the the permission to send notification we need to store a value in getstorage that the
+      // notification accepted or not by user .  the key is isNotificationON . and also show a snackbar
+      await getStorage.write('isNotificationON', 'false');
+      Get.snackbar('Notification Not Allowed by You', '',
+          colorText: Colors.white, backgroundColor: englishViolet);
+    }
+  }
+
+// Then After We need to generate FCM token and update the FCM Token (Firebase Cloud Messaging)
+  Future<void> notificationPermissionwithPostMethod() async {
+    FirebaseMessaging.onMessage.listen((RemoteMessage message) {
+      final RemoteNotification? notification = message.notification;
+      final AndroidNotification? android = message.notification?.android;
+      if (notification != null && android != null) {
+        flutterLocalNotificationsPlugin.show(
+            notification.hashCode,
+            notification.title,
+            notification.body,
+            NotificationDetails(
+              android: AndroidNotificationDetails(
+                channel.id,
+                channel.name,
+                channelDescription: channel.description,
+                color: englishViolet,
+                icon: '@mipmap/ic_launcher',
+              ),
+            ));
+      }
+    });
+
+    FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) {
+      log('A new onMessageOpenedApp event was published!');
+      final RemoteNotification? notification = message.notification;
+      final AndroidNotification? android = message.notification?.android;
+      if (notification != null && android != null) {
+        CustomDialog()
+            .showCustomDialog(notification.title!, notification.body!);
+      }
+    });
     final FirebaseMessaging messaging = FirebaseMessaging.instance;
     final NotificationSettings settings = await messaging.requestPermission();
     // Ask permission to user to send notification
