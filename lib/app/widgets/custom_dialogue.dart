@@ -6,8 +6,8 @@ import '../../core/theme/style.dart';
 
 class CustomDialog {
   Future<dynamic> showCustomDialog(
-    String title,
-    String contentText, {
+    String title, {
+    String? contentText,
     String cancelText = 'Cancel',
     String confirmText = 'Confirm',
     Function()? onCancel,
@@ -27,43 +27,50 @@ class CustomDialog {
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 mainAxisSize: MainAxisSize.min,
                 children: <Widget>[
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: <Widget>[
-                      SizedBox(
-                        height: 45,
-                        width: 220,
-                        child: DefaultTextStyle(
-                          style: heading3.copyWith(),
-                          child: Text(title,
-                              textAlign: TextAlign.center,
-                              overflow: TextOverflow.visible),
-                        ),
-                      ),
-                    ],
+                  SizedBox(
+                    height: 45,
+                    width: 220,
+                    child: DefaultTextStyle(
+                      style: subheading1.copyWith(),
+                      child: Text(title,
+                          textAlign: TextAlign.center,
+                          overflow: TextOverflow.visible),
+                    ),
                   ),
                   const SizedBox(height: 16),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: <Widget>[
-                      SizedBox(
-                        width: 200,
-                        height: 50,
-                        child: DefaultTextStyle(
-                          style: subheading2.copyWith(fontSize: 10.sp),
-                          child: Text(contentText,
-                              textAlign: TextAlign.center,
-                              overflow: TextOverflow.visible),
-                        ),
+                  if (contentText != null && contentText != '')
+                    SizedBox(
+                      width: 200,
+                      height: 50,
+                      child: DefaultTextStyle(
+                        style: subheading2.copyWith(fontSize: 10.sp),
+                        child: Text(contentText,
+                            textAlign: TextAlign.center,
+                            overflow: TextOverflow.visible),
                       ),
-                    ],
-                  ),
+                    ),
                   const SizedBox(height: 29),
-                  Column(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    mainAxisSize: MainAxisSize.min,
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    // mainAxisSize: MainAxisSize.min,
                     children: <Widget>[
                       if (onCancel != null)
+                        TextButton(
+                          onPressed: onCancel,
+                          style: TextButton.styleFrom(
+                            minimumSize: const Size(100, 50),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(15),
+                            ),
+                            foregroundColor: fontColor,
+                            backgroundColor:
+                                const Color.fromARGB(255, 232, 231, 233),
+                          ),
+                          child: Text(cancelText),
+                        )
+                      else
+                        const SizedBox(),
+                      if (onConfirm != null)
                         ElevatedButton(
                           style: ElevatedButton.styleFrom(
                               minimumSize: const Size(100, 50),
@@ -73,16 +80,6 @@ class CustomDialog {
                               backgroundColor: englishViolet),
                           onPressed: onConfirm,
                           child: Text(confirmText),
-                        )
-                      else
-                        const SizedBox(),
-                      if (onConfirm != null)
-                        TextButton(
-                          onPressed: onCancel,
-                          style: TextButton.styleFrom(
-                            foregroundColor: fontColor,
-                          ),
-                          child: Text(cancelText),
                         )
                       else
                         const SizedBox()

@@ -33,6 +33,7 @@ class PaymentTile extends StatelessWidget {
               padding: const EdgeInsets.all(18),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
                   Text(tourName, style: paragraph2),
                   Text(tourCode, style: paragraph4),
@@ -43,9 +44,15 @@ class PaymentTile extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.all(18),
               child: Column(
+                crossAxisAlignment: CrossAxisAlignment.end,
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
-                  Text(tourAmount, style: paragraph4),
+                  Text(
+                    tourAmount,
+                    style: paragraph3.copyWith(
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
                 ],
               ),
             ),

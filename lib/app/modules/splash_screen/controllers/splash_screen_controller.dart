@@ -76,7 +76,8 @@ class SplashScreenController extends GetxController with StateMixin<dynamic> {
     } catch (e) {
       // If suppose any error occured by running the checkUserLoggedInORnOT function user can visible the error.
       // and easily report the error by using the dialogue shown with the error message
-      await CustomDialog().showCustomDialog('Error !', e.toString());
+      await CustomDialog()
+          .showCustomDialog('Error !', contentText: e.toString());
     }
   }
 
@@ -103,15 +104,17 @@ class SplashScreenController extends GetxController with StateMixin<dynamic> {
       }
     });
 
-    FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) {
-      log('A new onMessageOpenedApp event was published!');
-      final RemoteNotification? notification = message.notification;
-      final AndroidNotification? android = message.notification?.android;
-      if (notification != null && android != null) {
-        CustomDialog()
-            .showCustomDialog(notification.title!, notification.body!);
-      }
-    });
+    FirebaseMessaging.onMessageOpenedApp.listen(
+      (RemoteMessage message) {
+        log('A new onMessageOpenedApp event was published!');
+        final RemoteNotification? notification = message.notification;
+        final AndroidNotification? android = message.notification?.android;
+        if (notification != null && android != null) {
+          CustomDialog().showCustomDialog(notification.title!,
+              contentText: notification.body);
+        }
+      },
+    );
     final FirebaseMessaging messaging = FirebaseMessaging.instance;
     final NotificationSettings settings = await messaging.requestPermission();
     // Ask permission to user to send notification
@@ -128,12 +131,7 @@ class SplashScreenController extends GetxController with StateMixin<dynamic> {
           await UserRepository().putFCMToken(fcmToken);
       log('message ${res.message}');
 
-      if (res.status == ApiResponseStatus.completed) {
-        // if the FCM token is updated show a snackbar
-        Get.snackbar('Notification Allowed by You',
-            'You will recieve offers nd updates from TourMaker',
-            colorText: Colors.white, backgroundColor: englishViolet);
-      }
+      if (res.status == ApiResponseStatus.completed) {}
     } else {
       // When user didn't allow the the permission to send notification we need to store a value in getstorage that the
       // notification accepted or not by user .  the key is isNotificationON . and also show a snackbar
@@ -143,8 +141,6 @@ class SplashScreenController extends GetxController with StateMixin<dynamic> {
     }
   }
 
-  // dH6uJfsiSOq92C4q7IqQID:APA91bEQKmdvICTay9xMOn6Aer7p_lm0hyyvt2QAqARXbx4cG5nlBrN5JWWDkqTypHbAcavoKl2t58eskiZwbqrLAxsqtQFKbWmeAKWEOR0dWi3xpuF6xypCFQ8_2uKzvjZkP4FZUrh9
-  //  eA7u_Mb2R0inMKU5Stvmhl:APA91bGZsnHV2_p4bi-uz7fRFNaZa00luZLu-gW51J1FaY0YC8t_tM29V_woBAKpYvYSDvIgw2Kj3ph8PkQLvo8FUPMrAXRlBjHD8g30zZieNiyhkEMpvJmbgDsEZO3ajEMZ9nNd-Hyb
   // If the User logged in We need to generate FCM token and update the FCM Token (Firebase Cloud Messaging)
   Future<void> notificationPermissionwithPostMethod() async {
     log('message 5');
@@ -192,6 +188,12 @@ class SplashScreenController extends GetxController with StateMixin<dynamic> {
     // if the user data is empty the user isn't exist in Database so the user will redirect to Login screen
     // Otherwise the user will redirect to Home Screen
     if (res.data != null) {
+      final UserModel user = res.data!;
+      await getStorage.write('currentUserAddress', user.address);
+      await getStorage.write('currentUserCategory', user.category);
+      user.paymentStatus != '' && user.paymentStatus != null
+          ? await getStorage.write('initialPayment', 'paid')
+          : await getStorage.write('initialPayment', '');
       await Get.offAllNamed(Routes.HOME);
     } else {
       await notificationPermissionwithPostMethod();

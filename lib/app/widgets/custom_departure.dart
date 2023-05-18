@@ -6,9 +6,10 @@ import 'package:sizer/sizer.dart';
 
 import '../../core/theme/style.dart';
 import '../../core/tour_maker_icons.dart';
+import '../../core/utils/date_utils.dart';
+import '../../core/utils/string_utils.dart';
 import '../modules/single_tour/controllers/single_tour_controller.dart';
 import 'custom_elevated_button.dart';
-import 'customdatepicker.dart';
 
 class CustomDeparture extends StatelessWidget {
   const CustomDeparture(
@@ -53,9 +54,10 @@ class CustomDeparture extends StatelessWidget {
                       ),
                       child: Center(
                         child: Text(
-                          controller.convertDates(controller
-                              .singleTours[index].dateOfTravel
-                              .toString()),
+                          controller.singleTours[index].dateOfTravel
+                              .toString()
+                              .parseFromIsoDate()
+                              .toDatewithMonthFormat(),
                           textAlign: TextAlign.center,
                           style: GoogleFonts.montserrat(
                             color: index == controller.selectedDateIndex.value

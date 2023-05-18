@@ -33,28 +33,32 @@ class AddPassengerController extends GetxController
   @override
   void onInit() {
     super.onInit();
-
+    // Load the datas from previous screen (Single tour Screen)
     loadData();
   }
 
+// validate DOB which entered by user is valid or not
   String? dobValidator(String? value) => DateTime.tryParse(value ?? '') != null
       ? null
       : 'Please enter a valid DOB';
+  //  validate name of passenger which entered by user is valid or not
   String? nameValidator(String? value) => GetUtils.isLengthLessOrEqual(value, 3)
       ? 'Please enter a valid name'
       : null;
-
+  //  validate phone number which entered by user is valid or not
   String? phoneNumberValidator(String? value) =>
       GetUtils.isLengthLessOrEqual(value, 9)
           ? 'Please enter a valid phone number'
           : null;
-
+  //  validate address which entered by user is valid or not
   String? addressValidator(String? value) =>
       GetUtils.isLengthGreaterOrEqual(value, 10)
           ? null
           : 'please enter a valid address';
 
   void loadData() {
+    // checking the arguments is null or not from the previous screen
+
     if (Get.arguments != null) {
       change(null, status: RxStatus.loading());
       orderID = Get.arguments[0] as int;
@@ -63,9 +67,13 @@ class AddPassengerController extends GetxController
     }
   }
 
+// After adding the passenger details on bottomsheet . we need to check the datas
+// and also validate the datas and send to server
   Future<void> onRegisterClicked() async {
     if (formKey.currentState!.validate()) {
+      // if the form state is validated after that check the id proof image is added or not
       if (image.value != '') {
+        // when it added send the data to server
         isloading.value = true;
         final ApiResponse<bool> res = await PassengerRepository().addpassenger(
             customerName.value,
@@ -76,13 +84,16 @@ class AddPassengerController extends GetxController
             image.value);
         if (res.status == ApiResponseStatus.completed) {
           image.value = '';
+          // After the data's added close the bottom sheet
           await getTravellers(orderID).whenComplete(() => Get.back());
         } else {
+          // when the data can't be added shows this dialogue
           CustomDialog().showCustomDialog("Can't add the passenger",
-              'Please check the all details that you entered');
+              contentText: 'Please check the all details that you entered');
         }
         isloading.value = false;
       } else {
+        // when the id proof is n't added show the snackbar
         Get.snackbar('Add your ID proof', 'Add any ID proof',
             backgroundColor: englishViolet, colorText: Colors.white);
       }
@@ -90,6 +101,7 @@ class AddPassengerController extends GetxController
     isloading.value = false;
   }
 
+  // GetImage function get the image from outside of the app
   Future<void> getImage(ImageSource source) async {
     final XFile? pickedFile = await picker.pickImage(source: source);
 
@@ -98,6 +110,7 @@ class AddPassengerController extends GetxController
     }
   }
 
+  // getting the travellers from the sevrer to visible on initials screen
   Future<void> getTravellers(int? orderID) async {
     final ApiResponse<List<TravellersModel>> res =
         await PassengerRepository().getAllPassengersByOrderId(orderID!);
@@ -106,10 +119,12 @@ class AddPassengerController extends GetxController
     } else {}
   }
 
+  // After completing the traveller details navigate to checkout screen
   void gotoCheckoutPage() {
     isLoadingIc.value = true;
     CustomDialog().showCustomDialog('Are your Ready \nto checkout',
-        "Please double check \n the data's you entered\n before checkout",
+        contentText:
+            "Please double check \n the data's you entered\n before checkout",
         cancelText: 'Go back', onCancel: () {
       Get.back();
       isLoadingIc.value = false;
@@ -119,5 +134,9 @@ class AddPassengerController extends GetxController
       isLoadingIc.value = false;
     });
     isLoadingIc.value = false;
+  }
+
+  void onTapSinglePassenger(int? id) {
+    Get.toNamed(Routes.SINGLE_PASSENGER, arguments: id);
   }
 }

@@ -58,7 +58,7 @@ class FilterScreenController extends GetxController
         change(null, status: RxStatus.error());
       }
     } catch (e) {
-      CustomDialog().showCustomDialog('Error !', e.toString());
+      CustomDialog().showCustomDialog('Error !', contentText: e.toString());
     }
   }
 
@@ -75,7 +75,7 @@ class FilterScreenController extends GetxController
         change(null, status: RxStatus.error());
       }
     } catch (e) {
-      CustomDialog().showCustomDialog('Error !', e.toString());
+      CustomDialog().showCustomDialog('Error !', contentText: e.toString());
     }
   }
 
@@ -119,7 +119,7 @@ class FilterScreenController extends GetxController
     } else {
       CustomDialog().showCustomDialog(
         'Please Select Destination!',
-        'Atleast One Destination is \n need to be selected.',
+        contentText: 'Atleast One Destination is \n need to be selected.',
         onCancel: () {
           Get.back();
         },

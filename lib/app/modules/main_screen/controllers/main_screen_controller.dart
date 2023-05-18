@@ -65,7 +65,7 @@ class MainScreenController extends GetxController
           change(null, status: RxStatus.success());
         }
       } catch (e) {
-        CustomDialog().showCustomDialog('Error !', e.toString());
+        CustomDialog().showCustomDialog('Error !', contentText: e.toString());
       }
     });
   }
@@ -80,7 +80,7 @@ class MainScreenController extends GetxController
           change(null, status: RxStatus.success());
         }
       } catch (e) {
-        CustomDialog().showCustomDialog('Error !', e.toString());
+        CustomDialog().showCustomDialog('Error !', contentText: e.toString());
       }
     });
   }
@@ -95,7 +95,7 @@ class MainScreenController extends GetxController
           change(null, status: RxStatus.success());
         }
       } catch (e) {
-        CustomDialog().showCustomDialog('Error !', e.toString());
+        CustomDialog().showCustomDialog('Error !', contentText: e.toString());
       }
     });
   }
@@ -110,7 +110,7 @@ class MainScreenController extends GetxController
           change(null, status: RxStatus.success());
         }
       } catch (e) {
-        CustomDialog().showCustomDialog('Error !', e.toString());
+        CustomDialog().showCustomDialog('Error !', contentText: e.toString());
       }
     });
   }

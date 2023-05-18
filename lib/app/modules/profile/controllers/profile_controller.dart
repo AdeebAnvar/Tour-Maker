@@ -1,11 +1,15 @@
+// ignore_for_file: deprecated_member_use
+
 import 'dart:convert';
 import 'package:expansion_tile_card/expansion_tile_card.dart';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:razorpay_flutter/razorpay_flutter.dart';
+import 'package:url_launcher/url_launcher.dart';
 import '../../../../core/theme/style.dart';
 
 import '../../../data/models/network_models/razorpay_model.dart';
@@ -33,9 +37,13 @@ class ProfileController extends GetxController with StateMixin<ProfileView> {
   Rx<UserModel> userData = UserModel().obs;
   Rx<RazorPayModel> razorPayModel = RazorPayModel().obs;
   UserRepository userRepo = UserRepository();
+  GetStorage getStorage = GetStorage();
+  String? currentUserCategory;
   @override
-  void onInit() {
+  Future<void> onInit() async {
     super.onInit();
+    currentUserCategory =
+        await getStorage.read('currentUserCategory') as String;
     getData();
     razorPay = Razorpay();
     razorPay.on(Razorpay.EVENT_PAYMENT_SUCCESS, _handlePaymentSuccess);
@@ -80,18 +88,18 @@ class ProfileController extends GetxController with StateMixin<ProfileView> {
             userData.value.phoneNumber.toString());
       } else {}
     } catch (e) {
-      CustomDialog().showCustomDialog('Error !', e.toString());
+      CustomDialog().showCustomDialog('Error !', contentText: e.toString());
     }
   }
 
   void _handlePaymentError(PaymentFailureResponse response) {
-    CustomDialog().showCustomDialog(
-        'Payment error: ${response.code}', '${response.message}');
+    CustomDialog().showCustomDialog('Payment error: ${response.code}',
+        contentText: '${response.message}');
   }
 
   void _handleExternalWallet(ExternalWalletResponse response) {
-    CustomDialog()
-        .showCustomDialog('Payment successed: ', 'on : ${response.walletName}');
+    CustomDialog().showCustomDialog('Payment successed: ',
+        contentText: 'on : ${response.walletName}');
   }
 
   Future<void> onClickPayment() async {
@@ -111,7 +119,7 @@ class ProfileController extends GetxController with StateMixin<ProfileView> {
         openRazorPay(razorPayModel.value.packageId.toString());
       } else {}
     } catch (e) {
-      CustomDialog().showCustomDialog('Error !', e.toString());
+      CustomDialog().showCustomDialog('Error !', contentText: e.toString());
     }
     isloading.value = false;
   }
@@ -144,7 +152,7 @@ class ProfileController extends GetxController with StateMixin<ProfileView> {
     try {
       razorPay.open(options);
     } catch (e) {
-      CustomDialog().showCustomDialog('Error !', e.toString());
+      CustomDialog().showCustomDialog('Error !', contentText: e.toString());
     }
   }
 
@@ -175,7 +183,7 @@ class ProfileController extends GetxController with StateMixin<ProfileView> {
             backgroundColor: englishViolet, colorText: Colors.white);
       }
     } catch (e) {
-      CustomDialog().showCustomDialog('Error !', e.toString());
+      CustomDialog().showCustomDialog('Error !', contentText: e.toString());
     }
   }
 
@@ -191,5 +199,29 @@ class ProfileController extends GetxController with StateMixin<ProfileView> {
 
   void onClickAdddetail() {
     Get.toNamed(Routes.USER_REGISTERSCREEN)!.whenComplete(() => getData());
+  }
+
+  Future<void> onCallClicked() async {
+    final Uri url = Uri.parse('tel:914872383104');
+    if (await canLaunchUrl(url)) {
+      await launchUrl(url);
+    } else {
+      CustomDialog().showCustomDialog('Error !',
+          contentText: "couldn't dial to 4872383104");
+    }
+  }
+
+  Future<void> onWhatsAppClicked() async {
+    const String phone =
+        '+918606131909'; // Replace with the phone number you want to chat with
+    const String message =
+        'Hi'; // Replace with the initial message you want to send
+    final String url = 'https://wa.me/$phone?text=${Uri.encodeFull(message)}';
+
+    if (await canLaunch(url)) {
+      await launch(url);
+    } else {
+      Get.snackbar('Error', 'Could not launch WhatsApp');
+    }
   }
 }

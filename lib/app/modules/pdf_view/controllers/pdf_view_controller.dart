@@ -49,7 +49,7 @@ class PdfViewController extends GetxController with StateMixin<PdfViewView> {
 
       Get.snackbar('PDF Downloaded', 'The PDF has been downloaded.');
     } catch (e) {
-      CustomDialog().showCustomDialog('Error !', e.toString());
+      CustomDialog().showCustomDialog('Error !', contentText: e.toString());
     }
   }
 
@@ -64,7 +64,7 @@ class PdfViewController extends GetxController with StateMixin<PdfViewView> {
 
       await Share.shareFiles(<String>[file.path], text: 'Check out this PDF!');
     } catch (e) {
-      CustomDialog().showCustomDialog('Error !', e.toString());
+      CustomDialog().showCustomDialog('Error !', contentText: e.toString());
     }
   }
 }

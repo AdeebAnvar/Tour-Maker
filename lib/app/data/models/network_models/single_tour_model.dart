@@ -178,6 +178,7 @@ class PackageData {
             ? 0
             : json['kids_offer_amount'] as int,
         extraOffer:
+            // ignore: avoid_bool_literals_in_conditional_expressions
             json['extra_offer'] == null ? false : json['extra_offer'] as bool,
         lastAmount:
             json['last_amount'] == null ? 0 : json['last_amount'] as int,

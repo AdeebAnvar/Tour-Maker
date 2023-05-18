@@ -22,7 +22,6 @@ class CheckoutScreenController extends GetxController
   GetStorage getStorage = GetStorage();
   String? currentUserCategory;
   late Razorpay razorPay;
-  // Rx<RazorPayModel> razorPayModel = RazorPayModel().obs;
   @override
   Future<void> onInit() async {
     super.onInit();
@@ -41,7 +40,7 @@ class CheckoutScreenController extends GetxController
       checkOutModel.value = await CheckOutRepositoy.getData();
       change(null, status: RxStatus.success());
     } catch (e) {
-      CustomDialog().showCustomDialog('Error !', '$e');
+      CustomDialog().showCustomDialog('Error !', contentText: '$e');
     }
   }
 
@@ -115,7 +114,7 @@ class CheckoutScreenController extends GetxController
   void onClickCancelPurchase() {
     CustomDialog().showCustomDialog(
       'Are You Sure?',
-      'Do you want to really cancel the purchase?',
+      contentText: 'Do you want to really cancel the purchase?',
       cancelText: 'go back',
       confirmText: 'Yes',
       onCancel: () {
@@ -128,18 +127,35 @@ class CheckoutScreenController extends GetxController
   }
 
   void onClickconfirmPurchase(int id) {
-    CustomDialog().showCustomDialog(
-      'Total amount ${getGrandTotal().toStringAsFixed(2)}',
-      'Advance amount ${checkOutModel.value!.advanceAmount} + GST(${checkOutModel.value!.gst}%)',
-      cancelText: 'Pay Advance Amount',
-      confirmText: 'Pay Full Amount',
-      onCancel: () {
-        payAdvanceAmount(id);
-      },
-      onConfirm: () {
-        payFullAmount(id);
-      },
-    );
+    final DateTime selectedDate =
+        DateTime.parse(checkOutModel.value!.dateOfTravel.toString());
+    final DateTime today = DateTime.now();
+    if (selectedDate.difference(today).inDays <= 7) {
+      CustomDialog().showCustomDialog(
+        'Total amount ${getGrandTotal().toStringAsFixed(2)}',
+        confirmText: 'Pay Full Amount',
+        onCancel: () {
+          payAdvanceAmount(id);
+        },
+        onConfirm: () {
+          payFullAmount(id);
+        },
+      );
+    } else {
+      CustomDialog().showCustomDialog(
+        'Total amount ${getGrandTotal().toStringAsFixed(2)}',
+        contentText:
+            'Advance amount ${checkOutModel.value!.advanceAmount} + GST(${checkOutModel.value!.gst}%)',
+        cancelText: 'Advance Amount',
+        confirmText: 'Full Amount',
+        onCancel: () {
+          payAdvanceAmount(id);
+        },
+        onConfirm: () {
+          payFullAmount(id);
+        },
+      );
+    }
   }
 
   void onViewPasengers(int? orderiD) {
@@ -170,7 +186,7 @@ class CheckoutScreenController extends GetxController
         orderPaymentModel.value = res.data!;
       } else {}
     } catch (e) {
-      CustomDialog().showCustomDialog('Error !', '$e');
+      CustomDialog().showCustomDialog('Error !', contentText: '$e');
     }
     return orderPaymentModel.value;
   }
@@ -188,7 +204,7 @@ class CheckoutScreenController extends GetxController
         orderAdvPaymentModel.value = res.data!;
       } else {}
     } catch (e) {
-      CustomDialog().showCustomDialog('Error !', '$e');
+      CustomDialog().showCustomDialog('Error !', contentText: '$e');
     }
     return orderAdvPaymentModel.value;
   }
@@ -206,7 +222,7 @@ class CheckoutScreenController extends GetxController
     try {
       razorPay.open(options);
     } catch (e) {
-      CustomDialog().showCustomDialog('Error !', '$e');
+      CustomDialog().showCustomDialog('Error !', contentText: '$e');
     }
   }
 
@@ -233,17 +249,17 @@ class CheckoutScreenController extends GetxController
         );
       } else {}
     } catch (e) {
-      CustomDialog().showCustomDialog('Error !', '$e');
+      CustomDialog().showCustomDialog('Error !', contentText: '$e');
     }
   }
 
   void _handlePaymentError(PaymentFailureResponse response) {
-    CustomDialog().showCustomDialog(
-        'Payment error: ${response.code}', '${response.message}');
+    CustomDialog().showCustomDialog('Payment error: ${response.code}',
+        contentText: '${response.message}');
   }
 
   void _handleExternalWallet(ExternalWalletResponse response) {
-    CustomDialog()
-        .showCustomDialog('Payment successed: ', 'on : ${response.walletName}');
+    CustomDialog().showCustomDialog('Payment successed: ',
+        contentText: 'on : ${response.walletName}');
   }
 }

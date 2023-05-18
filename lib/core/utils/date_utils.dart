@@ -5,6 +5,10 @@ extension DateUtils on DateTime {
     return DateFormat('dd-MM-yyyy').format(this);
   }
 
+  String toDatewithMonthFormat() {
+    return DateFormat('d MMM yy').format(this);
+  }
+
   String toTimeFormat() {
     return DateFormat('hh:mm a').format(this);
   }

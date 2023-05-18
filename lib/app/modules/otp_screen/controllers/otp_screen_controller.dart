@@ -97,7 +97,7 @@ class OtpScreenController extends GetxController
       // Handle incorrect OTP here
       await CustomDialog().showCustomDialog(
         'OOPS...!',
-        'You entered wrong OTP!!',
+        contentText: 'You entered wrong OTP!!',
         confirmText: 'Give me another OTP',
         cancelText: 'Change my number',
         onConfirm: () {
@@ -165,6 +165,7 @@ class OtpScreenController extends GetxController
         // store the adddresss and category of the user for later use the key value of both are
         // currentUserAddress and currentUserCategory
         await getStorage.write('currentUserAddress', user.address);
+        await getStorage.write('currentUserCategory', user.category);
         user.paymentStatus != '' && user.paymentStatus != null
             ? await getStorage.write('initialPayment', 'paid')
             : await getStorage.write('initialPayment', '');
@@ -176,7 +177,6 @@ class OtpScreenController extends GetxController
         Get.offAllNamed(Routes.LOGIN, arguments: phone);
         // store the adddresss of the user for later use he key value of both are
         // currentUserAddress
-        await getStorage.write('currentUserAddress', '');
         isLoading.value = false; // Stop the submit button animation
       }
     }
@@ -209,8 +209,8 @@ class OtpScreenController extends GetxController
       final RemoteNotification? notification = message.notification;
       final AndroidNotification? android = message.notification?.android;
       if (notification != null && android != null) {
-        CustomDialog()
-            .showCustomDialog(notification.title!, notification.body!);
+        CustomDialog().showCustomDialog(notification.title!,
+            contentText: notification.body);
       }
     });
     final FirebaseMessaging messaging = FirebaseMessaging.instance;
@@ -226,17 +226,12 @@ class OtpScreenController extends GetxController
       final ApiResponse<Map<String, dynamic>> res =
           await UserRepository().putFCMToken(fcmToken!);
       if (res.status == ApiResponseStatus.completed) {
-        // if the FCM token is updated show a snackbar
-        Get.snackbar('Notification Allowed by You',
-            'You will recieve offers nd updates from TourMaker',
-            colorText: Colors.white, backgroundColor: englishViolet);
+        await getStorage.write('isNotificationON', 'true');
       }
     } else {
       // When user didn't allow the the permission to send notification we need to store a value in getstorage that the
       // notification accepted or not by user .  the key is isNotificationON . and also show a snackbar
       await getStorage.write('isNotificationON', 'false');
-      Get.snackbar('Notification Not Allowed by You', '',
-          colorText: Colors.white, backgroundColor: englishViolet);
     }
   }
 
@@ -267,8 +262,8 @@ class OtpScreenController extends GetxController
       final RemoteNotification? notification = message.notification;
       final AndroidNotification? android = message.notification?.android;
       if (notification != null && android != null) {
-        CustomDialog()
-            .showCustomDialog(notification.title!, notification.body!);
+        CustomDialog().showCustomDialog(notification.title!,
+            contentText: notification.body);
       }
     });
     final FirebaseMessaging messaging = FirebaseMessaging.instance;
@@ -285,16 +280,12 @@ class OtpScreenController extends GetxController
           await UserRepository().postFCMToken(fcmToken!);
       if (res.status == ApiResponseStatus.completed) {
         // if the FCM token is updated show a snackbar
-        Get.snackbar('Notification Allowed by You',
-            'You will recieve offers nd updates from TourMaker',
-            colorText: Colors.white, backgroundColor: englishViolet);
+        await getStorage.write('isNotificationON', 'true');
       }
     } else {
       // When user didn't allow the the permission to send notification we need to store a value in getstorage that the
       // notification accepted or not by user .  the key is isNotificationON . and also show a snackbar
       await getStorage.write('isNotificationON', 'false');
-      Get.snackbar('Notification Not Allowed by You', '',
-          colorText: Colors.white, backgroundColor: englishViolet);
     }
   }
 }

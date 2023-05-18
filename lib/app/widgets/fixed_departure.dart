@@ -6,6 +6,8 @@ import 'package:sizer/sizer.dart';
 
 import '../../core/theme/style.dart';
 import '../../core/tour_maker_icons.dart';
+import '../../core/utils/date_utils.dart';
+import '../../core/utils/string_utils.dart';
 import '../modules/single_tour/controllers/single_tour_controller.dart';
 import 'custom_elevated_button.dart';
 
@@ -52,9 +54,11 @@ class FixedDepartures extends StatelessWidget {
                       ),
                       child: Center(
                         child: Text(
-                          controller.convertDates(controller
+                          controller
                               .batchTours.value.packageData![index].dateOfTravel
-                              .toString()),
+                              .toString()
+                              .parseFromIsoDate()
+                              .toDatewithMonthFormat(),
                           textAlign: TextAlign.center,
                           style: GoogleFonts.montserrat(
                             color: index == controller.selectedBatchIndex.value
@@ -216,7 +220,7 @@ class FixedDepartures extends StatelessWidget {
                             Text('Total Amount', style: heading3),
                             Text(
                                 '(Excluding GST ${controller.batchTours.value.packageData![controller.selectedBatchIndex.value].gstPercent}%)',
-                                style: paragraph2),
+                                style: paragraph3),
                           ],
                         ),
                         const Spacer(),
@@ -259,7 +263,7 @@ class FixedDepartures extends StatelessWidget {
                     color: Colors.grey.shade800,
                   ),
                 ),
-                const SizedBox(width: 40),
+                const SizedBox(width: 20),
                 if (controller.currentUserCategory != 'standard')
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
@@ -269,7 +273,7 @@ class FixedDepartures extends StatelessWidget {
                         icon: Icon(TourMaker.call,
                             color: Colors.grey.shade800, size: 20),
                       ),
-                      const SizedBox(width: 50),
+                      const SizedBox(width: 20),
                       GestureDetector(
                         onTap: controller.onWhatsAppClicked,
                         child: SvgPicture.asset(

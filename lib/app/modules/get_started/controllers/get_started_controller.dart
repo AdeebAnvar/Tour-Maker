@@ -62,7 +62,8 @@ class GetStartedController extends GetxController with StateMixin<dynamic> {
           verificationFailed: (FirebaseAuthException authException) {
             isloading.value = false;
             CustomDialog().showCustomDialog('Phone number verification failed.',
-                'Code: ${authException.code}. Message: ${authException.message}');
+                contentText:
+                    'Code: ${authException.code}. Message: ${authException.message}');
           },
           codeSent: (String verificationId, [int? forceResendingToken]) async {
             verificationid = verificationId;
@@ -75,7 +76,7 @@ class GetStartedController extends GetxController with StateMixin<dynamic> {
           codeAutoRetrievalTimeout: (String verificationId) {},
         )
             .catchError((dynamic e) {
-          CustomDialog().showCustomDialog('Error !', e.toString());
+          CustomDialog().showCustomDialog('Error !', contentText: e.toString());
         });
       } catch (e) {
         isloading.value = false;

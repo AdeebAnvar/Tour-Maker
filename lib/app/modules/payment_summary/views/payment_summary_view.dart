@@ -271,7 +271,8 @@ class PaymentSummaryView extends GetView<PaymentSummaryController> {
                           ],
                         ),
                         const SizedBox(height: 10),
-                        if (controller.getRemainingAmount() == 0)
+                        if (controller.paymentList[0].payableAmount !=
+                            controller.paymentList[0].amountPaid)
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: <Widget>[
@@ -341,7 +342,8 @@ class PaymentSummaryView extends GetView<PaymentSummaryController> {
                         // ),
 
                         const SizedBox(height: 5),
-                        if (controller.getRemainingAmount() != 0)
+                        if (controller.paymentList[0].payableAmount !=
+                            controller.paymentList[0].amountPaid)
                           Obx(() {
                             return CustomButton().showButtonWithGradient(
                               isLoading: controller.isLoading.value,

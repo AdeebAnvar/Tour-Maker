@@ -121,7 +121,8 @@ class SingleTourView extends GetView<SingleTourController> {
                     padding: const EdgeInsets.all(15.0),
                     child: Text(
                         '${controller.batchTours.value.tourData?.description}',
-                        style: paragraph1),
+                        style: paragraph3,
+                        textAlign: TextAlign.justify),
                   ),
                   const SizedBox(height: 10),
                   CustomTabBar(controller: controller),
@@ -130,14 +131,14 @@ class SingleTourView extends GetView<SingleTourController> {
                     () => controller.selectedIndex.value == 0
                         ? buildFixedDeparture()
                         : Column(
-                            children: [
+                            children: <Widget>[
                               CustomDatePickerField(
                                 labelName: 'Select Tour Date',
                                 validator: (String? value) {
                                   return null;
                                 },
                                 onChange: (String value) =>
-                                    controller.onSerchTextChanged(value),
+                                    controller.onSerchDateChanged(value),
                               ),
                               buildCustomDeparture(),
                             ],
@@ -236,17 +237,22 @@ class SingleTourView extends GetView<SingleTourController> {
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: <Widget>[
             GestureDetector(
-              onTap: () => controller.onClickSubtractChildren(),
+              onTap: () => controller.onClickAddChildren(),
               child: Container(
                 width: 25,
                 height: 25,
                 decoration:
                     BoxDecoration(shape: BoxShape.circle, color: englishViolet),
-                child: const Center(
-                  child: Text(
-                    '--',
-                    style: TextStyle(color: Colors.white),
-                  ),
+                child: Column(
+                  children: [
+                    const Center(
+                      child: Icon(
+                        Icons.minimize,
+                        color: Colors.white,
+                        size: 15,
+                      ),
+                    ),
+                  ],
                 ),
               ),
             ),
@@ -289,11 +295,16 @@ class SingleTourView extends GetView<SingleTourController> {
                   height: 25,
                   decoration: BoxDecoration(
                       shape: BoxShape.circle, color: englishViolet),
-                  child: const Center(
-                    child: Text(
-                      '--',
-                      style: TextStyle(color: Colors.white),
-                    ),
+                  child: Column(
+                    children: [
+                      const Center(
+                        child: Icon(
+                          Icons.minimize,
+                          color: Colors.white,
+                          size: 15,
+                        ),
+                      ),
+                    ],
                   ),
                 ),
               ),

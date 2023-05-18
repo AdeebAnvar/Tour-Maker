@@ -3,12 +3,14 @@ import 'package:flutter/material.dart';
 import '../../core/theme/style.dart';
 
 class CustomAppBar extends StatelessWidget with PreferredSizeWidget {
-  const CustomAppBar({super.key, this.title, this.actions});
+  const CustomAppBar({super.key, this.title, this.actions, this.isBack = true});
   final Widget? title;
   final List<Widget>? actions;
+  final bool isBack;
   @override
   PreferredSizeWidget build(BuildContext context) {
     return AppBar(
+      automaticallyImplyLeading: isBack,
       actions: actions,
       elevation: 0,
       title: title,

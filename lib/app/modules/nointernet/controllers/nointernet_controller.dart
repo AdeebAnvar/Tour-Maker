@@ -13,8 +13,8 @@ class NointernetController extends GetxController {
       Get.offAllNamed(Routes.SPLASH_SCREEN);
       isLoading.value = false;
     } else {
-      CustomDialog().showCustomDialog(
-          'Connection Error !', 'Please check your Wifi/Data');
+      CustomDialog().showCustomDialog('Connection Error !',
+          contentText: 'Please check your Wifi/Data');
 
       isLoading.value = false;
     }

@@ -48,7 +48,7 @@ class CustomDatePickerField extends StatelessWidget {
               filled: true,
               fillColor: const Color.fromARGB(255, 232, 231, 233),
               hintText: labelName,
-              prefixIcon: Icon(
+              suffixIcon: Icon(
                 TourMaker.calendar,
                 color: fontColor,
               ),

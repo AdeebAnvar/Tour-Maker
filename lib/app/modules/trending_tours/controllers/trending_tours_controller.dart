@@ -80,7 +80,7 @@ class TrendingToursController extends GetxController
         wishList.add(wishlistItem);
       }
     } catch (e) {
-      CustomDialog().showCustomDialog('Error !', e.toString());
+      CustomDialog().showCustomDialog('Error !', contentText: e.toString());
     }
   }
 

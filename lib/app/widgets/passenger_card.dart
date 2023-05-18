@@ -17,14 +17,14 @@ class PassengerCard extends StatelessWidget {
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(25),
         ),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-            Padding(
-              padding: const EdgeInsets.all(10.0),
-              child: Row(
+        child: Padding(
+          padding: const EdgeInsets.all(24.0),
+          child: Column(
+            children: <Widget>[
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: <Widget>[
-                  const Text('name : '),
+                  const Text('Name : '),
                   Text(
                     travellers.name.toString(),
                     style: GoogleFonts.montserrat(
@@ -35,12 +35,11 @@ class PassengerCard extends StatelessWidget {
                   ),
                 ],
               ),
-            ),
-            Padding(
-              padding: const EdgeInsets.all(10.0),
-              child: Row(
+              const SizedBox(height: 10),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: <Widget>[
-                  const Text('order ID : '),
+                  const Text('Order ID : '),
                   Text(
                     travellers.orderId.toString(),
                     style: GoogleFonts.montserrat(
@@ -51,12 +50,11 @@ class PassengerCard extends StatelessWidget {
                   ),
                 ],
               ),
-            ),
-            Padding(
-              padding: const EdgeInsets.all(10.0),
-              child: Row(
+              const SizedBox(height: 10),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: <Widget>[
-                  const Text('phone number : '),
+                  const Text('Phone Number : '),
                   Text(
                     travellers.phoneNumber.toString(),
                     style: GoogleFonts.montserrat(
@@ -67,10 +65,9 @@ class PassengerCard extends StatelessWidget {
                   ),
                 ],
               ),
-            ),
-            Padding(
-              padding: const EdgeInsets.all(10.0),
-              child: Row(
+              const SizedBox(height: 10),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: <Widget>[
                   const Text('DOB : '),
                   Text(
@@ -86,34 +83,37 @@ class PassengerCard extends StatelessWidget {
                   ),
                 ],
               ),
-            ),
-            Padding(
-              padding: const EdgeInsets.all(10.0),
-              child: Row(
+              const SizedBox(height: 10),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: <Widget>[
-                  const Text('address : '),
+                  const Text('Address : '),
                   SizedBox(
                     width: 200,
-                    child: Text(
-                      travellers.address.toString(),
-                      style: GoogleFonts.montserrat(
-                        fontWeight: FontWeight.w600,
-                        fontSize: 14,
-                        color: fontColor,
-                      ),
-                      overflow: TextOverflow.visible,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+                        Text(
+                          travellers.address.toString(),
+                          style: GoogleFonts.montserrat(
+                            fontWeight: FontWeight.w600,
+                            fontSize: 14,
+                            color: fontColor,
+                          ),
+                          overflow: TextOverflow.visible,
+                        ),
+                      ],
                     ),
                   ),
                 ],
               ),
-            ),
-            Padding(
-              padding: const EdgeInsets.all(10.0),
-              child: Row(
+              const SizedBox(height: 10),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: <Widget>[
-                  const Text('ID proof : '),
+                  const Text('ID Proof : '),
                   Text(
-                    ' added ✔️',
+                    ' Added ✔️',
                     style: GoogleFonts.montserrat(
                       fontWeight: FontWeight.w600,
                       fontSize: 14,
@@ -123,8 +123,8 @@ class PassengerCard extends StatelessWidget {
                   ),
                 ],
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );

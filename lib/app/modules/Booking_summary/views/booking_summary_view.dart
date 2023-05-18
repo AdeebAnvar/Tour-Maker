@@ -10,6 +10,7 @@ import '../../../../core/tour_maker_icons.dart';
 import '../../../../core/utils/date_utils.dart';
 import '../../../../core/utils/string_utils.dart';
 import '../../../widgets/custom_appbar.dart';
+import '../../../widgets/custom_elevated_button.dart';
 import '../../../widgets/custom_errorscreen.dart';
 import '../../../widgets/custom_loadinscreen.dart';
 import '../controllers/booking_summary_controller.dart';
@@ -21,7 +22,11 @@ class BookingSummaryView extends GetView<BookingSummaryController> {
     final BookingSummaryController controller =
         Get.put(BookingSummaryController());
     return Scaffold(
-        appBar: const CustomAppBar(title: Text('Booking Summary')),
+        appBar: const CustomAppBar(
+          title: Text(
+            'Booking Summary',
+          ),
+        ),
         body: controller.obx(
           onEmpty: const CustomErrorScreen(errorText: 'Nothing found....'),
           onLoading: const CustomLoadingScreen(),
@@ -66,10 +71,16 @@ class BookingSummaryView extends GetView<BookingSummaryController> {
                                   Text('Booked Date', style: subheading3),
                                   const SizedBox(height: 2),
                                   Text(
-                                      controller.bookingList[0].createdAt
-                                          .toString()
-                                          .parseFromIsoDate()
-                                          .toDateTime(),
+                                      controller.bookingList[0].orderStatus !=
+                                              'confirm'
+                                          ? controller.bookingList[0].createdAt
+                                              .toString()
+                                              .parseFromIsoDate()
+                                              .toDatewithMonthFormat()
+                                          : controller.bookingList[0].createdAt
+                                              .toString()
+                                              .parseFromIsoDate()
+                                              .toDateTime(),
                                       style: paragraph4),
                                 ],
                               ),
@@ -102,7 +113,7 @@ class BookingSummaryView extends GetView<BookingSummaryController> {
                                       controller.bookingList[0].dateOfTravel
                                           .toString()
                                           .parseFromIsoDate()
-                                          .toDate(),
+                                          .toDatewithMonthFormat(),
                                       style: paragraph4),
                                 ],
                               )
@@ -254,7 +265,8 @@ class BookingSummaryView extends GetView<BookingSummaryController> {
                           ],
                         ),
                         const SizedBox(height: 10),
-                        if (controller.getRemainingAmount() == 0)
+                        if (controller.bookingList[0].payableAmount !=
+                            controller.bookingList[0].amountPaid)
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: <Widget>[
@@ -323,17 +335,19 @@ class BookingSummaryView extends GetView<BookingSummaryController> {
                         // backgroundColor: englishlinearViolet,
                         // ),
 
-                        // const SizedBox(height: 5),
-                        // if (controller.getRemainingAmount() != 0)
-                        //   Obx(() {
-                        //     return CustomButton().showButtonWithGradient(
-                        //       isLoading: controller.isLoading.value,
-                        //       text: 'Pay Remaining Amount',
-                        //       onPressed: () =>
-                        //           controller.onClickPayRemainingAmount(
-                        //               controller.bookingList[0].id!),
-                        //     );
-                        //   }),
+                        const SizedBox(height: 5),
+                        if (controller.getRemainingAmount() != 0)
+                          Obx(
+                            () {
+                              return CustomButton().showButtonWithGradient(
+                                isLoading: controller.isLoading.value,
+                                text: 'Pay Remaining Amount',
+                                onPressed: () =>
+                                    controller.onClickPayRemainingAmount(
+                                        controller.bookingList[0].id!),
+                              );
+                            },
+                          ),
                       ],
                     ),
                   ),

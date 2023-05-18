@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:country_picker/country_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:geocoding/geocoding.dart';
@@ -53,6 +55,7 @@ class UserRegisterscreenController extends GetxController
   Future<void> onInit() async {
     super.onInit();
     userType.value = await getStorage.read('initialPayment') as String;
+    log(userType.value);
     loadData();
     razorPay = Razorpay();
     razorPay.on(Razorpay.EVENT_PAYMENT_SUCCESS, _handlePaymentSuccess);
@@ -180,7 +183,8 @@ class UserRegisterscreenController extends GetxController
       } else {
         await CustomDialog().showCustomDialog(
             'Register as an agent of TourMaker',
-            'You have to pay \n424+GST \nto apply as an\n agent of TourMaker',
+            contentText:
+                'You have to pay \n424+GST \nto apply as an\n agent of TourMaker',
             cancelText: 'Go Back',
             confirmText: 'Pay rs 424 + GST', onCancel: () {
           selectedCategoryType.value = CategoryType.standard;
@@ -212,7 +216,7 @@ class UserRegisterscreenController extends GetxController
         } else {}
         isloading.value = false;
       } catch (e) {
-        CustomDialog().showCustomDialog('Error !', e.toString());
+        CustomDialog().showCustomDialog('Error !', contentText: e.toString());
       }
     } else {
       isloading.value = false;
@@ -236,7 +240,7 @@ class UserRegisterscreenController extends GetxController
     try {
       razorPay.open(options);
     } catch (e) {
-      CustomDialog().showCustomDialog('Error !', e.toString());
+      CustomDialog().showCustomDialog('Error !', contentText: e.toString());
     }
   }
 
@@ -255,14 +259,14 @@ class UserRegisterscreenController extends GetxController
         userType.value = '';
       }
     } catch (e) {
-      CustomDialog().showCustomDialog('Error !', e.toString());
+      CustomDialog().showCustomDialog('Error !', contentText: e.toString());
       userType.value = '';
     }
   }
 
   void _handlePaymentError(PaymentFailureResponse response) =>
-      CustomDialog().showCustomDialog(
-          'Payment error: ${response.code}', '${response.message}');
+      CustomDialog().showCustomDialog('Payment error: ${response.code}',
+          contentText: '${response.message}');
 
   void _handleExternalWallet(ExternalWalletResponse response) => Get.snackbar(
         'Payment successed: ',
@@ -306,7 +310,7 @@ class UserRegisterscreenController extends GetxController
         );
         isloading.value = false;
       } catch (e) {
-        CustomDialog().showCustomDialog('Error !', e.toString());
+        CustomDialog().showCustomDialog('Error !', contentText: e.toString());
       }
     } else {
       isloading.value = false;
@@ -357,7 +361,7 @@ class UserRegisterscreenController extends GetxController
         isloading.value = false;
       }
     } catch (e) {
-      CustomDialog().showCustomDialog('Error !', e.toString());
+      CustomDialog().showCustomDialog('Error !', contentText: e.toString());
     }
   }
 }

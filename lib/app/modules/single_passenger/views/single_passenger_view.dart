@@ -21,19 +21,22 @@ class SinglePassengerView extends GetView<SinglePassengerController> {
       appBar: const CustomAppBar(),
       body: controller.obx(
         (SinglePassengerView? state) => Padding(
-          padding: const EdgeInsets.all(10),
+          padding: const EdgeInsets.symmetric(vertical: 80, horizontal: 20),
           child: Card(
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(25),
             ),
-            child: ListView(
-              children: <Widget>[
-                Padding(
-                  padding: const EdgeInsets.all(10.0),
-                  child: Row(
+            child: Padding(
+              padding: const EdgeInsets.all(24.0),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                mainAxisSize: MainAxisSize.min,
+                children: <Widget>[
+                  Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: <Widget>[
-                      const Text('name : '),
+                      const Text('Name : '),
                       Text(
                         controller.passenger[0].name.toString(),
                         style: GoogleFonts.montserrat(
@@ -44,13 +47,11 @@ class SinglePassengerView extends GetView<SinglePassengerController> {
                       ),
                     ],
                   ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.all(10.0),
-                  child: Row(
+                  const SizedBox(height: 10),
+                  Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: <Widget>[
-                      const Text('order ID : '),
+                      const Text('Order ID : '),
                       Text(
                         controller.passenger[0].orderId.toString(),
                         style: GoogleFonts.montserrat(
@@ -61,13 +62,11 @@ class SinglePassengerView extends GetView<SinglePassengerController> {
                       ),
                     ],
                   ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.all(10.0),
-                  child: Row(
+                  const SizedBox(height: 10),
+                  Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: <Widget>[
-                      const Text('phone number : '),
+                      const Text('Phone Number : '),
                       Text(
                         controller.passenger[0].phoneNumber.toString(),
                         style: GoogleFonts.montserrat(
@@ -78,10 +77,8 @@ class SinglePassengerView extends GetView<SinglePassengerController> {
                       ),
                     ],
                   ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.all(10.0),
-                  child: Row(
+                  const SizedBox(height: 10),
+                  Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: <Widget>[
                       const Text('DOB : '),
@@ -98,52 +95,47 @@ class SinglePassengerView extends GetView<SinglePassengerController> {
                       ),
                     ],
                   ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.all(10.0),
-                  child: Row(
+                  const SizedBox(height: 10),
+                  Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: <Widget>[
-                      const Text('address : '),
+                      const Text('Address : '),
                       SizedBox(
                         width: 200,
-                        child: Text(
-                          controller.passenger[0].address.toString(),
-                          textAlign: TextAlign.end,
-                          style: GoogleFonts.montserrat(
-                            fontWeight: FontWeight.w600,
-                            fontSize: 14,
-                            color: fontColor,
-                          ),
-                          overflow: TextOverflow.visible,
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          children: <Widget>[
+                            Text(
+                              controller.passenger[0].address.toString(),
+                              style: GoogleFonts.montserrat(
+                                fontWeight: FontWeight.w600,
+                                fontSize: 14,
+                                color: fontColor,
+                              ),
+                              overflow: TextOverflow.visible,
+                            ),
+                          ],
                         ),
                       ),
                     ],
                   ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.all(10.0),
-                  child: Column(
+                  const SizedBox(height: 10),
+                  const Text('ID Proof : '),
+                  const SizedBox(height: 30),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
                     children: <Widget>[
-                      Text('ID proof : ', style: subheading1),
-                      const SizedBox(height: 20),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: <Widget>[
-                          Container(
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(15),
-                              ),
-                              height: 400,
-                              width: 200,
-                              child:
-                                  Image.memory(controller.getImageFromBytes())),
-                        ],
-                      )
+                      Container(
+                          decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(15),
+                              color: Colors.blue),
+                          // height: 400,
+                          width: 200,
+                          child: Image.memory(controller.getImageFromBytes())),
                     ],
-                  ),
-                ),
-              ],
+                  )
+                ],
+              ),
             ),
           ),
         ),

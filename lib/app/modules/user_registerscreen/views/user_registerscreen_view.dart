@@ -241,18 +241,19 @@ class UserRegisterscreenView extends GetView<UserRegisterscreenController> {
                               ),
                             );
                           }),
+                          const SizedBox(height: 15),
+                          CustomTextFormField(
+                            onChanged: (String value) =>
+                                controller.usereEnterpriseName.value = value,
+                            validator: (String? value) {
+                              return null;
+                            },
+                            initialValue: controller.usereEnterpriseName.value,
+                            hintText: 'Enterprise Name (Optional)',
+                          ),
                         ],
                       ),
                     ),
-                  ),
-                  CustomTextFormField(
-                    onChanged: (String value) =>
-                        controller.usereEnterpriseName.value = value,
-                    validator: (String? value) {
-                      return null;
-                    },
-                    initialValue: controller.usereEnterpriseName.value,
-                    hintText: 'Enterprise Name(Optional)',
                   ),
                   const SizedBox(height: 15),
                   Obx(() {

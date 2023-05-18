@@ -7,6 +7,7 @@ import '../../../../core/theme/style.dart';
 import '../../../../core/utils/date_utils.dart';
 import '../../../../core/utils/string_utils.dart';
 import '../../../widgets/custom_appbar.dart';
+import '../../../widgets/custom_elevated_button.dart';
 import '../controllers/checkout_screen_controller.dart';
 
 class CheckoutScreenView extends GetView<CheckoutScreenController> {
@@ -91,30 +92,34 @@ class CheckoutScreenView extends GetView<CheckoutScreenController> {
                               if (controller.checkOutModel.value?.offerAmount ==
                                   0)
                                 TextSpan(
-                                    text:
-                                        '₹ ${controller.checkOutModel.value!.amount}/pax',
-                                    style: TextStyle(
-                                      color: fontColor,
-                                      fontWeight: FontWeight.w700,
-                                    ))
-                              else
-                                TextSpan(text: '', children: <TextSpan>[
-                                  TextSpan(
-                                    text:
-                                        '₹ ${controller.checkOutModel.value!.amount}',
-                                    style: TextStyle(
-                                      color: fontColor,
-                                      decoration: TextDecoration.lineThrough,
-                                    ),
+                                  text:
+                                      '₹ ${controller.checkOutModel.value!.amount}/pax',
+                                  style: TextStyle(
+                                    color: fontColor,
+                                    fontWeight: FontWeight.w700,
                                   ),
-                                  TextSpan(
-                                    text:
-                                        '  ₹ ${controller.checkOutModel.value!.offerAmount}/pax',
-                                    style: TextStyle(
-                                        fontWeight: FontWeight.w700,
-                                        color: fontColor),
-                                  )
-                                ]),
+                                )
+                              else
+                                TextSpan(
+                                  text: '',
+                                  children: <TextSpan>[
+                                    TextSpan(
+                                      text:
+                                          '₹ ${controller.checkOutModel.value!.amount}',
+                                      style: TextStyle(
+                                        color: fontColor,
+                                        decoration: TextDecoration.lineThrough,
+                                      ),
+                                    ),
+                                    TextSpan(
+                                      text:
+                                          '  ₹ ${controller.checkOutModel.value!.offerAmount}/pax',
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.w700,
+                                          color: fontColor),
+                                    )
+                                  ],
+                                ),
                             ],
                           ),
                         ),
@@ -173,17 +178,19 @@ class CheckoutScreenView extends GetView<CheckoutScreenController> {
                         ],
                       ),
                     buildItem(
-                        'Total Amount :', '₹ ${controller.getTotalAmount()}'),
+                        'Package Amount :', '₹ ${controller.getTotalAmount()}'),
                     if (controller.currentUserCategory == 'standard')
                       const SizedBox()
                     else
                       buildItem('Discount :',
                           '- ₹ ${controller.getCommissionAmount()}'),
+                    const SizedBox(height: 10),
                     const Divider(
                       color: Colors.grey,
                       endIndent: 40,
                       indent: 50,
                     ),
+                    const SizedBox(height: 10),
                     buildItem('Total Amount : ',
                         '₹ ${controller.getTotalAmounttoBePaid().toStringAsFixed(2)}'),
                     buildItem(
@@ -203,11 +210,16 @@ class CheckoutScreenView extends GetView<CheckoutScreenController> {
                         SizedBox(
                           height: 20,
                           width: 160,
-                          child: Text(
-                            '₹ ${controller.getGrandTotal().toStringAsFixed(2)}',
-                            style: heading3.copyWith(
-                                fontStyle: FontStyle.italic,
-                                overflow: TextOverflow.visible),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.end,
+                            children: [
+                              Text(
+                                '₹ ${controller.getGrandTotal().toStringAsFixed(2)}',
+                                style: heading3.copyWith(
+                                    fontStyle: FontStyle.italic,
+                                    overflow: TextOverflow.visible),
+                              ),
+                            ],
                           ),
                         ),
                       ],
@@ -218,54 +230,39 @@ class CheckoutScreenView extends GetView<CheckoutScreenController> {
                         SizedBox(
                           height: 20,
                           width: 160,
-                          child: Text(
-                            '(Includes GST ${controller.checkOutModel.value!.gst}%)',
-                            style: subheading1.copyWith(
-                                fontStyle: FontStyle.italic,
-                                overflow: TextOverflow.visible),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.end,
+                            children: [
+                              Text(
+                                '(Includes GST ${controller.checkOutModel.value!.gst}%)',
+                                style: subheading2.copyWith(
+                                    fontStyle: FontStyle.italic,
+                                    overflow: TextOverflow.visible),
+                              ),
+                            ],
                           ),
                         ),
                       ],
                     ),
                     const SizedBox(height: 60),
                     Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: <Widget>[
-                        Container(
-                          width: 30.w,
-                          margin: const EdgeInsets.all(10),
-                          height: 06.h,
-                          child: TextButton(
-                            style: TextButton.styleFrom(
-                              backgroundColor: Colors.white,
-                              foregroundColor: fontColor,
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(20),
-                              ),
-                            ),
+                      children: [
+                        Expanded(
+                          child: CustomButton().showButton(
+                            bgColor: Colors.white,
+                            text: 'Cancel',
                             onPressed: () => controller.onClickCancelPurchase(),
-                            child: const Text('Cancel'),
                           ),
                         ),
-                        Container(
-                          width: 40.w,
-                          height: 06.h,
-                          margin: const EdgeInsets.all(10),
-                          child: TextButton(
-                            style: TextButton.styleFrom(
-                              backgroundColor: englishViolet,
-                              foregroundColor: Colors.white,
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(20),
-                              ),
-                            ),
+                        Expanded(
+                          child: CustomButton().showButtonWithGradient(
+                            text: 'Pay Amount',
                             onPressed: () => controller.onClickconfirmPurchase(
                                 controller.checkOutModel.value!.orderID!),
-                            child: const Text('Purchase'),
                           ),
                         ),
                       ],
-                    )
+                    ),
                   ],
                 ),
               ),

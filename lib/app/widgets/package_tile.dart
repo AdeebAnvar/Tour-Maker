@@ -95,7 +95,7 @@ class PackageTile extends StatelessWidget {
                       overflow: TextOverflow.ellipsis,
                     ),
                     const SizedBox(height: 5),
-                    Text('( $tourCode )', style: paragraph1),
+                    Text(tourCode, style: paragraph1),
                     const SizedBox(height: 12),
                     Text(
                       '$tourDays Days / $tournights Nights',

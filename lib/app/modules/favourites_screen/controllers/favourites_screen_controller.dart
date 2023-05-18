@@ -64,7 +64,7 @@ class FavouritesScreenController extends GetxController
         packageList.add(pckg);
       }
     } catch (e) {
-      CustomDialog().showCustomDialog('Error !', e.toString());
+      CustomDialog().showCustomDialog('Error !', contentText: e.toString());
     }
   }
 

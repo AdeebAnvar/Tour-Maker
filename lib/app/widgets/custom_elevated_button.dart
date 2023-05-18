@@ -189,14 +189,14 @@ class CustomButton {
       Color? textColor,
       Key? key}) {
     return Padding(
-      padding: padding ?? const EdgeInsets.all(25),
+      padding: padding ?? const EdgeInsets.all(15),
       child: GestureDetector(
         onTap: onPressed,
         child: Container(
           height: height ?? 50,
           width: width ?? 250,
           decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(100),
+            borderRadius: BorderRadius.circular(15),
             color: bgColor,
           ),
           child: isLoading

@@ -50,12 +50,12 @@ final TextStyle subheading3 = GoogleFonts.montserrat(
   color: fontColor,
 );
 final TextStyle paragraph1 = GoogleFonts.montserrat(
-  fontWeight: FontWeight.w400,
+  fontWeight: FontWeight.w500,
   fontSize: 16,
   color: fontColor,
 );
 final TextStyle paragraph2 = GoogleFonts.montserrat(
-  fontWeight: FontWeight.w400,
+  fontWeight: FontWeight.w600,
   fontSize: 14,
   color: fontColor,
 );
@@ -71,12 +71,12 @@ final TextStyle buttonwithbLACKTextStyle = GoogleFonts.montserrat(
 );
 
 final TextStyle paragraph3 = GoogleFonts.montserrat(
-  fontWeight: FontWeight.w400,
+  fontWeight: FontWeight.w500,
   fontSize: 12,
   color: fontColor,
 );
 final TextStyle paragraph4 = GoogleFonts.montserrat(
-  fontWeight: FontWeight.w400,
+  fontWeight: FontWeight.w500,
   fontSize: 10,
   color: fontColor,
 );

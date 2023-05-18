@@ -36,7 +36,7 @@ class LoginController extends GetxController with StateMixin<dynamic> {
     if (formKey.currentState!.validate()) {
       isLoading.value = true;
       if (state.value == states[0]) {
-        CustomDialog().showCustomDialog('', 'Select your state');
+        CustomDialog().showCustomDialog('', contentText: 'Select your state');
       }
       final UserModel user = UserModel(
         name: name.value,

@@ -4,8 +4,7 @@ import 'dart:developer';
 
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
-import 'package:intl/intl.dart';
-import 'package:razorpay_flutter/razorpay_flutter.dart';
+
 import 'package:url_launcher/url_launcher.dart';
 
 import '../../../data/models/local_model/checkout_model.dart';
@@ -25,22 +24,17 @@ class SingleTourController extends GetxController
     with StateMixin<SingleTourView> {
   final GetStorage getStorage = GetStorage();
   late int totalAmount;
-  late Razorpay razorPay;
   final RxInt selectedDateIndex = 0.obs;
-  final RxList<int> favorites = <int>[].obs;
   RxList<PackageData> singleTours = <PackageData>[].obs;
   List<PackageData> singleTour = <PackageData>[];
   Rx<SingleTourModel> batchTours = SingleTourModel().obs;
   RxList<WishListModel> wishlists = <WishListModel>[].obs;
   Rx<int> selectedIndex = 0.obs;
-  Rx<int> selectDate = 0.obs;
   Rx<int> selectedBatchIndex = 0.obs;
   Rx<int> adult = 1.obs;
   Rx<int> children = 0.obs;
   Rx<bool> isLoading = false.obs;
   Rx<bool> isFavourite = false.obs;
-  Rx<String> selectedDate = ' '.obs;
-  Rx<String> formattedDate = ''.obs;
   int? tourID;
   int? order;
   String? currentUserAddress;
@@ -53,31 +47,16 @@ class SingleTourController extends GetxController
 
   Future<void> fetchData() async {
     change(null, status: RxStatus.loading());
-
-    currentUserAddress = await getStorage.read('currentUserAddress') as String;
-    currentUserCategory =
-        await getStorage.read('currentUserCategory') as String;
+    await datasFromLocalStorage();
     try {
       final int id = await loadData();
-      singleTours.value = await loadIndividualTours(id);
-      singleTour = await loadIndividualTours(id);
-      batchTours.value = await loadSingleTourData(id);
-      final List<WishListModel>? wishlistData = await getWishList(id);
-      if (wishlistData != null) {
-        wishlists.value = wishlistData;
-
-        for (final WishListModel wm in wishlists) {
-          if (wm.id == id) {
-            isFavourite.value = true;
-            break;
-          } else {
-            isFavourite.value = false;
-          }
-        }
-      }
+      singleTours.value = await loadCustomDeparturesTours(id);
+      singleTour = await loadCustomDeparturesTours(id);
+      batchTours.value = await loadFixedTourData(id);
+      await loadWishLists(id);
       change(null, status: RxStatus.success());
     } catch (er) {
-      CustomDialog().showCustomDialog('Error !', er.toString());
+      CustomDialog().showCustomDialog('Error !', contentText: er.toString());
     }
   }
 
@@ -89,7 +68,7 @@ class SingleTourController extends GetxController
     return tourID!;
   }
 
-  Future<SingleTourModel> loadSingleTourData(int tourID) async {
+  Future<SingleTourModel> loadFixedTourData(int tourID) async {
     try {
       final ApiResponse<SingleTourModel> res =
           await SingleTourRepository().getSingleTour(tourID);
@@ -104,7 +83,7 @@ class SingleTourController extends GetxController
     }
   }
 
-  Future<List<PackageData>> loadIndividualTours(int tourID) async {
+  Future<List<PackageData>> loadCustomDeparturesTours(int tourID) async {
     try {
       final ApiResponse<SingleTourModel> res =
           await SingleTourRepository().getSingleTourIndividual(tourID);
@@ -137,24 +116,19 @@ class SingleTourController extends GetxController
     }
   }
 
-  void onSerchTextChanged(String text) {
+  void onSerchDateChanged(String text) {
     if (text.isNotEmpty) {
       singleTours.value = singleTour
-          .where((PackageData package) => package.dateOfTravel!.contains(text))
+          .where(
+            (PackageData package) => package.dateOfTravel!.contains(
+              text,
+            ),
+          )
           .toList();
     } else {
       singleTours.value = singleTour;
     }
   }
-
-  // void onDateSelected(int index) {
-  //   selectedDateIndex.value = index;
-  //   final DateTime inputDate =
-  //       DateTime.parse('${singleTour.value.packageData?[index].dateOfTravel}');
-  //   final DateFormat outputFormat = DateFormat('MMM d');
-  //   final String formattedDate = outputFormat.format(inputDate);
-  //   selectedDate.value = formattedDate;
-  // }
 
   Future<void> onViewItineraryClicked(String itinerary) async =>
       Get.toNamed(Routes.PDF_VIEW, arguments: <String>[itinerary]);
@@ -181,19 +155,21 @@ class SingleTourController extends GetxController
 
   Future<void> onClickAddPassenger(PackageData package) async {
     if (currentUserAddress != null && currentUserAddress != '') {
-      final DateTime sd = DateTime.parse(package.dateOfTravel.toString());
+      final DateTime selectedDate =
+          DateTime.parse(package.dateOfTravel.toString());
       final DateTime today = DateTime.now();
-      if (sd.difference(today).inDays <= 7) {
-        CustomDialog().showCustomDialog('Warning ! !',
-            'The selected date is very near \nso you need to pay full amount and\n you have to contact and confirm the tour',
-            onConfirm: () async {
-          Get.back();
-          await confirmPayment(package.iD!, package);
-        }, onCancel: () async {
-          Get.back();
-        }, confirmText: 'OK', cancelText: 'back');
+      if (package.availableSeats == package.totalSeats) {
+        CustomDialog().showCustomDialog(
+          'Seats Filled!!',
+          contentText:
+              "Sorry the seat's are filled in this tour .  we will reach out you soon when the seats are available",
+        );
       } else {
-        await confirmPayment(package.iD!, package);
+        if (selectedDate.difference(today).inDays <= 7) {
+          await showWarningDialogue(package);
+        } else {
+          await confirmPayment(package.iD!, package);
+        }
       }
     } else {
       await Get.toNamed(Routes.USER_REGISTERSCREEN)!
@@ -218,28 +194,13 @@ class SingleTourController extends GetxController
   Future<void> onClickAddToFavourites() async {
     try {
       if (isFavourite.value == true) {
-        final ApiResponse<Map<String, dynamic>> res =
-            await WishListRepo().deleteFav(batchTours.value.tourData?.iD);
-        if (res.status == ApiResponseStatus.completed) {
-          isFavourite.value = false;
-        } else {}
+        await _deleteFromFav();
       } else {
-        final ApiResponse<Map<String, dynamic>> res =
-            await WishListRepo().createFav(batchTours.value.tourData?.iD);
-        if (res.status == ApiResponseStatus.completed) {
-          isFavourite.value = true;
-        } else {}
+        await _addToFav();
       }
     } catch (e) {
-      CustomDialog().showCustomDialog('Error !', e.toString());
+      CustomDialog().showCustomDialog('Error !', contentText: e.toString());
     }
-  }
-
-  String convertDates(String date) {
-    final DateTime inputDate = DateTime.parse(date);
-    final DateFormat outputFormat = DateFormat('d MMM yy');
-    final String formattedDate = outputFormat.format(inputDate);
-    return formattedDate;
   }
 
   int getTotalAmountOFtour(
@@ -264,7 +225,8 @@ class SingleTourController extends GetxController
     if (await canLaunchUrl(url)) {
       await launchUrl(url);
     } else {
-      CustomDialog().showCustomDialog('Error !', "couldn't dial to 4872383104");
+      CustomDialog().showCustomDialog('Error !',
+          contentText: "couldn't dial to 4872383104");
     }
   }
 
@@ -307,14 +269,15 @@ class SingleTourController extends GetxController
       try {
         await CheckOutRepositoy.saveData(cm);
       } catch (e) {
-        CustomDialog().showCustomDialog('Error !', e.toString());
+        CustomDialog().showCustomDialog('Error !', contentText: e.toString());
       }
       final int passengers = totaltravellers();
       Get.toNamed(Routes.ADD_PASSENGER,
           arguments: <dynamic>[order, passengers]);
     } else {
       CustomDialog().showCustomDialog('Order Not Placed',
-          "Sorry your order $order didn't placed from our side . please order again");
+          contentText:
+              "Sorry your order $order didn't placed from our side . please order again");
     }
     isLoading.value = false;
   }
@@ -322,5 +285,67 @@ class SingleTourController extends GetxController
   int totaltravellers() {
     final int sum = adult.value + children.value;
     return sum;
+  }
+
+  Future<void> datasFromLocalStorage() async {
+    currentUserAddress = await getStorage.read('currentUserAddress') as String;
+    currentUserCategory =
+        await getStorage.read('currentUserCategory') as String;
+    log('Adeeb $currentUserAddress');
+    log('Adeeb $currentUserCategory');
+  }
+
+  Future<void> loadWishLists(int id) async {
+    final List<WishListModel>? wishlistData = await getWishList(id);
+    if (wishlistData != null) {
+      wishlists.value = wishlistData;
+
+      for (final WishListModel wm in wishlists) {
+        if (wm.id == id) {
+          isFavourite.value = true;
+          break;
+        } else {
+          isFavourite.value = false;
+        }
+      }
+    }
+  }
+
+  Future<void> showWarningDialogue(PackageData package) async {
+    await CustomDialog().showCustomDialog('Warning ! !',
+        contentText:
+            'The selected date is very near \nso you need to pay full amount and\n you have to contact and confirm the tour',
+        onConfirm: () async {
+      Get.back();
+      await confirmPayment(package.iD!, package);
+    }, onCancel: () async {
+      Get.back();
+    }, confirmText: 'OK', cancelText: 'back');
+  }
+
+  Future<void> _deleteFromFav() async {
+    try {
+      final ApiResponse<Map<String, dynamic>> res =
+          await WishListRepo().deleteFav(batchTours.value.tourData?.iD);
+      if (res.status == ApiResponseStatus.completed) {
+        isFavourite.value = false;
+      }
+    } catch (e) {
+      CustomDialog().showCustomDialog("Can't Delete From favourites",
+          contentText: e.toString());
+    }
+  }
+
+  Future<void> _addToFav() async {
+    try {
+      final ApiResponse<Map<String, dynamic>> res =
+          await WishListRepo().createFav(batchTours.value.tourData?.iD);
+      if (res.status == ApiResponseStatus.completed) {
+        isFavourite.value = true;
+      }
+    } catch (e) {
+      CustomDialog()
+          .showCustomDialog("Can't Add to fav", contentText: e.toString());
+    }
   }
 }

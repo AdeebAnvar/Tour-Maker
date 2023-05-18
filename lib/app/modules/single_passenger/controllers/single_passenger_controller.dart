@@ -39,7 +39,7 @@ class SinglePassengerController extends GetxController
         await loadAAdhar(passenger[0].name!, passenger[0].orderId!);
       } else {}
     } catch (e) {
-      CustomDialog().showCustomDialog('Error !', e.toString());
+      CustomDialog().showCustomDialog('Error !', contentText: e.toString());
     }
   }
 
@@ -51,7 +51,7 @@ class SinglePassengerController extends GetxController
         adhar = res.data as String;
       } else {}
     } catch (e) {
-      CustomDialog().showCustomDialog('Error !', e.toString());
+      CustomDialog().showCustomDialog('Error !', contentText: e.toString());
     }
   }
 

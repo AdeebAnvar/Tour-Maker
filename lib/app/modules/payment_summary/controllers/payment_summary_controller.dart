@@ -80,7 +80,7 @@ class PaymentSummaryController extends GetxController
         orderPaymentModel.value = res.data!;
       } else {}
     } catch (e) {
-      CustomDialog().showCustomDialog('Error !', e.toString());
+      CustomDialog().showCustomDialog('Error !', contentText: e.toString());
     }
     return orderPaymentModel.value;
   }
@@ -98,7 +98,7 @@ class PaymentSummaryController extends GetxController
     try {
       razorPay.open(options);
     } catch (e) {
-      CustomDialog().showCustomDialog('Error !', e.toString());
+      CustomDialog().showCustomDialog('Error !', contentText: e.toString());
     }
   }
 
@@ -120,18 +120,18 @@ class PaymentSummaryController extends GetxController
         );
       } else {}
     } catch (e) {
-      CustomDialog().showCustomDialog('Error !', e.toString());
+      CustomDialog().showCustomDialog('Error !', contentText: e.toString());
     }
   }
 
   void _handlePaymentError(PaymentFailureResponse response) {
-    CustomDialog().showCustomDialog(
-        'Payment error: ${response.code}', '${response.message}');
+    CustomDialog().showCustomDialog('Payment error: ${response.code}',
+        contentText: '${response.message}');
   }
 
   void _handleExternalWallet(ExternalWalletResponse response) {
-    CustomDialog()
-        .showCustomDialog('Payment successed: ', 'on : ${response.walletName}');
+    CustomDialog().showCustomDialog('Payment successed: ',
+        contentText: 'on : ${response.walletName}');
   }
 
   num getPackageGSTamount(num totalAmount, num gst) {

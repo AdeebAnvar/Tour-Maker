@@ -75,11 +75,14 @@ class BookingScreenView extends GetView<BookingScreenController> {
   }
 
   TabBarView tabViewSection(BookingScreenController controller) {
-    return TabBarView(controller: controller.tabcontroller, children: <Widget>[
-      buildUpcomingView(),
-      buildCompletedView(),
-      buildCancelledView(),
-    ]);
+    return TabBarView(
+      controller: controller.tabcontroller,
+      children: <Widget>[
+        buildUpcomingView(),
+        buildCompletedView(),
+        buildCancelledView(),
+      ],
+    );
   }
 
   Widget buildCompletedView() {
@@ -101,7 +104,7 @@ class BookingScreenView extends GetView<BookingScreenController> {
               : controller.completedList.isNotEmpty
                   ? completedList()
                   : CustomErrorScreen(
-                      errorText: 'No Completed \n bookings ',
+                      errorText: 'No Completed bookings ',
                       onRefresh: controller.loadData,
                     ),
         );
@@ -111,17 +114,18 @@ class BookingScreenView extends GetView<BookingScreenController> {
 
   ListView completedList() {
     return ListView.builder(
-        physics: const BouncingScrollPhysics(),
-        itemCount: controller.completedList.length,
-        itemBuilder: (BuildContext context, int index) {
-          return buildCompletedBookingTile(
-            index,
-            controller.getTotalTravellers(
-              controller.completedList[index].noOfAdults!,
-              controller.completedList[index].noOfKids!,
-            ),
-          );
-        });
+      physics: const BouncingScrollPhysics(),
+      itemCount: controller.completedList.length,
+      itemBuilder: (BuildContext context, int index) {
+        return buildCompletedBookingTile(
+          index,
+          controller.getTotalTravellers(
+            controller.completedList[index].noOfAdults!,
+            controller.completedList[index].noOfKids!,
+          ),
+        );
+      },
+    );
   }
 
   Widget buildCancelledView() {
@@ -142,7 +146,7 @@ class BookingScreenView extends GetView<BookingScreenController> {
             : controller.cancelledList.isNotEmpty
                 ? cancelledList()
                 : CustomErrorScreen(
-                    errorText: 'No Cancelled \n bookings',
+                    errorText: 'No Cancelled bookings',
                     onRefresh: controller.loadData,
                   ),
       );
@@ -225,11 +229,18 @@ class BookingScreenView extends GetView<BookingScreenController> {
                 Padding(
                   padding: const EdgeInsets.all(18),
                   child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: <Widget>[
-                      Text(
+                      SizedBox(
+                        width: 100,
+                        child: Text(
                           controller.upcomingList[index].tourName ?? 'tourname',
-                          style: paragraph2),
+                          style: paragraph2,
+                          overflow: TextOverflow.visible,
+                        ),
+                      ),
+                      const SizedBox(height: 5),
                       Text('Tour date : ', style: paragraph4),
                     ],
                   ),
@@ -308,7 +319,7 @@ class BookingScreenView extends GetView<BookingScreenController> {
             borderRadius: BorderRadius.circular(18),
           ),
           child: Container(
-            height: 88,
+            height: 90,
             decoration: BoxDecoration(
               color: const Color(0xFFF1F1F1),
               borderRadius: BorderRadius.circular(18),
@@ -318,12 +329,19 @@ class BookingScreenView extends GetView<BookingScreenController> {
                 Padding(
                   padding: const EdgeInsets.all(18),
                   child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: <Widget>[
-                      Text(
+                      SizedBox(
+                        width: 100,
+                        child: Text(
                           controller.completedList[index].tourName ??
                               'tourname',
-                          style: paragraph2),
+                          style: paragraph2,
+                          overflow: TextOverflow.visible,
+                        ),
+                      ),
+                      const SizedBox(height: 5),
                       Text('Paid Amount : ',
                           style: GoogleFonts.montserrat(
                             fontWeight: FontWeight.w400,
@@ -417,16 +435,24 @@ class BookingScreenView extends GetView<BookingScreenController> {
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: <Widget>[
-                      Text(
+                      SizedBox(
+                        width: 100,
+                        child: Text(
                           controller.cancelledList[index].tourName ??
                               'tourname',
-                          style: paragraph2),
-                      Text('Tour Date:',
-                          style: GoogleFonts.montserrat(
-                            fontWeight: FontWeight.w400,
-                            fontSize: 10,
-                            color: Colors.red,
-                          )),
+                          style: paragraph2,
+                          overflow: TextOverflow.visible,
+                        ),
+                      ),
+                      const SizedBox(height: 5),
+                      Text(
+                        'Tour Date : ',
+                        style: GoogleFonts.montserrat(
+                          fontWeight: FontWeight.w400,
+                          fontSize: 10,
+                          color: Colors.red,
+                        ),
+                      ),
                     ],
                   ),
                 ),

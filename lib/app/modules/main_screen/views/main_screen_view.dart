@@ -382,7 +382,7 @@ class MainScreenView extends GetView<MainScreenController> {
                       children: <Widget>[
                         Padding(
                           padding: const EdgeInsets.only(left: 18.0, top: 18),
-                          child: Text('     category', style: paragraph2),
+                          child: Text('  Category', style: paragraph1),
                         ),
                       ],
                     ),

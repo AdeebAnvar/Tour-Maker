@@ -106,7 +106,7 @@ class RetryOnConnectionChangeInterceptor extends Interceptor {
         handler.next((await requestRetryer
             .scheduleRequestRetry(err.requestOptions)) as DioError);
       } catch (e) {
-        CustomDialog().showCustomDialog('Error !', e.toString());
+        CustomDialog().showCustomDialog('Error !', contentText: e.toString());
         handler.next(e as DioError);
       }
     } else {

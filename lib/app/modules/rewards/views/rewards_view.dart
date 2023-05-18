@@ -13,7 +13,7 @@ class RewardsView extends GetView<RewardsController> {
     return const Scaffold(
       appBar: CustomAppBar(title: Text('Rewards')),
       body: CustomErrorScreen(
-        errorText: 'NO rewards',
+        errorText: 'No rewards',
       ),
     );
   }

@@ -55,8 +55,12 @@ class AddPassengerView extends GetView<AddPassengerController> {
                                 itemCount: controller.travellers.length,
                                 itemBuilder:
                                     (BuildContext context, int index) =>
-                                        PassengerCard(
-                                  travellers: controller.travellers[index],
+                                        GestureDetector(
+                                  onTap: () => controller.onTapSinglePassenger(
+                                      controller.travellers[0].id),
+                                  child: PassengerCard(
+                                    travellers: controller.travellers[index],
+                                  ),
                                 ),
                               ),
                             )
