@@ -88,7 +88,7 @@ class PackageTile extends StatelessWidget {
                     Text(
                       tourName.split(' ').join('\n'),
                       style: GoogleFonts.montserrat(
-                        fontWeight: FontWeight.bold,
+                        fontWeight: FontWeight.w600,
                         fontSize: 16,
                         color: fontColor,
                       ),
@@ -102,7 +102,14 @@ class PackageTile extends StatelessWidget {
                       style: subheading3,
                     ),
                     const SizedBox(height: 13),
-                    Text('₹ $tourAmount', style: heading3),
+                    Text(
+                      '₹ $tourAmount',
+                      style: GoogleFonts.montserrat(
+                        fontWeight: FontWeight.w600,
+                        fontSize: 18,
+                        color: fontColor,
+                      ),
+                    ),
                   ],
                 ),
               ),

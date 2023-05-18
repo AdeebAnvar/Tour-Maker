@@ -166,7 +166,7 @@ class ProfileView extends GetView<ProfileController> {
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: <Widget>[
-                              Text('city :', style: subheading1),
+                              Text('City :', style: subheading1),
                               if (controller.userData.value.district == '')
                                 GestureDetector(
                                   onTap: () => controller.onClickAdddetail(),
@@ -193,7 +193,7 @@ class ProfileView extends GetView<ProfileController> {
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: <Widget>[
-                              Text('country :', style: subheading1),
+                              Text('Country :', style: subheading1),
                               if (controller.userData.value.country == '')
                                 GestureDetector(
                                   onTap: () => controller.onClickAdddetail(),
