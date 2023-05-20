@@ -30,7 +30,7 @@ class SearchViewView extends GetView<SearchViewController> {
                 onRefresh: controller.loadRecentSearchesFromStorage,
                 child: controller.recentSearchesList.isEmpty
                     ? Column(
-                        children: [
+                        children: <Widget>[
                           const SizedBox(height: 10),
                           ListView.separated(
                             separatorBuilder:

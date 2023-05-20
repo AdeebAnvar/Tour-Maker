@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
-import 'package:sizer/sizer.dart';
 
 import '../../../../core/theme/style.dart';
 import '../../../../core/utils/date_utils.dart';
@@ -212,7 +211,7 @@ class CheckoutScreenView extends GetView<CheckoutScreenController> {
                           width: 160,
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.end,
-                            children: [
+                            children: <Widget>[
                               Text(
                                 '₹ ${controller.getGrandTotal().toStringAsFixed(2)}',
                                 style: heading3.copyWith(
@@ -232,7 +231,7 @@ class CheckoutScreenView extends GetView<CheckoutScreenController> {
                           width: 160,
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.end,
-                            children: [
+                            children: <Widget>[
                               Text(
                                 '(Includes GST ${controller.checkOutModel.value!.gst}%)',
                                 style: subheading2.copyWith(
@@ -246,7 +245,7 @@ class CheckoutScreenView extends GetView<CheckoutScreenController> {
                     ),
                     const SizedBox(height: 60),
                     Row(
-                      children: [
+                      children: <Widget>[
                         Expanded(
                           child: CustomButton().showButton(
                             bgColor: Colors.white,

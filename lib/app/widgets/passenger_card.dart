@@ -92,7 +92,7 @@ class PassengerCard extends StatelessWidget {
                     width: 200,
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.end,
-                      children: [
+                      children: <Widget>[
                         Text(
                           travellers.address.toString(),
                           style: GoogleFonts.montserrat(
