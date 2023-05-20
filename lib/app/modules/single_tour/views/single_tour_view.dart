@@ -243,8 +243,8 @@ class SingleTourView extends GetView<SingleTourController> {
                 height: 25,
                 decoration:
                     BoxDecoration(shape: BoxShape.circle, color: englishViolet),
-                child: const Column(
-                  children: <Widget>[
+                child: Column(
+                  children: const <Widget>[
                     Center(
                       child: Icon(
                         Icons.minimize,
@@ -295,8 +295,8 @@ class SingleTourView extends GetView<SingleTourController> {
                   height: 25,
                   decoration: BoxDecoration(
                       shape: BoxShape.circle, color: englishViolet),
-                  child: const Column(
-                    children: <Widget>[
+                  child: Column(
+                    children: const <Widget>[
                       Center(
                         child: Icon(
                           Icons.minimize,
