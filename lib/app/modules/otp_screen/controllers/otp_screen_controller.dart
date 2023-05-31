@@ -166,6 +166,7 @@ class OtpScreenController extends GetxController
         // currentUserAddress and currentUserCategory
         await getStorage.write('currentUserAddress', user.address);
         await getStorage.write('currentUserCategory', user.category);
+        await getStorage.write('newUser', 'false');
         user.paymentStatus != '' && user.paymentStatus != null
             ? await getStorage.write('initialPayment', 'paid')
             : await getStorage.write('initialPayment', '');

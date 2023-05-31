@@ -39,15 +39,11 @@ class CustomDialog {
                   ),
                   const SizedBox(height: 16),
                   if (contentText != null && contentText != '')
-                    SizedBox(
-                      width: 200,
-                      height: 50,
-                      child: DefaultTextStyle(
-                        style: subheading2.copyWith(fontSize: 10.sp),
-                        child: Text(contentText,
-                            textAlign: TextAlign.center,
-                            overflow: TextOverflow.visible),
-                      ),
+                    DefaultTextStyle(
+                      style: subheading2.copyWith(fontSize: 10.sp),
+                      child: Text(contentText,
+                          textAlign: TextAlign.justify,
+                          overflow: TextOverflow.visible),
                     ),
                   const SizedBox(height: 29),
                   Row(

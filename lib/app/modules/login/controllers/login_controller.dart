@@ -49,7 +49,7 @@ class LoginController extends GetxController with StateMixin<dynamic> {
       await getStorage.write('currentUserState', user.state);
       await getStorage.write('initialPayment', '');
       await getStorage.write('currentUserAddress', '');
-
+      await getStorage.write('newUser', 'true');
       final ApiResponse<Map<String, dynamic>> res =
           await userRepo.loginTheUser(user);
       if (res.status == ApiResponseStatus.completed) {

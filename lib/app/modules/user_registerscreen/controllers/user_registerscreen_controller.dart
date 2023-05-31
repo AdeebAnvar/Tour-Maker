@@ -14,6 +14,7 @@ import '../../../data/models/network_models/razorpay_model.dart';
 import '../../../data/models/network_models/user_model.dart';
 import '../../../data/repo/network_repo/razorpay_repo.dart';
 import '../../../data/repo/network_repo/user_repo.dart';
+import '../../../routes/app_pages.dart';
 import '../../../services/network_services/dio_client.dart';
 import '../../../widgets/custom_dialogue.dart';
 import '../views/user_registerscreen_view.dart';
@@ -54,6 +55,7 @@ class UserRegisterscreenController extends GetxController
   @override
   Future<void> onInit() async {
     super.onInit();
+
     userType.value = await getStorage.read('initialPayment') as String;
     log(userType.value);
     loadData();
@@ -178,13 +180,39 @@ class UserRegisterscreenController extends GetxController
       isloading.value = true;
       if (userType.value == 'paid' ||
           selectedCategoryType.value == CategoryType.standard) {
-        await saveUserInfo();
+        final String newUser = await getStorage.read('newUser') as String;
+
+        if (newUser == 'true') {
+          CustomDialog().showCustomDialog(
+            barrierDismissible: false,
+            'Wait a sec...',
+            contentText:
+                "We understand that your beloved one from kerala missed out on visiting kasmir, but worry not! We have an exclusive offer just for him/her. Suggest him/her to tourmaker .  He /She can Join on this incredible journey from Kerala to Kashmir, and we'll provide our Kashmir or Manali package for free , making it an unforgettable adventure.",
+            confirmText: 'Suggest a friend',
+            cancelText: 'No , Thanks',
+            onCancel: () async {
+              Get.back();
+              await getStorage.write('newUser', 'false');
+              await saveUserInfo();
+            },
+            onConfirm: () {
+              isloading.value = false;
+              Get.back();
+              Get.toNamed(Routes.SUGGEST_FRIEND);
+            },
+          );
+          log('New User');
+        } else {
+          await getStorage.write('newUser', 'false');
+          await saveUserInfo();
+        }
+
         isloading.value = false;
       } else {
         await CustomDialog().showCustomDialog(
-            'Register as an agent of TourMaker',
+            'Register as premium user of TourMaker',
             contentText:
-                'You have to pay \n424+GST \nto apply as an\n agent of TourMaker',
+                'You have to pay \n424+GST \nto apply as an\n premium user of TourMaker',
             cancelText: 'Go Back',
             confirmText: 'Pay rs 424 + GST', onCancel: () {
           selectedCategoryType.value = CategoryType.standard;

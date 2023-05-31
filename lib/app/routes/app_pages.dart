@@ -54,6 +54,8 @@ import '../modules/single_tour/bindings/single_tour_binding.dart';
 import '../modules/single_tour/views/single_tour_view.dart';
 import '../modules/splash_screen/bindings/splash_screen_binding.dart';
 import '../modules/splash_screen/views/splash_screen_view.dart';
+import '../modules/suggest_friend/bindings/suggest_friend_binding.dart';
+import '../modules/suggest_friend/views/suggest_friend_view.dart';
 import '../modules/terms_and_conditions/bindings/terms_and_conditions_binding.dart';
 import '../modules/terms_and_conditions/views/terms_and_conditions_view.dart';
 import '../modules/token_screen/bindings/token_screen_binding.dart';
@@ -340,6 +342,11 @@ class AppPages {
       name: _Paths.INVOICE_PDF,
       page: () => const InvoicePdfView(),
       binding: InvoicePdfBinding(),
+    ),
+    GetPage(
+      name: _Paths.SUGGEST_FRIEND,
+      page: () => const SuggestFriendView(),
+      binding: SuggestFriendBinding(),
     ),
   ];
 }

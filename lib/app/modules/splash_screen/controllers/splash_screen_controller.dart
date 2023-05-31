@@ -136,8 +136,6 @@ class SplashScreenController extends GetxController with StateMixin<dynamic> {
       // When user didn't allow the the permission to send notification we need to store a value in getstorage that the
       // notification accepted or not by user .  the key is isNotificationON . and also show a snackbar
       await getStorage.write('isNotificationON', 'false');
-      Get.snackbar('Notification Not Allowed by You', '',
-          colorText: Colors.white, backgroundColor: englishViolet);
     }
   }
 
@@ -189,12 +187,19 @@ class SplashScreenController extends GetxController with StateMixin<dynamic> {
     // Otherwise the user will redirect to Home Screen
     if (res.data != null) {
       final UserModel user = res.data!;
-      await getStorage.write('currentUserAddress', user.address);
-      await getStorage.write('currentUserCategory', user.category);
-      user.paymentStatus != '' && user.paymentStatus != null
-          ? await getStorage.write('initialPayment', 'paid')
-          : await getStorage.write('initialPayment', '');
-      await Get.offAllNamed(Routes.HOME);
+      if (user.tAndCStatus == 'true') {
+        await getStorage.write('currentUserAddress', user.address);
+        await getStorage.write('currentUserCategory', user.category);
+        await getStorage.write('newUser', 'false');
+
+        user.paymentStatus != '' && user.paymentStatus != null
+            ? await getStorage.write('initialPayment', 'paid')
+            : await getStorage.write('initialPayment', '');
+        await Get.offAllNamed(Routes.HOME);
+      } else {
+        await getStorage.write('newUser', 'true');
+        Get.offAllNamed(Routes.TERMS_AND_CONDITIONS);
+      }
     } else {
       await notificationPermissionwithPostMethod();
       await Get.offAllNamed(Routes.LOGIN, arguments: currentUser?.phoneNumber);
