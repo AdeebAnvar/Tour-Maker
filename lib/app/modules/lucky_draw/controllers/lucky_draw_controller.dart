@@ -20,6 +20,7 @@ class LuckyDrawController extends GetxController with StateMixin<dynamic> {
   @override
   Future<void> onInit() async {
     super.onInit();
+    change(null, status: RxStatus.success());
   }
 
   @override
