@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 
 import '../../../routes/app_pages.dart';
+import '../../../widgets/custom_dialogue.dart';
 
 class LuckyDrawController extends GetxController with StateMixin<dynamic> {
   dynamic userName;
@@ -10,6 +11,7 @@ class LuckyDrawController extends GetxController with StateMixin<dynamic> {
   final RxInt count = 0.obs;
   RxBool isLoading = false.obs;
   RxBool isFinished = false.obs;
+  RxBool isFinishedHeading = false.obs;
   final GetStorage getStorage = GetStorage();
   final AudioPlayer audioPlayer = AudioPlayer();
 
@@ -23,9 +25,6 @@ class LuckyDrawController extends GetxController with StateMixin<dynamic> {
   @override
   Future<void> onReady() async {
     super.onReady();
-    change(null, status: RxStatus.loading());
-    currentUserName = await getStorage.read('currentUserName') as String;
-    change(null, status: RxStatus.success());
     playAudio();
   }
 
@@ -48,10 +47,23 @@ class LuckyDrawController extends GetxController with StateMixin<dynamic> {
     Get.offAllNamed(Routes.HOME);
   }
 
-  Future<void> onClickPayment() async {}
+  Future<void> onFinishedHeading() async {
+    isFinishedHeading.value = true;
+  }
 
-  void showRegisterBttomSheet(String name, String state, String phoneNumber) {
-    Get.offAllNamed(Routes.USER_REGISTERSCREEN,
-        arguments: <String>[name, state, phoneNumber]);
+  Future<void> onClickFoatingButton() async {
+    CustomDialog().showCustomDialog(
+      barrierDismissible: false,
+      'Want to Suggest A Friend',
+      confirmText: 'NO',
+      cancelText: 'Suggest',
+      onCancel: () async {
+        Get.back();
+        Get.offAllNamed(Routes.SUGGEST_FRIEND);
+      },
+      onConfirm: () {
+        Get.offAllNamed(Routes.HOME);
+      },
+    );
   }
 }

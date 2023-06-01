@@ -1,11 +1,10 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
 import 'package:sizer/sizer.dart';
 
 import '../../../../core/theme/style.dart';
+import '../../../routes/app_pages.dart';
 import '../../../widgets/custom_appbar.dart';
 import '../../../widgets/custom_elevated_button.dart';
 import '../../../widgets/custom_textformfield.dart';
@@ -97,6 +96,17 @@ class SuggestFriendView extends GetView<SuggestFriendController> {
                       onPressed: () => controller.onRegisterClicked(),
                     );
                   },
+                ),
+                TextButton(
+                  onPressed: () {
+                    Get.offAllNamed(Routes.HOME);
+                  },
+                  child: Text(
+                    'Cancel',
+                    style: TextStyle(
+                      color: englishlinearViolet,
+                    ),
+                  ),
                 ),
               ],
             ),

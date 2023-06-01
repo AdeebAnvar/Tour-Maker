@@ -180,33 +180,7 @@ class UserRegisterscreenController extends GetxController
       isloading.value = true;
       if (userType.value == 'paid' ||
           selectedCategoryType.value == CategoryType.standard) {
-        final String newUser = await getStorage.read('newUser') as String;
-
-        if (newUser == 'true') {
-          CustomDialog().showCustomDialog(
-            barrierDismissible: false,
-            'Wait a sec...',
-            contentText:
-                "We understand that your beloved one from kerala missed out on visiting kasmir, but worry not! We have an exclusive offer just for him/her. Suggest him/her to tourmaker .  He /She can Join on this incredible journey from Kerala to Kashmir, and we'll provide our Kashmir or Manali package for free , making it an unforgettable adventure.",
-            confirmText: 'Suggest a friend',
-            cancelText: 'No , Thanks',
-            onCancel: () async {
-              Get.back();
-              await getStorage.write('newUser', 'false');
-              await saveUserInfo();
-            },
-            onConfirm: () {
-              isloading.value = false;
-              Get.back();
-              Get.toNamed(Routes.SUGGEST_FRIEND);
-            },
-          );
-          log('New User');
-        } else {
-          await getStorage.write('newUser', 'false');
-          await saveUserInfo();
-        }
-
+        await saveUserInfo();
         isloading.value = false;
       } else {
         await CustomDialog().showCustomDialog(

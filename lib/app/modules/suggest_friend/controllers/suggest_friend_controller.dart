@@ -6,6 +6,7 @@ import 'package:get_storage/get_storage.dart';
 
 import '../../../data/models/network_models/suggest_a_friend.dart';
 import '../../../data/repo/network_repo/suggest_a_friend_repo.dart';
+import '../../../routes/app_pages.dart';
 import '../../../services/network_services/dio_client.dart';
 
 class SuggestFriendController extends GetxController {
@@ -64,8 +65,7 @@ class SuggestFriendController extends GetxController {
             .suggestAFriend(referAFriend: referAFriendModel);
 
         if (res.status == ApiResponseStatus.completed) {
-          await getStorage.write('newUser', 'false');
-          Get.back();
+          Get.offAllNamed(Routes.HOME);
           isloading.value = false;
         } else {
           isloading.value = false;
