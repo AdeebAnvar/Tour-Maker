@@ -51,13 +51,11 @@ class LuckyDrawView extends GetView<LuckyDrawController> {
                             animatedTexts: <AnimatedText>[
                               TypewriterAnimatedText(
                                 '''
-Attention! We have an exciting opportunity for someone you know who loves to travel but is held back by financial constraints. We are offering free tour packages to the mesmerizing destinations of Kashmir or Manali!
+Get ready for a chance to win big!\nwe're excited to announce that once we reach 10,000 users, we'll be conducting a lucky draw contest.\nstay tuned for more information on how to participate and the prizes you can win.\nin the meantime, invite your friends and family to join the app and increase your chances of being one of the lucky winners. 
 
-If you have a beloved one who dreams of exploring these breathtaking locations but is unable to do so due to financial limitations, we invite you to recommend them to TourMaker's suugestion screen (which appears next) . Our aim is to make travel accessible to everyone, regardless of their financial background.
-
-To nominate someone for this incredible opportunity, simply provide us with their contact information and a brief description of why they deserve to embark on this unforgettable journey. Our team will carefully reviewand verify all submissions and select deserving individuals for the free tour packages.
-
-Let's come together and make dreams come true! Nominate your beloved one now and let them experience the wonders of Kashmir or Manali without worrying about finances.''',
+If you have a beloved one who dreams of exploring these breathtaking locations but is unable to do so due to financial limitations, we invite you to recommend them to TourMaker's suugestion screen (which appears next).simply provide us with their contact information . Our team will carefully reviewand verify all submissions and select deserving individuals for the free tour packages.
+Let's come together and make dreams come true! Nominate your beloved one now and let them experience the wonders of Kashmir or Manali without worrying about finances.
+\n LET'S REACH OUR GOAL TOGETHER!''',
                                 speed: const Duration(milliseconds: 50),
                                 textAlign: TextAlign.justify,
                                 textStyle: heading2.copyWith(
