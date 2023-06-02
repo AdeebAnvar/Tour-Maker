@@ -29,28 +29,4 @@ class PackageRepository {
       return ApiResponse<List<PackageModel>>.error(e.toString());
     }
   }
-
-  Future<ApiResponse<List<PackageModel>>> getSingleTour() async {
-    try {
-      final Map<String, dynamic>? authHeader = await Client().getAuthHeader();
-      final Response<dynamic> res = await dio.getUri(
-          Uri.parse('tours/packages'),
-          options: Options(headers: authHeader));
-      if (res.statusCode == 200) {
-        packageList = (res.data['result'] as List<dynamic>).map(
-          (dynamic e) {
-            return PackageModel.fromJson(e as Map<String, dynamic>);
-          },
-        ).toList();
-
-        return ApiResponse<List<PackageModel>>.completed(packageList);
-      } else {
-        return ApiResponse<List<PackageModel>>.error(res.statusMessage);
-      }
-    } on DioError catch (de) {
-      return ApiResponse<List<PackageModel>>.error(de.toString());
-    } catch (e) {
-      return ApiResponse<List<PackageModel>>.error(e.toString());
-    }
-  }
 }

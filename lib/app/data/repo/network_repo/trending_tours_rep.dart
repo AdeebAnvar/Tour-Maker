@@ -35,11 +35,11 @@ class TrendingToursRepository {
   }
 
   Future<ApiResponse<List<SingleTrendingToursModel>>> getSingleTrendingTours(
-      String name) async {
+      String name, int page) async {
     try {
       final Map<String, dynamic>? authHeader = await Client().getAuthHeader();
       final Response<Map<String, dynamic>> res = await dio.getUri(
-          Uri.parse('tours/trending?destination=$name'),
+          Uri.parse('tours/trending?destination=$name&page=$page'),
           options: Options(headers: authHeader));
       if (res.statusCode == 200) {
         singleTour = (res.data!['result'] as List<dynamic>).map((dynamic e) {

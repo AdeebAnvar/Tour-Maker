@@ -13,7 +13,7 @@ class SinglePassengerController extends GetxController
     with StateMixin<SinglePassengerView> {
   RxList<TravellersModel> passenger = <TravellersModel>[].obs;
   int? id;
-  String? adhar;
+  // String? adhar;
   @override
   void onInit() {
     super.onInit();
@@ -36,28 +36,28 @@ class SinglePassengerController extends GetxController
     try {
       if (res.data != null) {
         passenger.value = res.data!;
-        await loadAAdhar(passenger[0].name!, passenger[0].orderId!);
+        // await loadAAdhar(passenger[0].name!, passenger[0].orderId!);
       } else {}
     } catch (e) {
       CustomDialog().showCustomDialog('Error !', contentText: e.toString());
     }
   }
 
-  Future<void> loadAAdhar(String name, int orderid) async {
-    final ApiResponse<dynamic> res =
-        await PassengerRepository().getadhar(name, orderid);
-    try {
-      if (res.data != null) {
-        adhar = res.data as String;
-      } else {}
-    } catch (e) {
-      CustomDialog().showCustomDialog('Error !', contentText: e.toString());
-    }
-  }
+  // Future<void> loadAAdhar(String name, int orderid) async {
+  //   final ApiResponse<dynamic> res =
+  //       await PassengerRepository().getadhar(name, orderid);
+  //   try {
+  //     if (res.data != null) {
+  //       adhar = res.data as String;
+  //     } else {}
+  //   } catch (e) {
+  //     CustomDialog().showCustomDialog('Error !', contentText: e.toString());
+  //   }
+  // }
 
-  Uint8List getImageFromBytes() {
-    final String base64Image = adhar.toString();
-    final Uint8List bytes = base64.decode(base64Image.split(',').last);
-    return bytes;
-  }
+  // Uint8List getImageFromBytes() {
+  //   final String base64Image = adhar.toString();
+  //   final Uint8List bytes = base64.decode(base64Image.split(',').last);
+  //   return bytes;
+  // }
 }

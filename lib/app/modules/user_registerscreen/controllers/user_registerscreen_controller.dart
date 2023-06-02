@@ -14,7 +14,6 @@ import '../../../data/models/network_models/razorpay_model.dart';
 import '../../../data/models/network_models/user_model.dart';
 import '../../../data/repo/network_repo/razorpay_repo.dart';
 import '../../../data/repo/network_repo/user_repo.dart';
-import '../../../routes/app_pages.dart';
 import '../../../services/network_services/dio_client.dart';
 import '../../../widgets/custom_dialogue.dart';
 import '../views/user_registerscreen_view.dart';

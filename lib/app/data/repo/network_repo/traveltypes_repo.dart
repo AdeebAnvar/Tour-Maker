@@ -35,11 +35,11 @@ class TravelTypesRepository {
   }
 
   Future<ApiResponse<List<SingleTravelTypesTourModel>>>
-      getSingleTravelTypesTours(String name) async {
+      getSingleTravelTypesTours(String name, int page) async {
     try {
       final Map<String, dynamic>? authHeader = await Client().getAuthHeader();
       final Response<Map<String, dynamic>> res = await dio.getUri(
-          Uri.parse('tours/packages?travel_type=$name'),
+          Uri.parse('tours/packages?travel_type=$name&page=$page'),
           options: Options(headers: authHeader));
       if (res.statusCode == 200) {
         travelTypesToursList =

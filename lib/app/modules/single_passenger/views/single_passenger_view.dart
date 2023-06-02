@@ -120,20 +120,20 @@ class SinglePassengerView extends GetView<SinglePassengerController> {
                     ],
                   ),
                   const SizedBox(height: 10),
-                  const Text('ID Proof : '),
-                  const SizedBox(height: 30),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: <Widget>[
-                      Container(
-                          decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(15),
-                              color: Colors.blue),
-                          // height: 400,
-                          width: 200,
-                          child: Image.memory(controller.getImageFromBytes())),
-                    ],
-                  )
+                  // const Text('ID Proof : '),
+                  // const SizedBox(height: 30),
+                  // Row(
+                  //   mainAxisAlignment: MainAxisAlignment.center,
+                  //   children: <Widget>[
+                  //     Container(
+                  //         decoration: BoxDecoration(
+                  //             borderRadius: BorderRadius.circular(15),
+                  //             color: Colors.blue),
+                  //         // height: 400,
+                  //         width: 200,
+                  //         child: Image.memory(controller.getImageFromBytes())),
+                  //   ],
+                  // )
                 ],
               ),
             ),

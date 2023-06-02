@@ -174,55 +174,55 @@ class AddPassengerView extends GetView<AddPassengerController> {
                         controller.customerAddress.value = value.toString(),
                     hintText: 'Address',
                   ),
-                  const SizedBox(height: 15),
-                  Container(
-                    padding:
-                        const EdgeInsets.symmetric(vertical: 10, horizontal: 5),
-                    decoration: BoxDecoration(
-                      color: const Color.fromARGB(255, 232, 231, 233),
-                      borderRadius: BorderRadius.circular(15),
-                    ),
-                    child: Obx(
-                      () => controller.image.value != ''
-                          ? Column(
-                              children: <Widget>[
-                                Text('ID proof', style: subheading2),
-                                Container(
-                                  decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(15)),
-                                  margin: const EdgeInsets.all(10),
-                                  child: Image.file(
-                                    fit: BoxFit.cover,
-                                    File(controller.image.value),
-                                  ),
-                                ),
-                                Row(
-                                  children: <Widget>[
-                                    IconButton(
-                                      icon: const Icon(Icons.camera_alt),
-                                      onPressed: () {
-                                        onClickCamera(context);
-                                      },
-                                    ),
-                                  ],
-                                )
-                              ],
-                            )
-                          : Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: <Widget>[
-                                const Text('      ID PROOF'),
-                                IconButton(
-                                  icon: const Icon(Icons.camera_alt),
-                                  onPressed: () {
-                                    onClickCamera(context);
-                                  },
-                                ),
-                              ],
-                            ),
-                    ),
-                  ),
-                  const SizedBox(height: 5),
+                  // const SizedBox(height: 15),
+                  // Container(
+                  //   padding:
+                  //       const EdgeInsets.symmetric(vertical: 10, horizontal: 5),
+                  //   decoration: BoxDecoration(
+                  //     color: const Color.fromARGB(255, 232, 231, 233),
+                  //     borderRadius: BorderRadius.circular(15),
+                  //   ),
+                  //   child: Obx(
+                  //     () => controller.image.value != ''
+                  //         ? Column(
+                  //             children: <Widget>[
+                  //               Text('ID proof', style: subheading2),
+                  //               Container(
+                  //                 decoration: BoxDecoration(
+                  //                     borderRadius: BorderRadius.circular(15)),
+                  //                 margin: const EdgeInsets.all(10),
+                  //                 child: Image.file(
+                  //                   fit: BoxFit.cover,
+                  //                   File(controller.image.value),
+                  //                 ),
+                  //               ),
+                  //               Row(
+                  //                 children: <Widget>[
+                  //                   IconButton(
+                  //                     icon: const Icon(Icons.camera_alt),
+                  //                     onPressed: () {
+                  //                       onClickCamera(context);
+                  //                     },
+                  //                   ),
+                  //                 ],
+                  //               )
+                  //             ],
+                  //           )
+                  //         : Row(
+                  //             mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  //             children: <Widget>[
+                  //               const Text('      ID PROOF'),
+                  //               IconButton(
+                  //                 icon: const Icon(Icons.camera_alt),
+                  //                 onPressed: () {
+                  //                   onClickCamera(context);
+                  //                 },
+                  //               ),
+                  //             ],
+                  //           ),
+                  //   ),
+                  // ),
+                  const SizedBox(height: 10),
                   Obx(
                     () {
                       return CustomButton().showIconButtonWithGradient(

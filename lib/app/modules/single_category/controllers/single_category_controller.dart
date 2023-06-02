@@ -15,6 +15,10 @@ class SingleCategoryController extends GetxController
   Rx<String> categoryName = ''.obs;
   Rx<String> categoryImage = ''.obs;
   RxList<WishListModel> wishList = <WishListModel>[].obs;
+  int page = 1;
+  bool isLoading = false;
+  RxBool hasReachedEnd = false.obs;
+
   @override
   void onInit() {
     super.onInit();
@@ -26,11 +30,6 @@ class SingleCategoryController extends GetxController
     await getWishList();
   }
 
-  void onSingleTourPressed(PackageModel pckg) {
-    Get.toNamed(Routes.SINGLE_TOUR, arguments: <int>[pckg.id!])!
-        .whenComplete(() => loadData());
-  }
-
   Future<void> getData() async {
     change(null, status: RxStatus.loading());
 
@@ -38,14 +37,24 @@ class SingleCategoryController extends GetxController
       categoryName.value = Get.arguments[0] as String;
       categoryImage.value = Get.arguments[1] as String;
       await loadCategoryPackages(categoryName.value);
-    } else {}
+    } else {
+      // Handle case when no arguments are passed
+    }
+  }
+
+  void onSingleTourPressed(PackageModel pckg) {
+    Get.toNamed(Routes.SINGLE_TOUR, arguments: <int>[pckg.id!])!
+        .whenComplete(() => loadData());
   }
 
   Future<void> getWishList() async {
     final ApiResponse<dynamic> res = await WishListRepo().getAllFav();
     if (res.data != null) {
       wishList.value = res.data! as List<WishListModel>;
-    } else {}
+      change(null, status: RxStatus.success());
+    } else {
+      // Handle case when wish list data is null
+    }
   }
 
   Future<void> toggleFavorite(int productId) async {
@@ -78,22 +87,32 @@ class SingleCategoryController extends GetxController
   RxBool isFavorite(int productId) =>
       RxBool(wishList.any((WishListModel package) => package.id == productId));
 
-  Future<void> loadCategoryPackages(String categoryName) async {
+  Future<void> loadCategoryPackages(String categoryName, {int page = 1}) async {
     try {
-      final ApiResponse<List<PackageModel>> res =
-          await CategoryRepository().getCategorybycategoryName(categoryName);
+      final ApiResponse<List<PackageModel>> res = await CategoryRepository()
+          .getCategorybycategoryName(categoryName, page);
       if (res.status == ApiResponseStatus.completed) {
-        if (res.data!.isNotEmpty) {
-          packageList.value = res.data!;
-          change(null, status: RxStatus.success());
+        final List<PackageModel> newData = res.data!;
+        if (newData.isNotEmpty) {
+          packageList.addAll(newData);
+          this.page = page;
+          if (newData.length < 10) {
+            hasReachedEnd.value = true;
+          }
         } else {
-          change(null, status: RxStatus.empty());
+          hasReachedEnd.value = true;
+          // Empty response, indicating end of data
         }
       } else {
-        change(null, status: RxStatus.empty());
+        // Error response
       }
     } catch (e) {
-      CustomDialog().showCustomDialog('Error !', contentText: e.toString());
+      // Exception occurred
     }
+  }
+
+  void loadMore() {
+    final int nextPage = page + 1;
+    loadCategoryPackages(categoryName.value, page: nextPage);
   }
 }

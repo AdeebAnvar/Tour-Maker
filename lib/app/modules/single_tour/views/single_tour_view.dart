@@ -237,7 +237,7 @@ class SingleTourView extends GetView<SingleTourController> {
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: <Widget>[
             GestureDetector(
-              onTap: () => controller.onClickAddChildren(),
+              onTap: () => controller.onClickSubtractChildren(),
               child: Container(
                 width: 25,
                 height: 25,

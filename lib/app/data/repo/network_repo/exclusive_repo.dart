@@ -35,11 +35,11 @@ class ExclusiveTourRepository {
   }
 
   Future<ApiResponse<List<SingleExclusiveTourModel>>>
-      getAllSingleExclusiveTours(String destination) async {
+      getAllSingleExclusiveTours(String destination, int page) async {
     try {
       final Map<String, dynamic>? authHeader = await Client().getAuthHeader();
       final Response<Map<String, dynamic>> res = await dio.getUri(
-          Uri.parse('tours/packages?exclusive=$destination'),
+          Uri.parse('tours/packages?exclusive=$destination&page=$page'),
           options: Options(headers: authHeader));
       if (res.statusCode == 200) {
         singleexclusiveToursList =

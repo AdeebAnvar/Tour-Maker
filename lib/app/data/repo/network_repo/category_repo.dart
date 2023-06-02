@@ -30,11 +30,11 @@ class CategoryRepository {
   }
 
   Future<ApiResponse<List<PackageModel>>> getCategorybycategoryName(
-      dynamic categoryname) async {
+      dynamic categoryname, int page) async {
     try {
       final Map<String, dynamic>? authHeader = await Client().getAuthHeader();
       final Response<Map<String, dynamic>> response = await dio.getUri(
-          Uri.parse('tours/packages?category=$categoryname'),
+          Uri.parse('tours/packages?category=$categoryname&page=$page'),
           options: Options(headers: authHeader));
       if (response.statusCode == 200) {
         if (response.data!['result'] != null) {

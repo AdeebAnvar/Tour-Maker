@@ -15,6 +15,9 @@ class TravelTypesController extends GetxController
   RxList<SingleTravelTypesTourModel> singleTour =
       <SingleTravelTypesTourModel>[].obs;
   RxList<WishListModel> wishList = <WishListModel>[].obs;
+  int page = 1;
+  bool isLoading = false;
+  RxBool hasReachedEnd = false.obs;
 
   @override
   void onInit() {
@@ -27,14 +30,28 @@ class TravelTypesController extends GetxController
     await getWishList();
   }
 
-  Future<void> loadTours(String destination) async {
-    final ApiResponse<List<SingleTravelTypesTourModel>> res =
-        await TravelTypesRepository().getSingleTravelTypesTours(destination);
-    if (res.data != null) {
-      singleTour.value = res.data!;
-      change(null, status: RxStatus.success());
-    } else {
-      change(null, status: RxStatus.empty());
+  Future<void> loadTours(String categoryName, {int page = 1}) async {
+    try {
+      final ApiResponse<List<SingleTravelTypesTourModel>> res =
+          await TravelTypesRepository()
+              .getSingleTravelTypesTours(destination!, page);
+      if (res.status == ApiResponseStatus.completed) {
+        final List<SingleTravelTypesTourModel> newData = res.data!;
+        if (newData.isNotEmpty) {
+          singleTour.addAll(newData);
+          this.page = page;
+          if (newData.length < 10) {
+            hasReachedEnd.value = true;
+          }
+        } else {
+          hasReachedEnd.value = true;
+          // Empty response, indicating end of data
+        }
+      } else {
+        // Error response
+      }
+    } catch (e) {
+      // Exception occurred
     }
   }
 
@@ -50,6 +67,7 @@ class TravelTypesController extends GetxController
     final ApiResponse<dynamic> res = await WishListRepo().getAllFav();
     if (res.status == ApiResponseStatus.completed) {
       wishList.value = res.data! as List<WishListModel>;
+      change(null, status: RxStatus.success());
     }
   }
 
@@ -78,6 +96,11 @@ class TravelTypesController extends GetxController
     } catch (e) {
       CustomDialog().showCustomDialog('Error !', contentText: e.toString());
     }
+  }
+
+  void loadMore() {
+    final int nextPage = page + 1;
+    loadTours(destination!, page: nextPage);
   }
 
   RxBool isFavorite(int productId) =>
