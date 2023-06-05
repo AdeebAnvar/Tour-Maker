@@ -126,7 +126,7 @@ class PassengerRepository {
   }
 
   Future<ApiResponse<bool>> addpassenger(String? name, String? phoneNumber,
-      String? orderID, String? dob, String? address) async {
+      String? orderID, String? dob, String? address, String fullPath) async {
     try {
       final Map<String, dynamic>? authHeader =
           await Client().getMultiPartAuthHeader();
@@ -136,10 +136,10 @@ class PassengerRepository {
         'date_of_birth': dob,
         'address': address,
         'order_id': orderID,
-        // // 'image': await MultipartFile.fromFile(
-        // //   fullPath,
-        //   contentType: MediaType('image', 'jpeg'),
-        // ),
+        'image': await MultipartFile.fromFile(
+          fullPath,
+          contentType: MediaType('image', 'jpeg'),
+        ),
       });
       final Response<Map<String, dynamic>> response = await dio.postUri(
           Uri.parse('user/traveller'),
@@ -207,24 +207,24 @@ class PassengerRepository {
     }
   }
 
-  // Future<ApiResponse<dynamic>> getadhar(String name, int id) async {
-  //   try {
-  //     final Map<String, dynamic>? authHeader = await Client().getAuthHeader();
+  Future<ApiResponse<dynamic>> getadhar(String name, int id) async {
+    try {
+      final Map<String, dynamic>? authHeader = await Client().getAuthHeader();
 
-  //     final Response<Map<String, dynamic>> response = await dio.postUri(
-  //       Uri.parse('user/traveller/aadhar'),
-  //       data: <String, dynamic>{'name': name, 'order_id': id},
-  //       options: Options(headers: authHeader),
-  //     );
-  //     if (response.statusCode == 200) {
-  //       return ApiResponse<dynamic>.completed(response.data!['result']);
-  //     } else {
-  //       return ApiResponse<dynamic>.error(response.statusMessage);
-  //     }
-  //   } on DioError catch (de) {
-  //     return ApiResponse<dynamic>.error(de.error.toString());
-  //   } catch (e) {
-  //     return ApiResponse<dynamic>.error(e.toString());
-  //   }
-  // }
+      final Response<Map<String, dynamic>> response = await dio.postUri(
+        Uri.parse('user/traveller/aadhar'),
+        data: <String, dynamic>{'name': name, 'order_id': id},
+        options: Options(headers: authHeader),
+      );
+      if (response.statusCode == 200) {
+        return ApiResponse<dynamic>.completed(response.data!['result']);
+      } else {
+        return ApiResponse<dynamic>.error(response.statusMessage);
+      }
+    } on DioError catch (de) {
+      return ApiResponse<dynamic>.error(de.error.toString());
+    } catch (e) {
+      return ApiResponse<dynamic>.error(e.toString());
+    }
+  }
 }

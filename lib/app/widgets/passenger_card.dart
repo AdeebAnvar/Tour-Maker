@@ -108,21 +108,21 @@ class PassengerCard extends StatelessWidget {
                 ],
               ),
               const SizedBox(height: 10),
-              // Row(
-              //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              //   children: <Widget>[
-              //     const Text('ID Proof : '),
-              //     Text(
-              //       ' Added ✔️',
-              //       style: GoogleFonts.montserrat(
-              //         fontWeight: FontWeight.w600,
-              //         fontSize: 14,
-              //         color: Colors.green,
-              //       ),
-              //       overflow: TextOverflow.clip,
-              //     ),
-              //   ],
-              // ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: <Widget>[
+                  const Text('ID Proof : '),
+                  Text(
+                    ' Added ✔️',
+                    style: GoogleFonts.montserrat(
+                      fontWeight: FontWeight.w600,
+                      fontSize: 14,
+                      color: Colors.green,
+                    ),
+                    overflow: TextOverflow.clip,
+                  ),
+                ],
+              ),
             ],
           ),
         ),

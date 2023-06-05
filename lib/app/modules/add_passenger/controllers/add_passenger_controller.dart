@@ -72,32 +72,32 @@ class AddPassengerController extends GetxController
   Future<void> onRegisterClicked() async {
     if (formKey.currentState!.validate()) {
       // if the form state is validated after that check the id proof image is added or not
-      // if (image.value != '') {
-      // when it added send the data to server
-      isloading.value = true;
-      final ApiResponse<bool> res = await PassengerRepository().addpassenger(
-        customerName.value,
-        customerPhone.value,
-        orderID.toString(),
-        customerDOB.value,
-        customerAddress.value,
-        // image.value,
-      );
-      if (res.status == ApiResponseStatus.completed) {
-        image.value = '';
-        // After the data's added close the bottom sheet
-        await getTravellers(orderID).whenComplete(() => Get.back());
+      if (image.value != '') {
+        // when it added send the data to server
+        isloading.value = true;
+        final ApiResponse<bool> res = await PassengerRepository().addpassenger(
+          customerName.value,
+          customerPhone.value,
+          orderID.toString(),
+          customerDOB.value,
+          customerAddress.value,
+          image.value,
+        );
+        if (res.status == ApiResponseStatus.completed) {
+          image.value = '';
+          // After the data's added close the bottom sheet
+          await getTravellers(orderID).whenComplete(() => Get.back());
+        } else {
+          // when the data can't be added shows this dialogue
+          CustomDialog().showCustomDialog("Can't add the passenger",
+              contentText: 'Please check the all details that you entered');
+        }
+        isloading.value = false;
       } else {
-        // when the data can't be added shows this dialogue
-        CustomDialog().showCustomDialog("Can't add the passenger",
-            contentText: 'Please check the all details that you entered');
+        //   // when the id proof is n't added show the snackbar
+        Get.snackbar('Add your ID proof', 'Add any ID proof',
+            backgroundColor: englishViolet, colorText: Colors.white);
       }
-      isloading.value = false;
-      // } else {
-      //   // when the id proof is n't added show the snackbar
-      //   Get.snackbar('Add your ID proof', 'Add any ID proof',
-      //       backgroundColor: englishViolet, colorText: Colors.white);
-      // }
     }
     isloading.value = false;
   }
