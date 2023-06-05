@@ -27,12 +27,19 @@ class SingleTourView extends GetView<SingleTourController> {
       appBar: buildAPPBAR(controller),
       body: controller.obx(
         onLoading: const CustomLoadingScreen(),
-        (SingleTourView? state) => Stack(
-          children: <Widget>[
-            tourImge(controller),
-            tourName(controller),
-            tourDetailContainer(screenWidth, controller, context),
-          ],
+        (SingleTourView? state) => RefreshIndicator(
+          onRefresh: controller.fetchData,
+          color: englishViolet,
+          child: SingleChildScrollView(
+            physics: AlwaysScrollableScrollPhysics(),
+            child: Stack(
+              children: <Widget>[
+                tourImge(controller),
+                tourName(controller),
+                tourDetailContainer(screenWidth, controller, context),
+              ],
+            ),
+          ),
         ),
       ),
     );

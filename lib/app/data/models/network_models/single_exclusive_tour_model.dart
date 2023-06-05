@@ -55,21 +55,26 @@ class SingleExclusiveTourModel {
 
   static SingleExclusiveTourModel fromJson(Map<String, dynamic> json) =>
       SingleExclusiveTourModel(
-        amount: json['amount'] as num,
-        category: json['category'] as String,
-        days: json['days'] as int,
-        description: json['description'] as String,
-        destination: json['destination'] as String,
-        exclusiveTour: json['exclusive_tour'] as String,
+        amount: json['amount'] == null ? 0 : json['amount'] as num,
+        category: json['category'] == null ? '' : json['category'] as String,
+        days: json['days'] == null ? 0 : json['days'] as int,
+        description:
+            json['description'] == null ? '' : json['description'] as String,
+        destination:
+            json['destination'] == null ? '' : json['destination'] as String,
+        exclusiveTour: json['exclusive_tour'] == null
+            ? ''
+            : json['exclusive_tour'] as String,
         id: json['id'] as int,
-        image: json['image'] as String,
-        itinerary: json['itinerary'] as String,
-        name: json['name'] as String,
-        nights: json['nights'] as int,
-        priority: json['priority'] as int,
-        region: json['region'] as String,
-        tourCode: json['tour_code'] as String,
-        travelType: json['travel_type'] as String,
-        trending: json['trending'] as bool,
+        image: json['image'] == null ? '' : json['image'] as String,
+        itinerary: json['itinerary'] == null ? '' : json['itinerary'] as String,
+        name: json['name'] == null ? '' : json['name'] as String,
+        nights: json['nights'] == null ? 0 : json['nights'] as int,
+        priority: json['priority'] == null ? 0 : json['priority'] as int,
+        region: json['region'] == null ? '' : json['region'] as String,
+        tourCode: json['tour_code'] == null ? '' : json['tour_code'] as String,
+        travelType:
+            json['travel_type'] == null ? '' : json['travel_type'] as String,
+        trending: json['trending'] == null ? false : json['trending'] as bool,
       );
 }

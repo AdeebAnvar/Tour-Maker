@@ -26,6 +26,9 @@ class SingleCategoryController extends GetxController
   }
 
   Future<void> loadData() async {
+    if (packageList.isNotEmpty) {
+      packageList.clear();
+    }
     await getData();
     await getWishList();
   }

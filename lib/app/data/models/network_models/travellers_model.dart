@@ -27,11 +27,14 @@ class TravellersModel {
 
   static TravellersModel fromJson(Map<String, dynamic> json) => TravellersModel(
         id: json['id'] as int,
-        orderId: json['order_id'] as int,
-        userId: json['user_id'] as String,
-        name: json['name'] as String,
-        phoneNumber: json['phone_number'] as String,
-        dateOfBirth: json['date_of_birth'] as String,
-        address: json['address'] as String,
+        orderId: json['order_id'] == null ? 0 : json['order_id'] as int,
+        userId: json['user_id'] == null ? '' : json['user_id'] as String,
+        name: json['name'] == null ? '' : json['name'] as String,
+        phoneNumber:
+            json['phone_number'] == null ? '' : json['phone_number'] as String,
+        dateOfBirth: json['date_of_birth'] == null
+            ? ''
+            : json['date_of_birth'] as String,
+        address: json['address'] == null ? '' : json['address'] as String,
       );
 }

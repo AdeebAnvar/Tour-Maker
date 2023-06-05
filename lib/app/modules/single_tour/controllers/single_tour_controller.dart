@@ -46,7 +46,9 @@ class SingleTourController extends GetxController
   }
 
   Future<void> fetchData() async {
+    log('message');
     change(null, status: RxStatus.loading());
+
     await datasFromLocalStorage();
     try {
       final int id = await loadData();

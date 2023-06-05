@@ -45,17 +45,28 @@ class SingleTravellerModel {
   static SingleTravellerModel fromJson(Map<String, dynamic> json) =>
       SingleTravellerModel(
         id: json['id'] as int,
-        paymentNo: json['payment_no'] as int,
-        orderDate: json['order_date'] as String,
-        userId: json['user_id'] as int,
-        paymentStatus: json['payment_status'] as String,
-        orderStatus: json['order_status'] as String,
-        noOfChildren: json['no_of_children'] as int,
-        noOfAdults: json['no_of_adults'] as int,
-        packageId: json['package_id'] as int,
-        amountPaid: json['amount_paid'] as int,
-        offerApplied: json['offer_applied'] as bool,
-        totalAmount: json['total_amount'] as int,
-        payableAmount: json['payable_amount'] as int,
+        paymentNo: json['payment_no'] == null ? 0 : json['payment_no'] as int,
+        orderDate:
+            json['order_date'] == null ? '' : json['order_date'] as String,
+        userId: json['user_id'] == null ? 0 : json['user_id'] as int,
+        paymentStatus: json['payment_status'] == null
+            ? ''
+            : json['payment_status'] as String,
+        orderStatus:
+            json['order_status'] == null ? '' : json['order_status'] as String,
+        noOfChildren:
+            json['no_of_children'] == null ? 0 : json['no_of_children'] as int,
+        noOfAdults:
+            json['no_of_adults'] == null ? 0 : json['no_of_adults'] as int,
+        packageId: json['package_id'] == null ? 0 : json['package_id'] as int,
+        amountPaid:
+            json['amount_paid'] == null ? 0 : json['amount_paid'] as int,
+        offerApplied: json['offer_applied'] == null
+            ? false
+            : json['offer_applied'] as bool,
+        totalAmount:
+            json['total_amount'] == null ? 0 : json['total_amount'] as int,
+        payableAmount:
+            json['payable_amount'] == null ? 0 : json['payable_amount'] as int,
       );
 }

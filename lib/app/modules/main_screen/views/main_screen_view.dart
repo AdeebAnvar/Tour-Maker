@@ -92,60 +92,64 @@ class MainScreenView extends GetView<MainScreenController> {
               shrinkWrap: true,
               physics: const NeverScrollableScrollPhysics(),
               itemCount: controller.travelTypesToursList.length,
-              itemBuilder: (BuildContext context, int index) => GestureDetector(
-                onTap: () => controller.onClickedSingleTravelTypeTour(
-                    controller.travelTypesToursList[index].name),
-                child: Hero(
-                  tag: controller.travelTypesToursList[index],
-                  transitionOnUserGestures: true,
-                  child: Material(
-                    borderRadius: BorderRadius.circular(18),
-                    type: MaterialType.transparency,
-                    elevation: 5,
-                    child: CachedNetworkImage(
-                      cacheManager: DefaultCacheManager(),
-                      placeholder: (BuildContext context, String url) =>
-                          CustomShimmer(
-                        margin: const EdgeInsets.all(7),
-                        padding: const EdgeInsets.all(10),
-                        height: 100,
+              itemBuilder: (BuildContext context, int index) => Padding(
+                padding: const EdgeInsets.all(5.0),
+                child: GestureDetector(
+                  onTap: () => controller.onClickedSingleTravelTypeTour(
+                      controller.travelTypesToursList[index].name),
+                  child: Hero(
+                    tag: controller.travelTypesToursList[index],
+                    transitionOnUserGestures: true,
+                    child: Card(
+                      shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(18),
-                        width: screenWidth * 0.75,
                       ),
-                      imageUrl: controller.travelTypesToursList[index].image
-                          .toString(),
-                      imageBuilder: (BuildContext context,
-                              ImageProvider<Object> imageProvider) =>
-                          Container(
-                        margin: const EdgeInsets.all(7),
-                        padding: const EdgeInsets.all(10),
-                        height: 100,
-                        width: screenWidth * 0.75,
-                        decoration: BoxDecoration(
-                          image: DecorationImage(
-                              fit: BoxFit.cover, image: imageProvider),
-                          color: englishlinearViolet,
+                      elevation: 5,
+                      child: CachedNetworkImage(
+                        cacheManager: DefaultCacheManager(),
+                        placeholder: (BuildContext context, String url) =>
+                            CustomShimmer(
+                          margin: const EdgeInsets.all(7),
+                          padding: const EdgeInsets.all(10),
+                          height: 100,
                           borderRadius: BorderRadius.circular(18),
+                          width: screenWidth * 0.75,
                         ),
-                        child: Center(
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: <Widget>[
-                              Column(
-                                children: <Widget>[
-                                  Text(
-                                    controller.travelTypesToursList[index].name
-                                        .toString(),
-                                    overflow: TextOverflow.clip,
-                                    style: GoogleFonts.montserrat(
-                                      fontWeight: FontWeight.w600,
-                                      fontSize: 24,
-                                      color: Colors.white,
+                        imageUrl: controller.travelTypesToursList[index].image
+                            .toString(),
+                        imageBuilder: (BuildContext context,
+                                ImageProvider<Object> imageProvider) =>
+                            Container(
+                          padding: const EdgeInsets.all(10),
+                          height: 100,
+                          width: screenWidth * 0.75,
+                          decoration: BoxDecoration(
+                            image: DecorationImage(
+                                fit: BoxFit.cover, image: imageProvider),
+                            color: englishlinearViolet,
+                            borderRadius: BorderRadius.circular(18),
+                          ),
+                          child: Center(
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: <Widget>[
+                                Column(
+                                  children: <Widget>[
+                                    Text(
+                                      controller
+                                          .travelTypesToursList[index].name
+                                          .toString(),
+                                      overflow: TextOverflow.clip,
+                                      style: GoogleFonts.montserrat(
+                                        fontWeight: FontWeight.w600,
+                                        fontSize: 24,
+                                        color: Colors.white,
+                                      ),
                                     ),
-                                  ),
-                                ],
-                              ),
-                            ],
+                                  ],
+                                ),
+                              ],
+                            ),
                           ),
                         ),
                       ),
@@ -173,59 +177,62 @@ class MainScreenView extends GetView<MainScreenController> {
                 physics: const RangeMaintainingScrollPhysics(),
                 itemCount: controller.exclusiveToursList.length,
                 scrollDirection: Axis.horizontal,
-                itemBuilder: (BuildContext context, int index) =>
-                    GestureDetector(
-                  onTap: () => controller.onClickSingleExclusiveTour(
-                      controller.exclusiveToursList[index].name),
-                  child: Hero(
-                    tag: controller.exclusiveToursList[index],
-                    transitionOnUserGestures: true,
-                    child: Material(
-                      borderRadius: BorderRadius.circular(18),
-                      type: MaterialType.transparency,
-                      elevation: 5,
-                      child: CachedNetworkImage(
-                        cacheManager: DefaultCacheManager(),
-                        placeholder: (BuildContext context, String url) =>
-                            CustomShimmer(
-                          margin: const EdgeInsets.all(7),
-                          padding: const EdgeInsets.all(10),
-                          width: screenWidth * 0.75,
+                itemBuilder: (BuildContext context, int index) => Padding(
+                  padding: const EdgeInsets.all(3.0),
+                  child: GestureDetector(
+                    onTap: () => controller.onClickSingleExclusiveTour(
+                        controller.exclusiveToursList[index].name),
+                    child: Hero(
+                      tag: controller.exclusiveToursList[index],
+                      transitionOnUserGestures: true,
+                      child: Card(
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(18),
                         ),
-                        imageUrl:
-                            controller.categoryList[index].image.toString(),
-                        imageBuilder: (BuildContext context,
-                                ImageProvider<Object> imageProvider) =>
-                            Container(
-                          margin: const EdgeInsets.all(7),
-                          padding: const EdgeInsets.all(10),
-                          width: screenWidth * 0.75,
-                          decoration: BoxDecoration(
-                            image: DecorationImage(
-                              fit: BoxFit.cover,
-                              image: imageProvider,
-                            ),
-                            color: englishlinearViolet,
-                            borderRadius: BorderRadius.circular(18),
+                        elevation: 5,
+                        child: CachedNetworkImage(
+                          cacheManager: DefaultCacheManager(),
+                          placeholder: (BuildContext context, String url) =>
+                              CustomShimmer(
+                            margin: const EdgeInsets.all(7),
+                            padding: const EdgeInsets.all(10),
+                            width: screenWidth * 0.75,
                           ),
-                          child: Center(
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: <Widget>[
-                                Column(
-                                  children: <Widget>[
-                                    Text(
-                                      controller.exclusiveToursList[index].name
-                                          .toString(),
-                                      style: GoogleFonts.montserrat(
-                                        fontWeight: FontWeight.w600,
-                                        fontSize: 24,
-                                        color: Colors.white,
+                          imageUrl:
+                              controller.categoryList[index].image.toString(),
+                          imageBuilder: (BuildContext context,
+                                  ImageProvider<Object> imageProvider) =>
+                              Container(
+                            padding: const EdgeInsets.all(10),
+                            width: screenWidth * 0.75,
+                            decoration: BoxDecoration(
+                              image: DecorationImage(
+                                fit: BoxFit.cover,
+                                image: imageProvider,
+                              ),
+                              color: englishlinearViolet,
+                              borderRadius: BorderRadius.circular(18),
+                            ),
+                            child: Center(
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: <Widget>[
+                                  Column(
+                                    children: <Widget>[
+                                      Text(
+                                        controller
+                                            .exclusiveToursList[index].name
+                                            .toString(),
+                                        style: GoogleFonts.montserrat(
+                                          fontWeight: FontWeight.w600,
+                                          fontSize: 24,
+                                          color: Colors.white,
+                                        ),
                                       ),
-                                    ),
-                                  ],
-                                ),
-                              ],
+                                    ],
+                                  ),
+                                ],
+                              ),
                             ),
                           ),
                         ),
@@ -254,99 +261,104 @@ class MainScreenView extends GetView<MainScreenController> {
                 physics: const PageScrollPhysics(),
                 itemCount: controller.trendingToursList.length,
                 scrollDirection: Axis.horizontal,
-                itemBuilder: (BuildContext context, int index) =>
-                    GestureDetector(
-                  onTap: () => controller.onClickSingleTrendingTour(
-                      controller.trendingToursList[index].destination),
-                  child: Hero(
-                    tag: controller.trendingToursList[index],
-                    transitionOnUserGestures: true,
-                    child: Material(
-                      borderRadius: BorderRadius.circular(18),
-                      // borderOnForeground: false,
-
-                      type: MaterialType.transparency,
-                      elevation: 5,
-                      child: CachedNetworkImage(
-                        cacheManager: DefaultCacheManager(),
-                        placeholder: (BuildContext context, String url) =>
-                            CustomShimmer(
-                          width: 171,
-                          margin: const EdgeInsets.all(10),
-                          padding: const EdgeInsets.all(10),
+                itemBuilder: (BuildContext context, int index) => Padding(
+                  padding: const EdgeInsets.all(6.0),
+                  child: GestureDetector(
+                    onTap: () => controller.onClickSingleTrendingTour(
+                        controller.trendingToursList[index].destination),
+                    child: Hero(
+                      tag: controller.trendingToursList[index],
+                      transitionOnUserGestures: true,
+                      child: Card(
+                        shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(18),
                         ),
-                        imageUrl: controller.trendingToursList[index].image
-                            .toString(),
-                        imageBuilder: (BuildContext context,
-                                ImageProvider<Object> imageProvider) =>
-                            Container(
-                          margin: const EdgeInsets.all(10),
-                          padding: const EdgeInsets.all(10),
-                          width: 171,
-                          decoration: BoxDecoration(
-                            image: DecorationImage(
-                              fit: BoxFit.cover,
-                              image: imageProvider,
-                            ),
-                            color: englishlinearViolet,
+                        // borderOnForeground: false,
+                        clipBehavior: Clip.hardEdge,
+                        elevation: 4,
+                        child: CachedNetworkImage(
+                          cacheManager: DefaultCacheManager(),
+                          placeholder: (BuildContext context, String url) =>
+                              CustomShimmer(
+                            width: 171,
+                            margin: const EdgeInsets.all(10),
+                            padding: const EdgeInsets.all(10),
                             borderRadius: BorderRadius.circular(18),
                           ),
-                          child: Center(
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: <Widget>[
-                                Padding(
-                                  padding: const EdgeInsets.all(8.0),
-                                  child: Column(
+                          imageUrl: controller.trendingToursList[index].image
+                              .toString(),
+                          imageBuilder: (BuildContext context,
+                                  ImageProvider<Object> imageProvider) =>
+                              Container(
+                            padding: const EdgeInsets.all(10),
+                            width: 171,
+                            decoration: BoxDecoration(
+                              image: DecorationImage(
+                                fit: BoxFit.cover,
+                                image: imageProvider,
+                              ),
+                              color: englishlinearViolet,
+                              borderRadius: BorderRadius.circular(18),
+                            ),
+                            child: Center(
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: <Widget>[
+                                  Padding(
+                                    padding: const EdgeInsets.symmetric(
+                                        vertical: 45.0),
+                                    child: Column(
+                                      children: <Widget>[
+                                        Text(
+                                          controller.trendingToursList[index]
+                                              .destination
+                                              .toString(),
+                                          style: TextStyle(
+                                            fontFamily: 'Tahu',
+                                            fontSize: 18.sp,
+                                            color: Colors.white,
+                                          ),
+                                        ),
+                                        const Text(
+                                          'Tours',
+                                          style: TextStyle(
+                                            fontFamily: 'Tahu',
+                                            fontSize: 20,
+                                            color: Colors.amber,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                  const SizedBox(height: 10),
+                                  Spacer(),
+                                  Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceAround,
                                     children: <Widget>[
                                       Text(
-                                        controller.trendingToursList[index]
-                                            .destination
-                                            .toString(),
-                                        style: TextStyle(
-                                          fontFamily: 'Tahu',
-                                          fontSize: 18.sp,
+                                        'Starting From: ',
+                                        style: GoogleFonts.montserrat(
+                                          fontWeight: FontWeight.w500,
+                                          fontSize: 12,
                                           color: Colors.white,
                                         ),
                                       ),
-                                      const Text(
-                                        'Tours',
-                                        style: TextStyle(
-                                          fontFamily: 'Tahu',
-                                          fontSize: 20,
+                                      Text(
+                                        controller
+                                            .trendingToursList[index].minAmount
+                                            .toString(),
+                                        style: GoogleFonts.montserrat(
+                                          fontWeight: FontWeight.w500,
+                                          fontSize: 12,
                                           color: Colors.amber,
                                         ),
                                       ),
+                                      const SizedBox(height: 24)
                                     ],
                                   ),
-                                ),
-                                const SizedBox(height: 10),
-                                Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceAround,
-                                  children: <Widget>[
-                                    Text(
-                                      'Starting From: ',
-                                      style: GoogleFonts.montserrat(
-                                        fontWeight: FontWeight.w500,
-                                        fontSize: 12,
-                                        color: Colors.white,
-                                      ),
-                                    ),
-                                    Text(
-                                      controller
-                                          .trendingToursList[index].minAmount
-                                          .toString(),
-                                      style: GoogleFonts.montserrat(
-                                        fontWeight: FontWeight.w500,
-                                        fontSize: 12,
-                                        color: Colors.amber,
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ],
+                                ],
+                              ),
                             ),
                           ),
                         ),
@@ -367,9 +379,11 @@ class MainScreenView extends GetView<MainScreenController> {
               borderRadius: BorderRadius.circular(20),
               height: 200,
             )
-          : Material(
-              elevation: 3,
-              borderRadius: BorderRadius.circular(30),
+          : Card(
+              elevation: 5,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(30),
+              ),
               child: Container(
                 height: screenHeight * 0.35,
                 decoration: BoxDecoration(

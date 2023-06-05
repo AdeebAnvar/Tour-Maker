@@ -13,15 +13,6 @@ class ReferAFriend {
   String? referralCountry;
   String? referralState;
 
-  // ReferAFriend.fromJson(Map<String, dynamic> json) {
-  //   referralName = json['referral_name'];
-  //   referralContact = json['referral_contact'];
-  //   referralAddress = json['referral_address'];
-  //   referralDistrict = json['referral_district'];
-  //   referralCountry = json['referral_country'];
-  //   referralState = json['referral_state'];
-  // }
-
   Map<String, dynamic> toJson() => <String, dynamic>{
         'referral_name': referralName,
         'referral_contact': referralContact,

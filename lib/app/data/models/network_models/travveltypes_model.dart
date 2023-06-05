@@ -13,7 +13,7 @@ class TravelTypesModel {
   static TravelTypesModel fromJson(Map<String, dynamic> json) =>
       TravelTypesModel(
         id: json['id'] as int,
-        name: json['name'] as String,
-        image: json['image'] as String,
+        name: json['name'] == null ? '' : json['name'] as String,
+        image: json['image'] == null ? '' : json['image'] as String,
       );
 }

@@ -25,6 +25,9 @@ class ExclusiveToursController extends GetxController
   }
 
   Future<void> loadData() async {
+    if (singleTour.isNotEmpty) {
+      singleTour.clear();
+    }
     await getData();
     await getWishList();
   }
