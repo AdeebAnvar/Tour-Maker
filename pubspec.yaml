@@ -51,6 +51,8 @@ dependencies:
   syncfusion_flutter_pdfviewer: ^21.1.39
   timer_count_down: ^2.2.2
   url_launcher: ^6.1.9
+  fluttertoast: ^8.2.2
+
 dev_dependencies:
   flutter_lints: ^2.0.0
   flutter_test:
