@@ -438,7 +438,7 @@ class CustomButton {
 //               : isIconRight
 //                   ? Row(
 //                       mainAxisSize: MainAxisSize.min,
-//                       children: [
+//                       children:<Widget> [
 //                         Text(text,
 //                             style: TextStyle(
 //                               fontSize: 18,
@@ -456,7 +456,7 @@ class CustomButton {
 //                     )
 //                   : Row(
 //                       mainAxisSize: MainAxisSize.min,
-//                       children: [
+//                       children:<Widget> [
 //                         if (icon != null) ...[
 //                           const SizedBox(
 //                             width: 3,

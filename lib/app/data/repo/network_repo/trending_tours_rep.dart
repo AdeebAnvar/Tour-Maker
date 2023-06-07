@@ -27,7 +27,7 @@ class TrendingToursRepository {
       } else {
         return ApiResponse<List<TrendingToursModel>>.error(res.statusMessage);
       }
-    } on DioError catch (de) {
+    } on DioException catch (de) {
       return ApiResponse<List<TrendingToursModel>>.error(de.error.toString());
     } catch (e) {
       return ApiResponse<List<TrendingToursModel>>.error(e.toString());
@@ -51,7 +51,7 @@ class TrendingToursRepository {
         return ApiResponse<List<SingleTrendingToursModel>>.error(
             res.statusMessage);
       }
-    } on DioError catch (de) {
+    } on DioException catch (de) {
       return ApiResponse<List<SingleTrendingToursModel>>.error(
           de.error.toString());
     } catch (e) {

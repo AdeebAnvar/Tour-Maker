@@ -61,6 +61,7 @@ class SingleTravellerModel {
         packageId: json['package_id'] == null ? 0 : json['package_id'] as int,
         amountPaid:
             json['amount_paid'] == null ? 0 : json['amount_paid'] as int,
+        // ignore: avoid_bool_literals_in_conditional_expressions
         offerApplied: json['offer_applied'] == null
             ? false
             : json['offer_applied'] as bool,

@@ -75,6 +75,7 @@ class SingleTrendingToursModel {
         tourCode: json['tour_code'] == null ? '' : json['tour_code'] as String,
         travelType:
             json['travel_type'] == null ? '' : json['travel_type'] as String,
+        // ignore: avoid_bool_literals_in_conditional_expressions
         trending: json['trending'] == null ? false : json['trending'] as bool,
       );
 }

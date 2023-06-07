@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:get/get.dart';
 
 import '../../../data/models/network_models/single_trenidng_tour_model.dart';

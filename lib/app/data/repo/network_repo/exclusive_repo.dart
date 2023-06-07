@@ -27,7 +27,7 @@ class ExclusiveTourRepository {
       } else {
         return ApiResponse<List<ExclusiveToursModel>>.error(res.statusMessage);
       }
-    } on DioError catch (de) {
+    } on DioException catch (de) {
       return ApiResponse<List<ExclusiveToursModel>>.error(de.error.toString());
     } catch (e) {
       return ApiResponse<List<ExclusiveToursModel>>.error(e.toString());
@@ -52,7 +52,7 @@ class ExclusiveTourRepository {
         return ApiResponse<List<SingleExclusiveTourModel>>.error(
             res.statusMessage);
       }
-    } on DioError catch (de) {
+    } on DioException catch (de) {
       return ApiResponse<List<SingleExclusiveTourModel>>.error(
           de.error.toString());
     } catch (e) {

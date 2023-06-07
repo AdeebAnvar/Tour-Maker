@@ -22,7 +22,7 @@ class CategoryRepository {
       } else {
         return ApiResponse<List<CategoryModel>>.error(res.statusMessage);
       }
-    } on DioError catch (de) {
+    } on DioException catch (de) {
       return ApiResponse<List<CategoryModel>>.error(de.error.toString());
     } catch (e) {
       return ApiResponse<List<CategoryModel>>.error(e.toString());
@@ -48,7 +48,7 @@ class CategoryRepository {
       } else {
         return ApiResponse<List<PackageModel>>.error(response.statusMessage);
       }
-    } on DioError catch (de) {
+    } on DioException catch (de) {
       return ApiResponse<List<PackageModel>>.error(de.error.toString());
     } catch (e) {
       return ApiResponse<List<PackageModel>>.error(e.toString());

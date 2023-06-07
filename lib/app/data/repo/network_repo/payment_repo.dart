@@ -26,7 +26,7 @@ class PaymentRepository {
       } else {
         return ApiResponse<List<PaymentModel>>.error(res.statusMessage);
       }
-    } on DioError catch (de) {
+    } on DioException catch (de) {
       return ApiResponse<List<PaymentModel>>.error(de.error.toString());
     } catch (e) {
       return ApiResponse<List<PaymentModel>>.error(e.toString());
@@ -53,7 +53,7 @@ class PaymentRepository {
       } else {
         return ApiResponse<List<SinglePaymentModel>>.error(res.statusMessage);
       }
-    } on DioError catch (de) {
+    } on DioException catch (de) {
       return ApiResponse<List<SinglePaymentModel>>.error(de.error.toString());
     } catch (e) {
       return ApiResponse<List<SinglePaymentModel>>.error(e.toString());

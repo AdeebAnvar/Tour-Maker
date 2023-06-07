@@ -23,7 +23,7 @@ class PassengerRepository {
       } else {
         return ApiResponse<int>.error(res.statusMessage);
       }
-    } on DioError catch (de) {
+    } on DioException catch (de) {
       return ApiResponse<int>.error(de.error.toString());
     } catch (e) {
       return ApiResponse<int>.error(e.toString());
@@ -45,7 +45,7 @@ class PassengerRepository {
       } else {
         return ApiResponse<OrderPaymentModel>.error(response.statusMessage);
       }
-    } on DioError catch (de) {
+    } on DioException catch (de) {
       return ApiResponse<OrderPaymentModel>.error(de.error.toString());
     } catch (e) {
       return ApiResponse<OrderPaymentModel>.error(e.toString());
@@ -68,7 +68,7 @@ class PassengerRepository {
       } else {
         return ApiResponse<OrderPaymentModel>.error(response.statusMessage);
       }
-    } on DioError catch (de) {
+    } on DioException catch (de) {
       return ApiResponse<OrderPaymentModel>.error(de.error.toString());
     } catch (e) {
       return ApiResponse<OrderPaymentModel>.error(e.toString());
@@ -90,7 +90,7 @@ class PassengerRepository {
       } else {
         return ApiResponse<OrderPaymentModel>.error(response.statusMessage);
       }
-    } on DioError catch (de) {
+    } on DioException catch (de) {
       return ApiResponse<OrderPaymentModel>.error(de.error.toString());
     } catch (e) {
       return ApiResponse<OrderPaymentModel>.error(e.toString());
@@ -118,7 +118,7 @@ class PassengerRepository {
       } else {
         return ApiResponse<bool>.error(response.statusMessage);
       }
-    } on DioError catch (de) {
+    } on DioException catch (de) {
       return ApiResponse<bool>.error(de.error.toString());
     } catch (e) {
       return ApiResponse<bool>.error(e.toString());
@@ -151,7 +151,7 @@ class PassengerRepository {
       } else {
         return ApiResponse<bool>.error(response.statusMessage);
       }
-    } on DioError catch (de) {
+    } on DioException catch (de) {
       return ApiResponse<bool>.error(de.error.toString());
     } catch (e) {
       return ApiResponse<bool>.error(e.toString());
@@ -176,7 +176,7 @@ class PassengerRepository {
       } else {
         return ApiResponse<List<TravellersModel>>.error(response.statusMessage);
       }
-    } on DioError catch (de) {
+    } on DioException catch (de) {
       return ApiResponse<List<TravellersModel>>.error(de.error.toString());
     } catch (e) {
       return ApiResponse<List<TravellersModel>>.error(e.toString());
@@ -200,7 +200,7 @@ class PassengerRepository {
       } else {
         return ApiResponse<List<TravellersModel>>.error(response.statusMessage);
       }
-    } on DioError catch (de) {
+    } on DioException catch (de) {
       return ApiResponse<List<TravellersModel>>.error(de.error.toString());
     } catch (e) {
       return ApiResponse<List<TravellersModel>>.error(e.toString());
@@ -221,7 +221,7 @@ class PassengerRepository {
       } else {
         return ApiResponse<dynamic>.error(response.statusMessage);
       }
-    } on DioError catch (de) {
+    } on DioException catch (de) {
       return ApiResponse<dynamic>.error(de.error.toString());
     } catch (e) {
       return ApiResponse<dynamic>.error(e.toString());

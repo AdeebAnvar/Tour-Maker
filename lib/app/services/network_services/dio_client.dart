@@ -100,22 +100,23 @@ class RetryOnConnectionChangeInterceptor extends Interceptor {
   final DioConnectivityRequestRetryer requestRetryer;
 
   @override
-  Future<void> onError(DioError err, ErrorInterceptorHandler handler) async {
+  Future<void> onError(
+      DioException err, ErrorInterceptorHandler handler) async {
     if (_shouldRetry(err)) {
       try {
         handler.next((await requestRetryer
-            .scheduleRequestRetry(err.requestOptions)) as DioError);
+            .scheduleRequestRetry(err.requestOptions)) as DioException);
       } catch (e) {
         CustomDialog().showCustomDialog('Error !', contentText: e.toString());
-        handler.next(e as DioError);
+        handler.next(e as DioException);
       }
     } else {
       handler.next(err);
     }
   }
 
-  bool _shouldRetry(DioError err) {
-    return err.type == DioErrorType.unknown &&
+  bool _shouldRetry(DioException err) {
+    return err.type == DioExceptionType.unknown &&
         err.error != null &&
         err.error is SocketException;
   }

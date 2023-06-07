@@ -25,7 +25,7 @@ class WishListRepo {
       } else {
         return ApiResponse<List<WishListModel>>.error(res.statusMessage);
       }
-    } on DioError catch (de) {
+    } on DioException catch (de) {
       return ApiResponse<List<WishListModel>>.error(de.error.toString());
     } catch (e) {
       return ApiResponse<List<WishListModel>>.error(e.toString());
@@ -44,7 +44,7 @@ class WishListRepo {
       } else {
         return ApiResponse<Map<String, dynamic>>.error(res.statusMessage);
       }
-    } on DioError catch (de) {
+    } on DioException catch (de) {
       return ApiResponse<Map<String, dynamic>>.error(de.error.toString());
     } catch (e) {
       return ApiResponse<Map<String, dynamic>>.error(e.toString());
@@ -62,7 +62,7 @@ class WishListRepo {
       } else {
         return ApiResponse<Map<String, dynamic>>.error(res.statusMessage);
       }
-    } on DioError catch (de) {
+    } on DioException catch (de) {
       return ApiResponse<Map<String, dynamic>>.error(de.error.toString());
     } catch (e) {
       return ApiResponse<Map<String, dynamic>>.error(e.toString());
