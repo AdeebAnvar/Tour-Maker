@@ -33,7 +33,7 @@ class UserRepository {
         return ApiResponse<Map<String, dynamic>>.error(
             response.statusMessage.toString());
       }
-    } on DioError catch (d) {
+    } on DioException catch (d) {
       return ApiResponse<Map<String, dynamic>>.error(d.message);
     } catch (ex) {
       return ApiResponse<Map<String, dynamic>>.error(ex.toString());
@@ -54,7 +54,7 @@ class UserRepository {
       } else {
         return ApiResponse<UserModel>.error(response.statusMessage.toString());
       }
-    } on DioError catch (d) {
+    } on DioException catch (d) {
       return ApiResponse<UserModel>.error(d.message);
     } catch (ex) {
       return ApiResponse<UserModel>.error(ex.toString());
@@ -77,7 +77,7 @@ class UserRepository {
       } else {
         return ApiResponse<Map<String, dynamic>>.error(res.statusMessage);
       }
-    } on DioError catch (de) {
+    } on DioException catch (de) {
       return ApiResponse<Map<String, dynamic>>.error(de.error.toString());
     } catch (e) {
       return ApiResponse<Map<String, dynamic>>.error(e.toString());
@@ -97,7 +97,7 @@ class UserRepository {
       } else {
         return ApiResponse<Map<String, dynamic>>.error(res.statusMessage);
       }
-    } on DioError catch (de) {
+    } on DioException catch (de) {
       return ApiResponse<Map<String, dynamic>>.error(de.error.toString());
     } catch (e) {
       return ApiResponse<Map<String, dynamic>>.error(e.toString());
@@ -125,7 +125,7 @@ class UserRepository {
       } else {
         return ApiResponse<Map<String, dynamic>>.error(res.statusMessage);
       }
-    } on DioError catch (de) {
+    } on DioException catch (de) {
       return ApiResponse<Map<String, dynamic>>.error(de.error.toString());
     } catch (e) {
       return ApiResponse<Map<String, dynamic>>.error(e.toString());
@@ -169,7 +169,7 @@ class UserRepository {
       } else {
         return ApiResponse<Map<String, dynamic>>.error(res.statusMessage);
       }
-    } on DioError catch (de) {
+    } on DioException catch (de) {
       return ApiResponse<Map<String, dynamic>>.error(de.error.toString());
     } catch (e) {
       return ApiResponse<Map<String, dynamic>>.error(e.toString());
@@ -190,7 +190,7 @@ class UserRepository {
       } else {
         return ApiResponse<Map<String, dynamic>>.error(res.statusMessage);
       }
-    } on DioError catch (de) {
+    } on DioException catch (de) {
       return ApiResponse<Map<String, dynamic>>.error(de.error.toString());
     } catch (e) {
       return ApiResponse<Map<String, dynamic>>.error(e.toString());
@@ -211,7 +211,7 @@ class UserRepository {
       } else {
         return ApiResponse<Map<String, dynamic>>.error(res.statusMessage);
       }
-    } on DioError catch (de) {
+    } on DioException catch (de) {
       return ApiResponse<Map<String, dynamic>>.error(de.error.toString());
     } catch (e) {
       return ApiResponse<Map<String, dynamic>>.error(e.toString());

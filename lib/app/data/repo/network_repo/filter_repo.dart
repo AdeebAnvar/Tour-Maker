@@ -24,7 +24,7 @@ class FilterRepository {
       } else {
         return ApiResponse<List<PackageModel>>.error(res.statusMessage);
       }
-    } on DioError catch (de) {
+    } on DioException catch (de) {
       return ApiResponse<List<PackageModel>>.error(de.error.toString());
     } catch (e) {
       return ApiResponse<List<PackageModel>>.error(e.toString());
@@ -46,7 +46,7 @@ class FilterRepository {
       } else {
         return ApiResponse<List<PackageModel>>.error(res.statusMessage);
       }
-    } on DioError catch (de) {
+    } on DioException catch (de) {
       return ApiResponse<List<PackageModel>>.error(de.error.toString());
     } catch (e) {
       return ApiResponse<List<PackageModel>>.error(e.toString());
@@ -69,7 +69,7 @@ class FilterRepository {
       } else {
         return ApiResponse<List<PackageModel>>.error(res.statusMessage);
       }
-    } on DioError catch (de) {
+    } on DioException catch (de) {
       return ApiResponse<List<PackageModel>>.error(de.error.toString());
     } catch (e) {
       return ApiResponse<List<PackageModel>>.error(e.toString());
@@ -92,7 +92,7 @@ class FilterRepository {
       } else {
         return ApiResponse<List<PackageModel>>.error(res.statusMessage);
       }
-    } on DioError catch (de) {
+    } on DioException catch (de) {
       return ApiResponse<List<PackageModel>>.error(de.error.toString());
     } catch (e) {
       return ApiResponse<List<PackageModel>>.error(e.toString());
@@ -114,7 +114,7 @@ class FilterRepository {
       } else {
         return ApiResponse<List<PackageModel>>.error(res.statusMessage);
       }
-    } on DioError catch (de) {
+    } on DioException catch (de) {
       return ApiResponse<List<PackageModel>>.error(de.error.toString());
     } catch (e) {
       return ApiResponse<List<PackageModel>>.error(e.toString());

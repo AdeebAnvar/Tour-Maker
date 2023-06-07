@@ -131,7 +131,7 @@ class SingleCategoryView extends GetView<SingleCategoryController> {
                       ? Padding(
                           padding: const EdgeInsets.symmetric(vertical: 15.0),
                           child: Column(
-                            children: [
+                            children: <Widget>[
                               Divider(indent: 70, endIndent: 70),
                               Text('You Are All Caught Up', style: subheading1),
                             ],

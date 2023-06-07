@@ -23,7 +23,7 @@ class BookingRepository {
       } else {
         return ApiResponse<List<BookingsModel>>.error(res.statusMessage);
       }
-    } on DioError catch (de) {
+    } on DioException catch (de) {
       return ApiResponse<List<BookingsModel>>.error(de.error.toString());
     } catch (e) {
       return ApiResponse<List<BookingsModel>>.error(e.toString());
@@ -46,7 +46,7 @@ class BookingRepository {
       } else {
         return ApiResponse<List<SingleBookingModel>>.error(res.statusMessage);
       }
-    } on DioError catch (de) {
+    } on DioException catch (de) {
       return ApiResponse<List<SingleBookingModel>>.error(de.error.toString());
     } catch (e) {
       return ApiResponse<List<SingleBookingModel>>.error(e.toString());

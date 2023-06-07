@@ -24,7 +24,7 @@ class SingleTourRepository {
       } else {
         return ApiResponse<SingleTourModel>.error(res.statusMessage);
       }
-    } on DioError catch (de) {
+    } on DioException catch (de) {
       return ApiResponse<SingleTourModel>.error(de.error.toString());
     } catch (e) {
       return ApiResponse<SingleTourModel>.error(e.toString());
@@ -68,7 +68,7 @@ class SingleTourRepository {
       } else {
         return ApiResponse<SingleTourModel>.error(res.statusMessage);
       }
-    } on DioError catch (de) {
+    } on DioException catch (de) {
       return ApiResponse<SingleTourModel>.error(de.error.toString());
     } catch (e) {
       return ApiResponse<SingleTourModel>.error(e.toString());

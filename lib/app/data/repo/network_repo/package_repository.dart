@@ -23,7 +23,7 @@ class PackageRepository {
       } else {
         return ApiResponse<List<PackageModel>>.error(res.statusMessage);
       }
-    } on DioError catch (de) {
+    } on DioException catch (de) {
       return ApiResponse<List<PackageModel>>.error(de.toString());
     } catch (e) {
       return ApiResponse<List<PackageModel>>.error(e.toString());

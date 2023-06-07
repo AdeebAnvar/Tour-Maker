@@ -21,7 +21,7 @@ class RazorPayRepository {
       } else {
         return ApiResponse<RazorPayModel>.error(response.statusMessage);
       }
-    } on DioError catch (de) {
+    } on DioException catch (de) {
       return ApiResponse<RazorPayModel>.error(de.error.toString());
     } catch (e) {
       return ApiResponse<RazorPayModel>.error(e.toString());
@@ -46,7 +46,7 @@ class RazorPayRepository {
       } else {
         return ApiResponse<bool>.error(response.statusMessage);
       }
-    } on DioError catch (de) {
+    } on DioException catch (de) {
       return ApiResponse<bool>.error(de.error.toString());
     } catch (e) {
       return ApiResponse<bool>.error(e.toString());
@@ -71,7 +71,7 @@ class RazorPayRepository {
       } else {
         return ApiResponse<bool>.error(response.statusMessage);
       }
-    } on DioError catch (de) {
+    } on DioException catch (de) {
       return ApiResponse<bool>.error(de.error.toString());
     } catch (e) {
       return ApiResponse<bool>.error(e.toString());

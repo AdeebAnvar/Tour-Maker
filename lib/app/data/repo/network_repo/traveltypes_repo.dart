@@ -27,7 +27,7 @@ class TravelTypesRepository {
       } else {
         return ApiResponse<List<TravelTypesModel>>.error(res.statusMessage);
       }
-    } on DioError catch (de) {
+    } on DioException catch (de) {
       return ApiResponse<List<TravelTypesModel>>.error(de.error.toString());
     } catch (e) {
       return ApiResponse<List<TravelTypesModel>>.error(e.toString());
@@ -52,7 +52,7 @@ class TravelTypesRepository {
         return ApiResponse<List<SingleTravelTypesTourModel>>.error(
             res.statusMessage);
       }
-    } on DioError catch (de) {
+    } on DioException catch (de) {
       return ApiResponse<List<SingleTravelTypesTourModel>>.error(
           de.error.toString());
     } catch (e) {
