@@ -229,6 +229,7 @@ class CustomDeparture extends StatelessWidget {
                     controller.singleTours[controller.selectedDateIndex.value]),
               ),
             ),
+            
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
