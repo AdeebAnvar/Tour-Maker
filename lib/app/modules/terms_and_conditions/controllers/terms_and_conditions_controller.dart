@@ -3,10 +3,12 @@
 import 'dart:developer';
 
 import 'package:get/get.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import '../../../data/repo/network_repo/user_repo.dart';
 import '../../../routes/app_pages.dart';
 import '../../../services/network_services/dio_client.dart';
+import '../../../widgets/custom_dialogue.dart';
 
 class TermsAndConditionsController extends GetxController {
   String termsAndCond = '''
@@ -71,6 +73,16 @@ If you can book minimum 2 tours within 20 days of your app installation, you wil
     } else {
       log('sdfgsg');
       isLoading.value = false;
+    }
+  }
+
+  Future<void> onTapViewMore()async {
+     final Uri url = Uri.parse('https://tourmaker.in/privacy.html');
+    if (await canLaunchUrl(url)) {
+      await launchUrl(url);
+    } else {
+      CustomDialog().showCustomDialog('Error !',
+          contentText: "couldn't open to link");
     }
   }
 }

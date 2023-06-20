@@ -66,7 +66,10 @@ class TermsAndConditionsView extends GetView<TermsAndConditionsController> {
                         text: "Let's Get Started",
                         onPressed: () {},
                       ),
-              )
+              ),
+              GestureDetector(
+                onTap: ()=>controller.onTapViewMore(),
+                child: Text('view more > > >',style: subheading3.copyWith(color: englishlinearViolet,),),)
             ],
           ),
         ),

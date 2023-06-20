@@ -248,7 +248,7 @@ class FixedDepartures extends StatelessWidget {
                 height: 80,
                 width: 100.w,
                 text: '   Enter Passenger Details',
-                onPressed: () => controller.onClickAddPassenger(controller
+                onPressed: () => controller.onClickAddBatchTourPassenger(controller
                     .batchTours
                     .value
                     .packageData![controller.selectedBatchIndex.value]),

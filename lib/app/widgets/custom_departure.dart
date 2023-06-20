@@ -225,7 +225,7 @@ class CustomDeparture extends StatelessWidget {
                 height: 80,
                 width: 100.w,
                 text: '   Enter Passenger Details',
-                onPressed: () => controller.onClickAddPassenger(
+                onPressed: () => controller.onClickAddindividualTourPassenger(
                     controller.singleTours[controller.selectedDateIndex.value]),
               ),
             ),

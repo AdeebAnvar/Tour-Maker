@@ -155,7 +155,7 @@ class SingleTourController extends GetxController
     children.value++;
   }
 
-  Future<void> onClickAddPassenger(PackageData package) async {
+  Future<void> onClickAddBatchTourPassenger(PackageData package) async {
     if (currentUserAddress != null && currentUserAddress != '') {
       final DateTime selectedDate =
           DateTime.parse(package.dateOfTravel.toString());
@@ -179,6 +179,23 @@ class SingleTourController extends GetxController
     }
   }
 
+  Future<void> onClickAddindividualTourPassenger(PackageData package) async {
+    if (currentUserAddress != null && currentUserAddress != '') {
+      final DateTime selectedDate =
+          DateTime.parse(package.dateOfTravel.toString());
+      final DateTime today = DateTime.now();
+     
+        if (selectedDate.difference(today).inDays <= 7) {
+          await showWarningDialogue(package);
+        } else {
+          await confirmPayment(package.iD!, package);
+        }
+      
+    } else {
+      await Get.toNamed(Routes.USER_REGISTERSCREEN)!
+          .whenComplete(() => fetchData());
+    }
+  }
   Future<int?> createUserOrder(int packageID, PackageData package) async {
     final OrderModel om = OrderModel(
       noOfAdults: adult.value,

@@ -19,6 +19,15 @@ class MyDrawer extends StatelessWidget {
   MyDrawer({super.key, this.controller});
   final UserModel? controller;
   final Rx<bool> isNotificationON = true.obs;
+    final Rx<bool> appRelatedQueries = false.obs;
+      final Rx<bool> businessQueries = false.obs;
+        final Rx<bool> deactivateAccount = false.obs;
+          final Rx<bool> other = false.obs;
+
+
+
+
+
   @override
   Widget build(BuildContext context) {
     return Drawer(
@@ -132,7 +141,7 @@ class MyDrawer extends StatelessWidget {
                 title: const Text('Terms Of Use'),
               ),
               ListTile(
-                onTap: onClickHelp,
+                onTap: ()=>onClickHelp(context),
                 leading: SvgPicture.asset('assets/help.svg', height: 25),
                 title: const Text('Help'),
               ),
@@ -177,26 +186,90 @@ class MyDrawer extends StatelessWidget {
 
   void onClickPayments() => Get.toNamed(Routes.PAYMENT_SCREEN);
 
-  Future<void> onClickHelp() async {
-    final Uri params = Uri(
-      scheme: 'mailto',
-      path: 'tourmakerapp@gmail.com',
-      query:
-          'subject=I am ${controller?.name} , and i need a help from TourMaker',
+  Future<void> onClickHelp(BuildContext context) async {
+  return showDialog(
+
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(18),
+          ),
+          title: const Text('Seek our help!'),
+          content: Container(
+            padding: const EdgeInsets.all(8),
+            height: 259,
+            child: SingleChildScrollView(
+              child: Column(
+                mainAxisSize:   MainAxisSize.min,
+                children: <Widget>[
+                  ListTile(
+                      title: const Text('App related queries'),
+                      onTap: () {
+                        appRelatedQueries.value=true;
+                         businessQueries.value=false;
+                         deactivateAccount.value=false;
+                         other.value=false;
+                        onclickSingleHelp();
+                        Get.back();
+                      }),
+                  ListTile(
+                      title: const Text('Business Enqueries'),
+                      onTap: () {
+             appRelatedQueries.value=false;
+                         businessQueries.value=true;
+                         deactivateAccount.value=false;
+                         other.value=false;    onclickSingleHelp();                 Get.back();
+                      }),
+                       ListTile(
+                       title: const Text('Deactivate my account'),
+                      onTap: () {
+              appRelatedQueries.value=false;
+                         businessQueries.value=false;
+                         deactivateAccount.value=true;
+                         other.value=false;         onclickSingleHelp();           Get.back();
+                      }),
+                       ListTile(
+                     title: const Text('Other'),
+                      onTap: () {
+           appRelatedQueries.value=false;
+                         businessQueries.value=false;
+                         deactivateAccount.value=false;
+                         other.value=true;            onclickSingleHelp();        Get.back();
+                      }),
+                ],
+              ),
+            ),
+          ),
+        );
+      },
     );
-    final String url = params.toString();
-    if (await canLaunchUrl(Uri.parse(url))) {
-      await launchUrl(Uri.parse(url));
-    } else {
-      Get.snackbar('SORRY!!!', 'Could not launch $url');
-    }
+   
   }
 
   Future<void> onClickFeedBack() async {
     final Uri params = Uri(
       scheme: 'mailto',
-      path: 'tourmakerapp@gmail.com',
+      path: 'tourmakerinfo@gmail.com',
       query: 'subject=Hi , I am ${controller?.name}',
+    );
+    final String url = params.toString();
+    if (await canLaunchUrl(Uri.parse(url))) {
+      await launchUrl(Uri.parse(url))!.whenComplete(() => Get.snackbar( 
+                          'Got the mail',
+                          "we got your request via mail \nwe will reach out you soon"
+                        ));;
+    } else {
+      Get.snackbar('SORRY!!!', 'Could not launch $url');
+    }
+  }
+Future<void> onclickSingleHelp()async{
+ if (appRelatedQueries.value==true) {
+    final Uri params = Uri(
+      scheme: 'mailto',
+      path: 'tourmakerinfo@gmail.com',
+      query:
+          'subject=I am ${controller?.name} , i need help about TourMaker app',
     );
     final String url = params.toString();
     if (await canLaunchUrl(Uri.parse(url))) {
@@ -204,8 +277,52 @@ class MyDrawer extends StatelessWidget {
     } else {
       Get.snackbar('SORRY!!!', 'Could not launch $url');
     }
-  }
+ } else if(businessQueries.value==true){
+   final Uri params = Uri(
+      scheme: 'mailto',
+      path: 'tourmakerinfo@gmail.com',
+      query:
+          'subject=I am ${controller?.name} , i would like to collab with TourMaker app',
+    );
+    final String url = params.toString();
+    if (await canLaunchUrl(Uri.parse(url))) {
+      await launchUrl(Uri.parse(url));
+    } else {
+      Get.snackbar('SORRY!!!', 'Could not launch $url');
+    }
+   
+ }else if(deactivateAccount.value==true){
+   final Uri params = Uri(
+      scheme: 'mailto',
+      path: 'tourmakerinfo@gmail.com',
+      query:
+          'subject=I am ${controller?.name} , I need to deactivate/ delete my data from TourMaker app',
+    );
+    final String url = params.toString();
+    if (await canLaunchUrl(Uri.parse(url))) {
+      await launchUrl(Uri.parse(url));
+    } else {
+      Get.snackbar('SORRY!!!', 'Could not launch $url');
+    }
+ }
+ else{
+   final Uri params = Uri(
+      scheme: 'mailto',
+      path: 'tourmakerinfo@gmail.com',
+      query:
+          'subject=I am ${controller?.name} , i need help about TourMaker app',
+    );
+    final String url = params.toString();
+    if (await canLaunchUrl(Uri.parse(url))) {
+      await launchUrl(Uri.parse(url));
+    } else {
+      Get.snackbar('SORRY!!!', 'Could not launch $url');
+    }
+ }
 
+
+
+}
   Future<void> logout() async {
     final GetStorage storage = GetStorage();
     await storage.write('currentUserAddress', '');
@@ -281,9 +398,8 @@ class MyDrawer extends StatelessWidget {
                     ),
                   ],
                 ),
-                Expanded(
-                  child: Text(
-                    '''
+                Text(
+                  '''
 TOUR MAKER is an application designed to book tours of TRIPPENS’s tour operation company. Adventure tours, Package group tours, family package group tours, couple package tours, Ride tours, hiking, trucking etc. are available. This is basically not a customer focus app but for those who book tours on commission basis. For each and every tour package, company has fixed amount of commission for the agents on company’s wills.
 
 For this application presently, we are not charging yearly charges or any registration fee. At this moment we have only 500Rs as service charges including tax. Tour payments are done only on GST tax basis. Bills and invoices will be done by TRIPPENS alone. And TRIPPENS will be responsible for all the tours operations.
@@ -293,9 +409,13 @@ Through this app we are not offering adequate income or a greater income. You ge
 The payments of the tours booked can be paid either through app or by bank through executives help or even from office within the time given by the executives. There will be an appointed time for the payment of booked tours and fail of payment with in that time given will result in cancellation of booking of the same. The responsibility of the balance amount of the booked tours lies with the agent alone.
 
 The company have all the guaranteed rights to ban your login if we notice misuse of app by too much of fake bookings or unnecessary bookings.''',
-                    style: subheading3,
-                  ),
+                  style: subheading3,
+                  textAlign: TextAlign.justify,
                 ),
+                SizedBox(height: 59),
+                 GestureDetector(
+                onTap: ()=>onTapViewMore(),
+                child: Text('view more > > >',style: subheading3.copyWith(color: englishlinearViolet,),),)
               ],
             ),
           ),
@@ -444,5 +564,15 @@ The company have all the guaranteed rights to ban your login if we notice misuse
 
   void onClickEditProfile() {
     Get.toNamed(Routes.USER_REGISTERSCREEN);
+  }
+  
+  Future<void> onTapViewMore() async{
+     final Uri url = Uri.parse('https://tourmaker.in/privacy.html');
+    if (await canLaunchUrl(url)) {
+      await launchUrl(url);
+    } else {
+      CustomDialog().showCustomDialog('Error !',
+          contentText: "couldn't open to link");
+    }
   }
 }

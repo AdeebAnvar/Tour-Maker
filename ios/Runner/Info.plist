@@ -28,6 +28,8 @@
 	<string>6.0</string>
 	<key>CFBundleName</key>
 	<string>tour_maker</string>
+	<key>NSCameraUsageDescription</key>
+	<string>take a picture and use as profile pic </string>
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>This app requires to save your images user gallery</string>
 	<key>NSLocationAlwaysUsageDescription</key>
