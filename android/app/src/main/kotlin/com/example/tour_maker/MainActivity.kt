@@ -1,4 +1,4 @@
-package com.example.tour_maker
+package com.tour.tour_maker
 
 import io.flutter.embedding.android.FlutterActivity
 

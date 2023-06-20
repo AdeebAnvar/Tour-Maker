@@ -11,14 +11,13 @@ class GetStartedController extends GetxController with StateMixin<dynamic> {
   GlobalKey<FormState> formKey = GlobalKey<FormState>();
   GetStorage storage = GetStorage();
   final FirebaseAuth auth = FirebaseAuth.instance;
-  int? verificationId;
   int? otp;
   RxBool isButtonVisible = true.obs;
   RxBool isloading = false.obs;
   RxString authStatus = ''.obs;
   Rx<bool> isFinished = false.obs;
   String? phone;
-  dynamic verificationid;
+  String? verificationid;
   Rx<Country> selectedCountry = Country(
           phoneCode: '91',
           countryCode: 'IN',
@@ -61,7 +60,8 @@ class GetStartedController extends GetxController with StateMixin<dynamic> {
           verificationCompleted: (PhoneAuthCredential authCredential) async {},
           verificationFailed: (FirebaseAuthException authException) {
             isloading.value = false;
-            CustomDialog().showCustomDialog('Phone number verification failed.',
+            CustomDialog().showCustomDialog(
+                'Phone number $phoneNumber verification failed.',
                 contentText:
                     'Code: ${authException.code}. Message: ${authException.message}');
           },

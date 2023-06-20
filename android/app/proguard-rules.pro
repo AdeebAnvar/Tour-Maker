@@ -1,1 +1,1 @@
--keep class com.example.tour_maker.** { *; }
+-keep class com.tour.tour_maker.** { *; }
