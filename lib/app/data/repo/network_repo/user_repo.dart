@@ -55,8 +55,12 @@ class UserRepository {
         return ApiResponse<UserModel>.error(response.statusMessage.toString());
       }
     } on DioException catch (d) {
+      log(d.message.toString());
+      log(d.error.toString());
+      log(d.response.toString());
       return ApiResponse<UserModel>.error(d.message);
     } catch (ex) {
+      log(ex.toString());
       return ApiResponse<UserModel>.error(ex.toString());
     }
   }

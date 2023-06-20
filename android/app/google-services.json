@@ -1,0 +1,106 @@
+{
+  "project_info": {
+    "project_number": "644670662487",
+    "project_id": "tourmaker-b6612",
+    "storage_bucket": "tourmaker-b6612.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:644670662487:android:2296cf624d6b3209f1c012",
+        "android_client_info": {
+          "package_name": "com.example.tourmaker_web"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "644670662487-m2jrrv80a6e8c3bh5pltijackm13a61n.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCltEGgGvAszL7D6AVX5Q2DH3qNb40AC0g"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "644670662487-m2jrrv80a6e8c3bh5pltijackm13a61n.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "644670662487-62260pkg61c4pno7phqhbsa106dav0s3.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.tour.tourMaker"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:644670662487:android:af7fa6c2c655894bf1c012",
+        "android_client_info": {
+          "package_name": "com.tour.tour_maker"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "644670662487-9pfjmotn32003n5msi1o7bqg287hc5fk.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.tour.tour_maker",
+            "certificate_hash": "7cd79e658765773d09f81a0d855fe58d418640b4"
+          }
+        },
+        {
+          "client_id": "644670662487-ig0ncncmncdeelnqeobbq44dp1ceoo9v.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.tour.tour_maker",
+            "certificate_hash": "9f00f17e2c8dc6211942bd19933e4f5bc0286252"
+          }
+        },
+        {
+          "client_id": "644670662487-nmpomhq8ph7g243seg4cla095vu9ar0g.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.tour.tour_maker",
+            "certificate_hash": "5f4c8efe86e5713661f5aced0c11ea58c8ef92b6"
+          }
+        },
+        {
+          "client_id": "644670662487-m2jrrv80a6e8c3bh5pltijackm13a61n.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCltEGgGvAszL7D6AVX5Q2DH3qNb40AC0g"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "644670662487-m2jrrv80a6e8c3bh5pltijackm13a61n.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "644670662487-62260pkg61c4pno7phqhbsa106dav0s3.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.tour.tourMaker"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
