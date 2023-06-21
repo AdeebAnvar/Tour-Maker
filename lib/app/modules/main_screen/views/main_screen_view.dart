@@ -300,66 +300,6 @@ class MainScreenView extends GetView<MainScreenController> {
                               color: englishlinearViolet,
                               borderRadius: BorderRadius.circular(18),
                             ),
-                            child: Center(
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: <Widget>[
-                                  Padding(
-                                    padding: const EdgeInsets.symmetric(
-                                        vertical: 45.0),
-                                    child: Column(
-                                      children: <Widget>[
-                                        Text(
-                                          controller.trendingToursList[index]
-                                              .destination
-                                              .toString(),
-                                          style: TextStyle(
-                                            fontFamily: 'Tahu',
-                                            fontSize: 18.sp,
-                                            color: Colors.white,
-                                          ),
-                                        ),
-                                        const Text(
-                                          'Tours',
-                                          style: TextStyle(
-                                            fontFamily: 'Tahu',
-                                            fontSize: 20,
-                                            color: Colors.amber,
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                  const SizedBox(height: 10),
-                                  Spacer(),
-                                  Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceAround,
-                                    children: <Widget>[
-                                      Text(
-                                        'Starting From: ',
-                                        style: GoogleFonts.montserrat(
-                                          fontWeight: FontWeight.w500,
-                                          fontSize: 12,
-                                          color: Colors.white,
-                                        ),
-                                      ),
-                                      Text(
-                                        controller
-                                            .trendingToursList[index].minAmount
-                                            .toString(),
-                                        style: GoogleFonts.montserrat(
-                                          fontWeight: FontWeight.w500,
-                                          fontSize: 12,
-                                          color: Colors.amber,
-                                        ),
-                                      ),
-                                      const SizedBox(height: 24)
-                                    ],
-                                  ),
-                                ],
-                              ),
-                            ),
                           ),
                         ),
                       ),

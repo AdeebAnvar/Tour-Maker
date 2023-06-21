@@ -11,7 +11,7 @@ import 'dio_connnecticity_retryer.dart';
 
 class Client {
   GetStorage storage = GetStorage();
-  Dio init({String baseUrl = 'https://api.tourmakerapp.com/'}) {
+  Dio init({String baseUrl = 'https://uuuhc8u0vk.execute-api.ap-south-1.amazonaws.com/development_api/'}) {
     final Dio dio = Dio();
 
     dio.interceptors.add(
