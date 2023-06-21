@@ -269,22 +269,6 @@ class UserRegisterscreenView extends GetView<UserRegisterscreenController> {
                       onPressed: () => controller.onRegisterClicked(),
                     );
                   }),
-                  Text("hi"),
-                  Obx(
-                    () {
-                      return CustomButton().showIconButtonWithGradient(
-                        height: 75,
-                        width: 100.h,
-                        isLoading: controller.isloading.value,
-                        text: controller.userType.value == 'paid' ||
-                                controller.selectedCategoryType.value ==
-                                    CategoryType.standard
-                            ? '     Submit'
-                            : '     Pay 424 + GST',
-                        onPressed: () => controller.onRegisterClicked(),
-                      );
-                    },
-                  )
                 ],
               ),
             ),
