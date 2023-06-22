@@ -16,6 +16,7 @@ dependencies:
   date_time_picker: ^2.1.0
   dio: ^5.0.1
   expansion_tile_card: ^3.0.0
+  firebase_admin: ^0.2.0
   firebase_app_check: ^0.1.1+8
   firebase_auth: ^4.2.5
   firebase_core: ^2.4.0
@@ -27,6 +28,7 @@ dependencies:
   flutter_launcher_icons: ^0.13.1
   flutter_local_notifications: ^14.0.0+2
   flutter_svg: ^2.0.0+1
+  fluttertoast: ^8.2.2
   geocoding: ^2.1.0
   geolocator: ^9.0.2
   get: ^4.6.5
@@ -51,7 +53,6 @@ dependencies:
   syncfusion_flutter_pdfviewer: ^21.1.39
   timer_count_down: ^2.2.2
   url_launcher: ^6.1.9
-  fluttertoast: ^8.2.2
 
 dev_dependencies:
   flutter_lints: ^2.0.0

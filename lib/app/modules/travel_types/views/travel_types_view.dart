@@ -95,7 +95,7 @@ class TravelTypesView extends GetView<TravelTypesController> {
                                       vertical: 15.0),
                                   child: Column(
                                     children: <Widget>[
-                                      Divider(indent: 70, endIndent: 70),
+                                      const Divider(indent: 70, endIndent: 70),
                                       Text('You Are All Caught Up',
                                           style: subheading1),
                                     ],

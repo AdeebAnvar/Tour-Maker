@@ -19,14 +19,10 @@ class MyDrawer extends StatelessWidget {
   MyDrawer({super.key, this.controller});
   final UserModel? controller;
   final Rx<bool> isNotificationON = true.obs;
-    final Rx<bool> appRelatedQueries = false.obs;
-      final Rx<bool> businessQueries = false.obs;
-        final Rx<bool> deactivateAccount = false.obs;
-          final Rx<bool> other = false.obs;
-
-
-
-
+  final Rx<bool> appRelatedQueries = false.obs;
+  final Rx<bool> businessQueries = false.obs;
+  final Rx<bool> deactivateAccount = false.obs;
+  final Rx<bool> other = false.obs;
 
   @override
   Widget build(BuildContext context) {
@@ -141,7 +137,7 @@ class MyDrawer extends StatelessWidget {
                 title: const Text('Terms Of Use'),
               ),
               ListTile(
-                onTap: ()=>onClickHelp(context),
+                onTap: () => onClickHelp(context),
                 leading: SvgPicture.asset('assets/help.svg', height: 25),
                 title: const Text('Help'),
               ),
@@ -187,8 +183,7 @@ class MyDrawer extends StatelessWidget {
   void onClickPayments() => Get.toNamed(Routes.PAYMENT_SCREEN);
 
   Future<void> onClickHelp(BuildContext context) async {
-  return showDialog(
-
+    return showDialog(
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
@@ -201,41 +196,47 @@ class MyDrawer extends StatelessWidget {
             height: 259,
             child: SingleChildScrollView(
               child: Column(
-                mainAxisSize:   MainAxisSize.min,
+                mainAxisSize: MainAxisSize.min,
                 children: <Widget>[
                   ListTile(
                       title: const Text('App related queries'),
                       onTap: () {
-                        appRelatedQueries.value=true;
-                         businessQueries.value=false;
-                         deactivateAccount.value=false;
-                         other.value=false;
+                        appRelatedQueries.value = true;
+                        businessQueries.value = false;
+                        deactivateAccount.value = false;
+                        other.value = false;
                         onclickSingleHelp();
                         Get.back();
                       }),
                   ListTile(
                       title: const Text('Business Enqueries'),
                       onTap: () {
-             appRelatedQueries.value=false;
-                         businessQueries.value=true;
-                         deactivateAccount.value=false;
-                         other.value=false;    onclickSingleHelp();                 Get.back();
+                        appRelatedQueries.value = false;
+                        businessQueries.value = true;
+                        deactivateAccount.value = false;
+                        other.value = false;
+                        onclickSingleHelp();
+                        Get.back();
                       }),
-                       ListTile(
-                       title: const Text('Deactivate my account'),
+                  ListTile(
+                      title: const Text('Deactivate my account'),
                       onTap: () {
-              appRelatedQueries.value=false;
-                         businessQueries.value=false;
-                         deactivateAccount.value=true;
-                         other.value=false;         onclickSingleHelp();           Get.back();
+                        appRelatedQueries.value = false;
+                        businessQueries.value = false;
+                        deactivateAccount.value = true;
+                        other.value = false;
+                        onclickSingleHelp();
+                        Get.back();
                       }),
-                       ListTile(
-                     title: const Text('Other'),
+                  ListTile(
+                      title: const Text('Other'),
                       onTap: () {
-           appRelatedQueries.value=false;
-                         businessQueries.value=false;
-                         deactivateAccount.value=false;
-                         other.value=true;            onclickSingleHelp();        Get.back();
+                        appRelatedQueries.value = false;
+                        businessQueries.value = false;
+                        deactivateAccount.value = false;
+                        other.value = true;
+                        onclickSingleHelp();
+                        Get.back();
                       }),
                 ],
               ),
@@ -244,7 +245,6 @@ class MyDrawer extends StatelessWidget {
         );
       },
     );
-   
   }
 
   Future<void> onClickFeedBack() async {
@@ -255,74 +255,70 @@ class MyDrawer extends StatelessWidget {
     );
     final String url = params.toString();
     if (await canLaunchUrl(Uri.parse(url))) {
-      await launchUrl(Uri.parse(url))!.whenComplete(() => Get.snackbar( 
-                          'Got the mail',
-                          "we got your request via mail \nwe will reach out you soon"
-                        ));;
+      await launchUrl(Uri.parse(url)).whenComplete(() => Get.snackbar(
+          'Got the mail',
+          'we got your request via mail \nwe will reach out you soon'));
     } else {
       Get.snackbar('SORRY!!!', 'Could not launch $url');
     }
   }
-Future<void> onclickSingleHelp()async{
- if (appRelatedQueries.value==true) {
-    final Uri params = Uri(
-      scheme: 'mailto',
-      path: 'tourmakerinfo@gmail.com',
-      query:
-          'subject=I am ${controller?.name} , i need help about TourMaker app',
-    );
-    final String url = params.toString();
-    if (await canLaunchUrl(Uri.parse(url))) {
-      await launchUrl(Uri.parse(url));
-    } else {
-      Get.snackbar('SORRY!!!', 'Could not launch $url');
-    }
- } else if(businessQueries.value==true){
-   final Uri params = Uri(
-      scheme: 'mailto',
-      path: 'tourmakerinfo@gmail.com',
-      query:
-          'subject=I am ${controller?.name} , i would like to collab with TourMaker app',
-    );
-    final String url = params.toString();
-    if (await canLaunchUrl(Uri.parse(url))) {
-      await launchUrl(Uri.parse(url));
-    } else {
-      Get.snackbar('SORRY!!!', 'Could not launch $url');
-    }
-   
- }else if(deactivateAccount.value==true){
-   final Uri params = Uri(
-      scheme: 'mailto',
-      path: 'tourmakerinfo@gmail.com',
-      query:
-          'subject=I am ${controller?.name} , I need to deactivate/ delete my data from TourMaker app',
-    );
-    final String url = params.toString();
-    if (await canLaunchUrl(Uri.parse(url))) {
-      await launchUrl(Uri.parse(url));
-    } else {
-      Get.snackbar('SORRY!!!', 'Could not launch $url');
-    }
- }
- else{
-   final Uri params = Uri(
-      scheme: 'mailto',
-      path: 'tourmakerinfo@gmail.com',
-      query:
-          'subject=I am ${controller?.name} , i need help about TourMaker app',
-    );
-    final String url = params.toString();
-    if (await canLaunchUrl(Uri.parse(url))) {
-      await launchUrl(Uri.parse(url));
-    } else {
-      Get.snackbar('SORRY!!!', 'Could not launch $url');
-    }
- }
 
+  Future<void> onclickSingleHelp() async {
+    if (appRelatedQueries.value == true) {
+      final Uri params = Uri(
+        scheme: 'mailto',
+        path: 'tourmakerinfo@gmail.com',
+        query:
+            'subject=I am ${controller?.name} , i need help about TourMaker app',
+      );
+      final String url = params.toString();
+      if (await canLaunchUrl(Uri.parse(url))) {
+        await launchUrl(Uri.parse(url));
+      } else {
+        Get.snackbar('SORRY!!!', 'Could not launch $url');
+      }
+    } else if (businessQueries.value == true) {
+      final Uri params = Uri(
+        scheme: 'mailto',
+        path: 'tourmakerinfo@gmail.com',
+        query:
+            'subject=I am ${controller?.name} , i would like to collab with TourMaker app',
+      );
+      final String url = params.toString();
+      if (await canLaunchUrl(Uri.parse(url))) {
+        await launchUrl(Uri.parse(url));
+      } else {
+        Get.snackbar('SORRY!!!', 'Could not launch $url');
+      }
+    } else if (deactivateAccount.value == true) {
+      final Uri params = Uri(
+        scheme: 'mailto',
+        path: 'tourmakerinfo@gmail.com',
+        query:
+            'subject=I am ${controller?.name} , I need to deactivate/ delete my data from TourMaker app',
+      );
+      final String url = params.toString();
+      if (await canLaunchUrl(Uri.parse(url))) {
+        await launchUrl(Uri.parse(url));
+      } else {
+        Get.snackbar('SORRY!!!', 'Could not launch $url');
+      }
+    } else {
+      final Uri params = Uri(
+        scheme: 'mailto',
+        path: 'tourmakerinfo@gmail.com',
+        query:
+            'subject=I am ${controller?.name} , i need help about TourMaker app',
+      );
+      final String url = params.toString();
+      if (await canLaunchUrl(Uri.parse(url))) {
+        await launchUrl(Uri.parse(url));
+      } else {
+        Get.snackbar('SORRY!!!', 'Could not launch $url');
+      }
+    }
+  }
 
-
-}
   Future<void> logout() async {
     final GetStorage storage = GetStorage();
     await storage.write('currentUserAddress', '');
@@ -412,10 +408,16 @@ The company have all the guaranteed rights to ban your login if we notice misuse
                   style: subheading3,
                   textAlign: TextAlign.justify,
                 ),
-                SizedBox(height: 59),
-                 GestureDetector(
-                onTap: ()=>onTapViewMore(),
-                child: Text('view more > > >',style: subheading3.copyWith(color: englishlinearViolet,),),)
+                const SizedBox(height: 59),
+                GestureDetector(
+                  onTap: () => onTapViewMore(),
+                  child: Text(
+                    'view more > > >',
+                    style: subheading3.copyWith(
+                      color: englishlinearViolet,
+                    ),
+                  ),
+                )
               ],
             ),
           ),
@@ -565,14 +567,14 @@ The company have all the guaranteed rights to ban your login if we notice misuse
   void onClickEditProfile() {
     Get.toNamed(Routes.USER_REGISTERSCREEN);
   }
-  
-  Future<void> onTapViewMore() async{
-     final Uri url = Uri.parse('https://tourmaker.in/privacy.html');
+
+  Future<void> onTapViewMore() async {
+    final Uri url = Uri.parse('https://tourmaker.in/privacy.html');
     if (await canLaunchUrl(url)) {
       await launchUrl(url);
     } else {
-      CustomDialog().showCustomDialog('Error !',
-          contentText: "couldn't open to link");
+      CustomDialog()
+          .showCustomDialog('Error !', contentText: "couldn't open to link");
     }
   }
 }

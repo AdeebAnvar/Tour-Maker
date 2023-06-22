@@ -31,11 +31,11 @@ class SingleTourView extends GetView<SingleTourController> {
           onRefresh: controller.fetchData,
           color: englishViolet,
           child: SingleChildScrollView(
-            physics: AlwaysScrollableScrollPhysics(),
+            physics: const AlwaysScrollableScrollPhysics(),
             child: Stack(
               children: <Widget>[
                 tourImge(controller),
-                tourName(controller),
+                // tourName(controller),
                 tourDetailContainer(screenWidth, controller, context),
               ],
             ),
@@ -214,7 +214,7 @@ class SingleTourView extends GetView<SingleTourController> {
   }
 
   Widget buildFixedDeparture() {
-    if (controller.batchTours.value.packageData != null) {
+    if (controller.batchTours.value.packageData!.isNotEmpty) {
       return FixedDepartures(
           controller: controller,
           countOfAdults: countOfAdults(),
@@ -250,8 +250,8 @@ class SingleTourView extends GetView<SingleTourController> {
                 height: 25,
                 decoration:
                     BoxDecoration(shape: BoxShape.circle, color: englishViolet),
-                child: Column(
-                  children: const <Widget>[
+                child: const Column(
+                  children: <Widget>[
                     Center(
                       child: Icon(
                         Icons.minimize,
@@ -302,8 +302,8 @@ class SingleTourView extends GetView<SingleTourController> {
                   height: 25,
                   decoration: BoxDecoration(
                       shape: BoxShape.circle, color: englishViolet),
-                  child: Column(
-                    children: const <Widget>[
+                  child: const Column(
+                    children: <Widget>[
                       Center(
                         child: Icon(
                           Icons.minimize,

@@ -2,7 +2,6 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 import 'package:get/get.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:sizer/sizer.dart';
 
 import '../../../../core/theme/style.dart';
@@ -129,28 +128,28 @@ class MainScreenView extends GetView<MainScreenController> {
                             color: englishlinearViolet,
                             borderRadius: BorderRadius.circular(18),
                           ),
-                          child: Center(
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: <Widget>[
-                                Column(
-                                  children: <Widget>[
-                                    Text(
-                                      controller
-                                          .travelTypesToursList[index].name
-                                          .toString(),
-                                      overflow: TextOverflow.clip,
-                                      style: GoogleFonts.montserrat(
-                                        fontWeight: FontWeight.w600,
-                                        fontSize: 24,
-                                        color: Colors.white,
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ],
-                            ),
-                          ),
+                          // child: Center(
+                          //   child: Column(
+                          //     mainAxisAlignment: MainAxisAlignment.center,
+                          //     children: <Widget>[
+                          //       Column(
+                          //         children: <Widget>[
+                          //           Text(
+                          //             controller
+                          //                 .travelTypesToursList[index].name
+                          //                 .toString(),
+                          //             overflow: TextOverflow.clip,
+                          //             style: GoogleFonts.montserrat(
+                          //               fontWeight: FontWeight.w600,
+                          //               fontSize: 24,
+                          //               color: Colors.white,
+                          //             ),
+                          //           ),
+                          //         ],
+                          //       ),
+                          //     ],
+                          //   ),
+                          // ),
                         ),
                       ),
                     ),
@@ -213,27 +212,27 @@ class MainScreenView extends GetView<MainScreenController> {
                               color: englishlinearViolet,
                               borderRadius: BorderRadius.circular(18),
                             ),
-                            child: Center(
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: <Widget>[
-                                  Column(
-                                    children: <Widget>[
-                                      Text(
-                                        controller
-                                            .exclusiveToursList[index].name
-                                            .toString(),
-                                        style: GoogleFonts.montserrat(
-                                          fontWeight: FontWeight.w600,
-                                          fontSize: 24,
-                                          color: Colors.white,
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ],
-                              ),
-                            ),
+                            // child: Center(
+                            //   child: Column(
+                            //     mainAxisAlignment: MainAxisAlignment.center,
+                            //     children: <Widget>[
+                            //       Column(
+                            //         children: <Widget>[
+                            //           Text(
+                            //             controller
+                            //                 .exclusiveToursList[index].name
+                            //                 .toString(),
+                            //             style: GoogleFonts.montserrat(
+                            //               fontWeight: FontWeight.w600,
+                            //               fontSize: 24,
+                            //               color: Colors.white,
+                            //             ),
+                            //           ),
+                            //         ],
+                            //       ),
+                            //     ],
+                            //   ),
+                            // ),
                           ),
                         ),
                       ),
@@ -300,66 +299,66 @@ class MainScreenView extends GetView<MainScreenController> {
                               color: englishlinearViolet,
                               borderRadius: BorderRadius.circular(18),
                             ),
-                            child: Center(
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: <Widget>[
-                                  Padding(
-                                    padding: const EdgeInsets.symmetric(
-                                        vertical: 45.0),
-                                    child: Column(
-                                      children: <Widget>[
-                                        Text(
-                                          controller.trendingToursList[index]
-                                              .destination
-                                              .toString(),
-                                          style: TextStyle(
-                                            fontFamily: 'Tahu',
-                                            fontSize: 18.sp,
-                                            color: Colors.white,
-                                          ),
-                                        ),
-                                        const Text(
-                                          'Tours',
-                                          style: TextStyle(
-                                            fontFamily: 'Tahu',
-                                            fontSize: 20,
-                                            color: Colors.amber,
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                  const SizedBox(height: 10),
-                                  Spacer(),
-                                  Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceAround,
-                                    children: <Widget>[
-                                      Text(
-                                        'Starting From: ',
-                                        style: GoogleFonts.montserrat(
-                                          fontWeight: FontWeight.w500,
-                                          fontSize: 12,
-                                          color: Colors.white,
-                                        ),
-                                      ),
-                                      Text(
-                                        controller
-                                            .trendingToursList[index].minAmount
-                                            .toString(),
-                                        style: GoogleFonts.montserrat(
-                                          fontWeight: FontWeight.w500,
-                                          fontSize: 12,
-                                          color: Colors.amber,
-                                        ),
-                                      ),
-                                      const SizedBox(height: 24)
-                                    ],
-                                  ),
-                                ],
-                              ),
-                            ),
+                            // child: Center(
+                            //   child: Column(
+                            //     mainAxisAlignment: MainAxisAlignment.center,
+                            //     children: <Widget>[
+                            //       Padding(
+                            //         padding: const EdgeInsets.symmetric(
+                            //             vertical: 45.0),
+                            //         child: Column(
+                            //           children: <Widget>[
+                            //             Text(
+                            //               controller.trendingToursList[index]
+                            //                   .destination
+                            //                   .toString(),
+                            //               style: TextStyle(
+                            //                 fontFamily: 'Tahu',
+                            //                 fontSize: 18.sp,
+                            //                 color: Colors.white,
+                            //               ),
+                            //             ),
+                            //             const Text(
+                            //               'Tours',
+                            //               style: TextStyle(
+                            //                 fontFamily: 'Tahu',
+                            //                 fontSize: 20,
+                            //                 color: Colors.amber,
+                            //               ),
+                            //             ),
+                            //           ],
+                            //         ),
+                            //       ),
+                            //       const SizedBox(height: 10),
+                            //       Spacer(),
+                            //       Row(
+                            //         mainAxisAlignment:
+                            //             MainAxisAlignment.spaceAround,
+                            //         children: <Widget>[
+                            //           Text(
+                            //             'Starting From: ',
+                            //             style: GoogleFonts.montserrat(
+                            //               fontWeight: FontWeight.w500,
+                            //               fontSize: 12,
+                            //               color: Colors.white,
+                            //             ),
+                            //           ),
+                            //           Text(
+                            //             controller
+                            //                 .trendingToursList[index].minAmount
+                            //                 .toString(),
+                            //             style: GoogleFonts.montserrat(
+                            //               fontWeight: FontWeight.w500,
+                            //               fontSize: 12,
+                            //               color: Colors.amber,
+                            //             ),
+                            //           ),
+                            //           const SizedBox(height: 24)
+                            //         ],
+                            //       ),
+                            //     ],
+                            //   ),
+                            // ),
                           ),
                         ),
                       ),

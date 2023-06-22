@@ -67,16 +67,16 @@ class SingleCategoryView extends GetView<SingleCategoryController> {
                             fit: BoxFit.cover,
                           ),
                         ),
-                        child: Center(
-                          child: Text(
-                            controller.categoryName.value,
-                            style: const TextStyle(
-                              fontFamily: 'Tahu',
-                              fontSize: 50,
-                              color: Colors.white,
-                            ),
-                          ),
-                        ),
+                        // child: Center(
+                        //   child: Text(
+                        //     controller.categoryName.value,
+                        //     style: const TextStyle(
+                        //       fontFamily: 'Tahu',
+                        //       fontSize: 50,
+                        //       color: Colors.white,
+                        //     ),
+                        //   ),
+                        // ),
                       ),
                     )),
                 Obx(() {
@@ -132,7 +132,7 @@ class SingleCategoryView extends GetView<SingleCategoryController> {
                           padding: const EdgeInsets.symmetric(vertical: 15.0),
                           child: Column(
                             children: <Widget>[
-                              Divider(indent: 70, endIndent: 70),
+                              const Divider(indent: 70, endIndent: 70),
                               Text('You Are All Caught Up', style: subheading1),
                             ],
                           ),
