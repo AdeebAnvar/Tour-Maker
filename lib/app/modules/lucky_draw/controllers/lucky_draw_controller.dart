@@ -4,14 +4,18 @@ import 'package:get_storage/get_storage.dart';
 
 import '../../../routes/app_pages.dart';
 import '../../../widgets/custom_dialogue.dart';
+import '../views/lucky_draw_view.dart';
 
-class LuckyDrawController extends GetxController with StateMixin<dynamic> {
+class LuckyDrawController extends GetxController
+    with StateMixin<LuckyDrawView> {
   dynamic userName;
   String? currentUserName;
   final RxInt count = 0.obs;
   RxBool isLoading = false.obs;
-  RxBool isFinished = false.obs;
-  RxBool isFinishedHeading = false.obs;
+  RxBool isloading = false.obs;
+  RxBool isClickNext = false.obs;
+  // RxBool isFinished = false.obs;
+  // RxBool isFinishedHeading = false.obs;
   final GetStorage getStorage = GetStorage();
   final AudioPlayer audioPlayer = AudioPlayer();
 
@@ -26,31 +30,31 @@ class LuckyDrawController extends GetxController with StateMixin<dynamic> {
   @override
   Future<void> onReady() async {
     super.onReady();
-    playAudio();
+    // playAudio();
   }
 
   @override
   void onClose() {
     super.onClose();
-    audioPlayer.dispose();
+    // audioPlayer.dispose();
   }
 
   Future<void> playAudio() async {
     await audioPlayer.play(AssetSource('typewriter-1.mp3'));
   }
 
-  Future<void> onFinished() async {
-    isFinished.value = true;
-    await audioPlayer.pause();
-  }
+  // Future<void> onFinished() async {
+  //   isFinished.value = true;
+  //   await audioPlayer.pause();
+  // }
 
   void onClickDemoApp() {
     Get.offAllNamed(Routes.HOME);
   }
 
-  Future<void> onFinishedHeading() async {
-    isFinishedHeading.value = true;
-  }
+  // Future<void> onFinishedHeading() async {
+  //   isFinishedHeading.value = true;
+  // }
 
   Future<void> onClickFoatingButton() async {
     CustomDialog().showCustomDialog(
@@ -66,5 +70,10 @@ class LuckyDrawController extends GetxController with StateMixin<dynamic> {
         Get.offAllNamed(Routes.HOME);
       },
     );
+  }
+
+  void onClickNext() {
+    isLoading.value = true;
+    isClickNext.value = true;
   }
 }
