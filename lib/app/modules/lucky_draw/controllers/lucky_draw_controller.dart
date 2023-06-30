@@ -33,12 +33,6 @@ class LuckyDrawController extends GetxController
     // playAudio();
   }
 
-  @override
-  void onClose() {
-    super.onClose();
-    // audioPlayer.dispose();
-  }
-
   Future<void> playAudio() async {
     await audioPlayer.play(AssetSource('typewriter-1.mp3'));
   }

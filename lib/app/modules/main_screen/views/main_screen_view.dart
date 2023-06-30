@@ -1,4 +1,3 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:sizer/sizer.dart';
@@ -260,7 +259,8 @@ class MainScreenView extends GetView<MainScreenController> {
                             image: DecorationImage(
                               fit: BoxFit.cover,
                               image: NetworkImage(
-                                controller.categoryList[index].image.toString(),
+                                controller.trendingToursList[index].image
+                                    .toString(),
                               ),
                             ),
                             color: englishlinearViolet,
@@ -399,39 +399,41 @@ class MainScreenView extends GetView<MainScreenController> {
                                     width: 73,
                                     child: Column(
                                       children: <Widget>[
-                                        CachedNetworkImage(
-                                          // cacheKey:
-                                          //     'categories_image_cache_key ${controller.categoryList[index].image}',
-                                          // cacheManager: DefaultCacheManager(),
-                                          fadeInDuration:
-                                              const Duration(milliseconds: 600),
-                                          imageUrl: controller
-                                              .categoryList[index].image!,
-                                          imageBuilder: (BuildContext context,
-                                                  ImageProvider<Object>
-                                                      imageProvider) =>
-                                              Container(
-                                            width: 55,
-                                            height: 55,
-                                            decoration: BoxDecoration(
-                                              shape: BoxShape.circle,
-                                              image: DecorationImage(
-                                                image: imageProvider,
-                                                fit: BoxFit.cover,
-                                              ),
+                                        // CachedNetworkImage(
+                                        //   // cacheKey:
+                                        //   //     'categories_image_cache_key ${controller.categoryList[index].image}',
+                                        //   // cacheManager: DefaultCacheManager(),
+                                        //   fadeInDuration:
+                                        //       const Duration(milliseconds: 600),
+                                        //   imageUrl: controller
+                                        //       .categoryList[index].image!,
+                                        //   imageBuilder: (BuildContext context,
+                                        //           ImageProvider<Object>
+                                        //               imageProvider) =>
+                                        Container(
+                                          width: 55,
+                                          height: 55,
+                                          decoration: BoxDecoration(
+                                            shape: BoxShape.circle,
+                                            image: DecorationImage(
+                                              image: NetworkImage(controller
+                                                  .categoryList[index].image
+                                                  .toString()),
+                                              fit: BoxFit.cover,
                                             ),
                                           ),
-                                          placeholder: (BuildContext context,
-                                                  String url) =>
-                                              const CustomShimmer(
-                                            width: 55,
-                                            height: 55,
-                                            shape: BoxShape.circle,
-                                          ),
-                                          errorWidget: (BuildContext context,
-                                                  String url, dynamic error) =>
-                                              const Icon(Icons.error),
                                         ),
+                                        //   placeholder: (BuildContext context,
+                                        //           String url) =>
+                                        //       const CustomShimmer(
+                                        //     width: 55,
+                                        //     height: 55,
+                                        //     shape: BoxShape.circle,
+                                        //   ),
+                                        //   errorWidget: (BuildContext context,
+                                        //           String url, dynamic error) =>
+                                        //       const Icon(Icons.error),
+                                        // ),
                                         const SizedBox(height: 3),
                                         Text(
                                           controller.categoryList[index].name
