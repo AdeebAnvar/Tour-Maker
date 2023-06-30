@@ -1,4 +1,3 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:sizer/sizer.dart';
@@ -47,37 +46,31 @@ class SingleCategoryView extends GetView<SingleCategoryController> {
             controller: scrollController,
             child: Column(
               children: <Widget>[
-                Obx(() => CachedNetworkImage(
-                      imageUrl: controller.categoryImage.value.isEmpty
-                          ? 'https://images.unsplash.com/photo-1589802829985-817e51171b92?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxleHBsb3JlLWZlZWR8Nnx8fGVufDB8fHx8&w=1000&q=80'
-                          : controller.categoryImage.value,
-                      imageBuilder: (BuildContext context,
-                              ImageProvider<Object> imageProvider) =>
-                          Container(
-                        width: double.infinity,
-                        height: 35.h,
-                        clipBehavior: Clip.hardEdge,
-                        decoration: BoxDecoration(
-                          borderRadius: const BorderRadius.only(
-                            bottomLeft: Radius.circular(25),
-                            bottomRight: Radius.circular(25),
-                          ),
-                          image: DecorationImage(
-                            image: imageProvider,
-                            fit: BoxFit.cover,
-                          ),
+                Obx(() => Container(
+                      width: double.infinity,
+                      height: 35.h,
+                      clipBehavior: Clip.hardEdge,
+                      decoration: BoxDecoration(
+                        borderRadius: const BorderRadius.only(
+                          bottomLeft: Radius.circular(25),
+                          bottomRight: Radius.circular(25),
                         ),
-                        // child: Center(
-                        //   child: Text(
-                        //     controller.categoryName.value,
-                        //     style: const TextStyle(
-                        //       fontFamily: 'Tahu',
-                        //       fontSize: 50,
-                        //       color: Colors.white,
-                        //     ),
-                        //   ),
-                        // ),
+                        image: DecorationImage(
+                          image:
+                              NetworkImage(controller.categoryImage.toString()),
+                          fit: BoxFit.cover,
+                        ),
                       ),
+                      // child: Center(
+                      //   child: Text(
+                      //     controller.categoryName.value,
+                      //     style: const TextStyle(
+                      //       fontFamily: 'Tahu',
+                      //       fontSize: 50,
+                      //       color: Colors.white,
+                      //     ),
+                      //   ),
+                      // ),
                     )),
                 Obx(() {
                   return ListView.builder(

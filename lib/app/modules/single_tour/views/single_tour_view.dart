@@ -1,4 +1,3 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
@@ -183,7 +182,7 @@ class SingleTourView extends GetView<SingleTourController> {
       height: 100.w,
       decoration: BoxDecoration(
         image: DecorationImage(
-          image: CachedNetworkImageProvider(
+          image: NetworkImage(
             '${controller.batchTours.value.tourData!.image}',
           ),
           fit: BoxFit.cover,

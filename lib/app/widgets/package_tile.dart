@@ -1,11 +1,8 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:sizer/sizer.dart';
 
 import '../../core/theme/style.dart';
-import 'custom_shimmer.dart';
 
 class PackageTile extends StatelessWidget {
   const PackageTile({
@@ -47,36 +44,19 @@ class PackageTile extends StatelessWidget {
             children: <Widget>[
               Column(
                 children: <Widget>[
-                  CachedNetworkImage(
-                    cacheManager: DefaultCacheManager(),
-                    useOldImageOnUrlChange: true,
-                    errorWidget:
-                        (BuildContext context, String url, dynamic error) {
-                      return const Icon(Icons.error);
-                    },
-                    placeholder: (BuildContext context, String url) =>
-                        CustomShimmer(
-                      width: 125,
-                      height: 125,
+                  Container(
+                    margin: const EdgeInsets.all(10),
+                    width: 125,
+                    height: 125,
+                    decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(12),
-                    ),
-                    imageUrl: tourImage,
-                    imageBuilder: (BuildContext context,
-                            ImageProvider<Object> imageProvider) =>
-                        Container(
-                      margin: const EdgeInsets.all(10),
-                      width: 125,
-                      height: 125,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(12),
-                        color: englishlinearViolet,
-                        image: DecorationImage(
-                          fit: BoxFit.fill,
-                          image: imageProvider,
-                        ),
+                      color: Colors.grey.shade200,
+                      image: DecorationImage(
+                        fit: BoxFit.fill,
+                        image: NetworkImage(tourImage),
                       ),
                     ),
-                  )
+                  ),
                 ],
               ),
               Padding(
@@ -85,16 +65,20 @@ class PackageTile extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
-                    Text(
-                      tourName.split(' ').join('\n'),
-                      style: GoogleFonts.montserrat(
-                        fontWeight: FontWeight.w600,
-                        fontSize: 16,
-                        color: fontColor,
+                    Container(
+                      padding: const EdgeInsets.symmetric(vertical: 5),
+                      width: 140,
+                      child: Text(
+                        tourName.trim(),
+                        style: GoogleFonts.montserrat(
+                          fontWeight: FontWeight.w600,
+                          fontSize: 16,
+                          color: fontColor,
+                        ),
+                        overflow: TextOverflow.visible,
                       ),
-                      overflow: TextOverflow.ellipsis,
                     ),
-                    const SizedBox(height: 5),
+                    const SizedBox(height: 7),
                     Text(tourCode, style: paragraph1),
                     const SizedBox(height: 12),
                     Text(
