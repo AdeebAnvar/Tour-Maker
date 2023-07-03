@@ -160,7 +160,7 @@ class SingleTourController extends GetxController
       final DateTime selectedDate =
           DateTime.parse(package.dateOfTravel.toString());
       final DateTime today = DateTime.now();
-      if (package.availableSeats == package.totalSeats) {
+      if (package.availableSeats == 0) {
         CustomDialog().showCustomDialog(
           'Seats Filled!!',
           contentText:
@@ -184,18 +184,18 @@ class SingleTourController extends GetxController
       final DateTime selectedDate =
           DateTime.parse(package.dateOfTravel.toString());
       final DateTime today = DateTime.now();
-     
-        if (selectedDate.difference(today).inDays <= 7) {
-          await showWarningDialogue(package);
-        } else {
-          await confirmPayment(package.iD!, package);
-        }
-      
+
+      if (selectedDate.difference(today).inDays <= 7) {
+        await showWarningDialogue(package);
+      } else {
+        await confirmPayment(package.iD!, package);
+      }
     } else {
       await Get.toNamed(Routes.USER_REGISTERSCREEN)!
           .whenComplete(() => fetchData());
     }
   }
+
   Future<int?> createUserOrder(int packageID, PackageData package) async {
     final OrderModel om = OrderModel(
       noOfAdults: adult.value,
