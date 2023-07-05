@@ -103,7 +103,7 @@ class BookingSummaryController extends GetxController
 
   void openRazorPay(String paymentID) {
     final Map<String, Object?> options = <String, Object?>{
-      'key': 'rzp_test_yAFypxWUiCD7H7',
+      'key': 'rzp_live_VpG0vgAvsBqlnU',
       'name': 'TourMaker',
       'description': 'Pay for your Package Order',
       'order_id': paymentID,

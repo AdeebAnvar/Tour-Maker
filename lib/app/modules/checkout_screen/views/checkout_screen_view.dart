@@ -176,13 +176,9 @@ class CheckoutScreenView extends GetView<CheckoutScreenController> {
                           ),
                         ],
                       ),
-                    buildItem(
-                        'Package Amount :', '₹ ${controller.getTotalAmount()}'),
-                    if (controller.currentUserCategory == 'standard')
-                      const SizedBox()
-                    else
-                      buildItem('Discount :',
-                          '- ₹ ${controller.getCommissionAmount()}'),
+                    // buildItem('Package Amount :',
+                    //     '₹ ${controller.checkOutModel.va}'),
+
                     const SizedBox(height: 10),
                     const Divider(
                       color: Colors.grey,
@@ -191,7 +187,12 @@ class CheckoutScreenView extends GetView<CheckoutScreenController> {
                     ),
                     const SizedBox(height: 10),
                     buildItem('Total Amount : ',
-                        '₹ ${controller.getTotalAmounttoBePaid().toStringAsFixed(2)}'),
+                        '₹ ${controller.getTotalAmountofPackageIncludingGST().toStringAsFixed(2)}'),
+                    if (controller.currentUserCategory == 'standard')
+                      const SizedBox()
+                    else
+                      buildItem('Discount :',
+                          '- ₹ ${controller.getCommissionAmount()}'),
                     buildItem(
                         'CGST (${controller.checkOutModel.value!.gst! / 2}%):',
                         '₹ ${controller.getCGST()}'),

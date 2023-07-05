@@ -229,7 +229,7 @@ class UserRegisterscreenController extends GetxController
 
   Future<void> openRazorPay(String orderId) async {
     final Map<String, Object?> options = <String, Object?>{
-      'key': 'rzp_test_yAFypxWUiCD7H7',
+      'key': 'rzp_live_VpG0vgAvsBqlnU',
       'name': 'Tour Maker',
       'description': 'Test Payment',
       'order_id': orderId,

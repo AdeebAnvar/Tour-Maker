@@ -13,6 +13,7 @@ import '../../../routes/app_pages.dart';
 import '../../../services/network_services/dio_client.dart';
 import '../../../widgets/custom_dialogue.dart';
 import '../views/checkout_screen_view.dart';
+import 'tour_calculations.dart';
 
 class CheckoutScreenController extends GetxController
     with StateMixin<CheckoutScreenView> {
@@ -44,68 +45,55 @@ class CheckoutScreenController extends GetxController
     }
   }
 
-  num getTotalAmount() {
-    final int adultCount = checkOutModel.value!.adultCount!;
-    final int chidrenCount = checkOutModel.value!.childrenCount!;
-    final num adultAmount = checkOutModel.value!.offerAmount != 0
-        ? checkOutModel.value!.offerAmount! * adultCount
-        : checkOutModel.value!.amount! * adultCount;
-    final num kidsAmount = checkOutModel.value!.kidsOfferAmount != 0
-        ? checkOutModel.value!.kidsOfferAmount! * chidrenCount
-        : checkOutModel.value!.kidsAmount! * chidrenCount;
-    final num totalAmount = adultAmount + kidsAmount;
-    return totalAmount;
-  }
+  num getTotalAmountofPackageIncludingGST() =>
+      CalculateAmount().getAmountofTourPackageIncludingGST(
+        adultCount: checkOutModel.value!.adultCount!,
+        amount: checkOutModel.value!.amount!,
+        childrenCount: checkOutModel.value!.childrenCount!,
+        kidsAmount: checkOutModel.value!.kidsAmount!,
+        kidsOfferAmount: checkOutModel.value!.kidsOfferAmount!,
+        offerAmount: checkOutModel.value!.offerAmount!,
+        gst: checkOutModel.value!.gst!,
+      );
+  num getTotalAmountofPackageExcludingGST() =>
+      CalculateAmount().getAmountofTourPackageExcludingGST(
+        adultCount: checkOutModel.value!.adultCount!,
+        amount: checkOutModel.value!.amount!,
+        childrenCount: checkOutModel.value!.childrenCount!,
+        kidsAmount: checkOutModel.value!.kidsAmount!,
+        kidsOfferAmount: checkOutModel.value!.kidsOfferAmount!,
+        offerAmount: checkOutModel.value!.offerAmount!,
+        gst: checkOutModel.value!.gst!,
+      );
 
-  double getGST() {
-    final num totalAmount = getTotalAmounttoBePaid();
-    final double gst = (totalAmount * checkOutModel.value!.gst!) / 100;
-    return gst;
-  }
+  num getGST() => CalculateAmount().getGSTAmount(
+      amountofPackage: getTotalAmountofPackageIncludingGST(),
+      gstPercentage: checkOutModel.value!.gst!);
 
-  double getSGST() {
-    final num totalAmount = getTotalAmounttoBePaid();
-    final double sgstpercentage = checkOutModel.value!.gst! / 2;
-    final double sgst = (totalAmount * sgstpercentage) / 100;
-    return sgst;
-  }
+  num getSGST() => CalculateAmount().getSGSTAmount(
+        amountofPackage: getTotalAmountofPackageExcludingGST(),
+        gstPercentage: checkOutModel.value!.gst!,
+      );
 
-  double getCGST() {
-    final num totalAmount = getTotalAmounttoBePaid();
-    final double cgstPercentage = checkOutModel.value!.gst! / 2;
-    final double sgst = (totalAmount * cgstPercentage) / 100;
-    return sgst;
-  }
+  num getCGST() => CalculateAmount().getCGSTAmount(
+      amountofPackage: getTotalAmountofPackageExcludingGST(),
+      gstPercentage: checkOutModel.value!.gst!);
 
-  num getTotalAmounttoBePaid() {
-    final num commissionAmount = getCommissionAmount();
-    final num totalAmount = getTotalAmount();
-    final num sum;
-    currentUserCategory == 'standard'
-        ? sum = totalAmount
-        : sum = totalAmount - commissionAmount;
-    return sum;
-  }
+  int getTotalPassengers() => CalculateAmount().getTotalPassengersCount(
+        adultCount: checkOutModel.value!.adultCount!,
+        childrenCount: checkOutModel.value!.childrenCount!,
+      );
 
-  num getCommissionAmount() {
-    final num commission = checkOutModel.value!.commission!;
-    final int totalPassenegrs = getTotalPassengers();
-    final num sum = commission * totalPassenegrs;
-    return sum;
-  }
+  num getCommissionAmount() => CalculateAmount().getCommisionAmount(
+        commission: checkOutModel.value!.commission!,
+        totalPassengers: getTotalPassengers(),
+      );
 
-  int getTotalPassengers() {
-    final int totalPassenegrs =
-        checkOutModel.value!.adultCount! + checkOutModel.value!.childrenCount!;
-    return totalPassenegrs;
-  }
-
-  num getGrandTotal() {
-    final num gst = getGST();
-    final num totalAmount = getTotalAmounttoBePaid();
-    final num grandTotal = totalAmount + gst;
-    return grandTotal;
-  }
+  num getGrandTotal() => CalculateAmount().getGrandTotalAmount(
+      commission: getCommissionAmount(),
+      currentUserCategory: currentUserCategory.toString(),
+      packageAmount: getTotalAmountofPackageIncludingGST(),
+      gst: getGST());
 
   void onViewItinerary(String? tourItinerary) {
     Get.toNamed(Routes.PDF_VIEW, arguments: <String>[tourItinerary!]);
@@ -211,7 +199,7 @@ class CheckoutScreenController extends GetxController
 
   void openRazorPay(String paymentID) {
     final Map<String, Object?> options = <String, Object?>{
-      'key': 'rzp_test_yAFypxWUiCD7H7',
+      'key': 'rzp_live_VpG0vgAvsBqlnU',
       'name': 'TourMaker',
       'description': 'Pay for your Package Order',
       'order_id': paymentID,

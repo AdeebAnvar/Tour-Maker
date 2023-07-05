@@ -88,12 +88,13 @@ class PassengerCard extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: <Widget>[
                   const Text('Address : '),
-                  SizedBox(
-                    width: 200,
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.end,
-                      children: <Widget>[
-                        Text(
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: <Widget>[
+                      Container(
+                        height: 50,
+                        width: 200,
+                        child: Text(
                           travellers.address.toString(),
                           style: GoogleFonts.montserrat(
                             fontWeight: FontWeight.w600,
@@ -102,8 +103,8 @@ class PassengerCard extends StatelessWidget {
                           ),
                           overflow: TextOverflow.visible,
                         ),
-                      ],
-                    ),
+                      ),
+                    ],
                   ),
                 ],
               ),

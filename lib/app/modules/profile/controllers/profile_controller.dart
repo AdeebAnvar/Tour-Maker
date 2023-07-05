@@ -126,7 +126,7 @@ class ProfileController extends GetxController with StateMixin<ProfileView> {
 
   Future<void> openRazorPay(String orderId) async {
     final Map<String, Object?> options = <String, Object?>{
-      'key': 'rzp_test_yAFypxWUiCD7H7',
+      'key': 'rzp_live_VpG0vgAvsBqlnU',
       'name': userData.value.name,
       'description': 'Test Payment',
       'order_id': orderId,

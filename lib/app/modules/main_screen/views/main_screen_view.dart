@@ -400,10 +400,10 @@ class MainScreenView extends GetView<MainScreenController> {
                                     child: Column(
                                       children: <Widget>[
                                         // CachedNetworkImage(
-                                        //   // cacheKey:
-                                        //   //     'categories_image_cache_key ${controller.categoryList[index].image}',
-                                        //   // cacheManager: DefaultCacheManager(),
-                                        //   fadeInDuration:
+                                        // cacheKey:
+                                        //     'categories_image_cache_key ${controller.categoryList[index].image}',
+                                        // cacheManager: DefaultCacheManager(),
+                                        // fadeInDuration:
                                         //       const Duration(milliseconds: 600),
                                         //   imageUrl: controller
                                         //       .categoryList[index].image!,

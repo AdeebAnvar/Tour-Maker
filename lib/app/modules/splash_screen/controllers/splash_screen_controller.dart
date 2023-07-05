@@ -185,7 +185,7 @@ class SplashScreenController extends GetxController with StateMixin<dynamic> {
     // we will get a response the user exists or not by checking the userdata is empty or not .
     // if the user data is empty the user isn't exist in Database so the user will redirect to Login screen
     // Otherwise the user will redirect to Home Screen
-    if (res.data != null) {
+    if (res.data != null && res.data!.phoneNumber != '') {
       final UserModel user = res.data!;
       if (user.tAndCStatus == 'true') {
         await getStorage.write('currentUserAddress', user.address);
