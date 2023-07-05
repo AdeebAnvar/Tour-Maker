@@ -270,32 +270,32 @@ class UserRegisterscreenView extends GetView<UserRegisterscreenController> {
                     );
                   }),
                   const SizedBox(height: 20),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: <Widget>[
-                      ActionChip(
-                        backgroundColor: Colors.transparent,
-                        elevation: 0,
-                        onPressed: () => controller.onClickDeleteMyAccount(),
-                        label: Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Row(
-                            children: <Widget>[
-                              Text('Delete My Account',
-                                  style: subheading3.copyWith(
-                                      color: englishViolet)),
-                              const SizedBox(width: 15),
-                              Icon(
-                                Icons.delete,
-                                color: englishViolet,
-                                size: 15,
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
+                  // Row(
+                  //   mainAxisAlignment: MainAxisAlignment.center,
+                  //   children: <Widget>[
+                  //     ActionChip(
+                  //       backgroundColor: Colors.transparent,
+                  //       elevation: 0,
+                  //       onPressed: () => controller.onClickDeleteMyAccount(),
+                  //       label: Padding(
+                  //         padding: const EdgeInsets.all(8.0),
+                  //         child: Row(
+                  //           children: <Widget>[
+                  //             Text('Delete My Account',
+                  //                 style: subheading3.copyWith(
+                  //                     color: englishViolet)),
+                  //             const SizedBox(width: 15),
+                  //             Icon(
+                  //               Icons.delete,
+                  //               color: englishViolet,
+                  //               size: 15,
+                  //             ),
+                  //           ],
+                  //         ),
+                  //),
+                  //),
+                  //],
+                  //),
                 ],
               ),
             ),

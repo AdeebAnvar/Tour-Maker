@@ -1,7 +1,6 @@
 import 'dart:developer';
 
 import 'package:country_picker/country_picker.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
@@ -15,7 +14,6 @@ import '../../../data/models/network_models/razorpay_model.dart';
 import '../../../data/models/network_models/user_model.dart';
 import '../../../data/repo/network_repo/razorpay_repo.dart';
 import '../../../data/repo/network_repo/user_repo.dart';
-import '../../../routes/app_pages.dart';
 import '../../../services/network_services/dio_client.dart';
 import '../../../widgets/custom_dialogue.dart';
 import '../views/user_registerscreen_view.dart';
@@ -366,63 +364,6 @@ class UserRegisterscreenController extends GetxController
       }
     } catch (e) {
       CustomDialog().showCustomDialog('Error !', contentText: e.toString());
-    }
-  }
-
-  Future<void> onClickDeleteMyAccount() async {
-    CustomDialog().showCustomDialog('Are you sure ??',
-        contentText:
-            'After delete your profile all of your data will be removed from our server . it cant be reversible !!.',
-        confirmText: 'Delete',
-        cancelText: 'Go Back', onCancel: () {
-      Get.back();
-    }, onConfirm: () async {
-      Get.back();
-      await reauthenticateUser();
-      // try {
-      //   final User user = FirebaseAuth.instance.currentUser!;
-      //   final PhoneAuthCredential credential = PhoneAuthProvider.credential(
-      //       smsCode: 'smsCode', verificationId: 'verificationId');
-      //   await user.reauthenticateWithCredential(credential);
-      //   await user
-      //       .delete()
-      //       .then((dynamic value) => Get.offAllNamed(Routes.GET_STARTED));
-      // } catch (e) {
-      //   log(e.toString());
-      // }
-    });
-  }
-
-  Future<void> reauthenticateUser() async {
-    final FirebaseAuth auth = FirebaseAuth.instance;
-    try {
-      await auth
-          .verifyPhoneNumber(
-        phoneNumber: auth.currentUser!.phoneNumber,
-        timeout: const Duration(seconds: 60),
-        verificationCompleted: (PhoneAuthCredential authCredential) async {},
-        verificationFailed: (FirebaseAuthException authException) {
-          isloading.value = false;
-          CustomDialog().showCustomDialog(
-              'Phone number ${auth.currentUser!.phoneNumber} verification failed.',
-              contentText:
-                  'Code: ${authException.code}. Message: ${authException.message}');
-        },
-        codeSent: (String verificationId, [int? forceResendingToken]) async {
-          await Get.toNamed(Routes.REAUTHENTICATION_SCREEN,
-              arguments: <dynamic>[
-                verificationId,
-                auth.currentUser!.phoneNumber,
-                forceResendingToken
-              ]);
-        },
-        codeAutoRetrievalTimeout: (String verificationId) {},
-      )
-          .catchError((dynamic e) {
-        CustomDialog().showCustomDialog('Error !', contentText: e.toString());
-      });
-    } catch (e) {
-      isloading.value = false;
     }
   }
 }

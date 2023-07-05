@@ -106,14 +106,14 @@ class MyDrawer extends StatelessWidget {
                       Icon(TourMaker.notification, color: englishViolet),
                       const Text('Notifications'),
                       Obx(() {
-                        final GetStorage storage = GetStorage();
-                        final String notification =
-                            storage.read('isNotificationON') as String;
-                        if (notification == 'true') {
-                          isNotificationON.value = true;
-                        } else {
-                          isNotificationON.value = false;
-                        }
+                        // final GetStorage storage = GetStorage();
+                        // final String notification =
+                        //     storage.read('isNotificationON') as String;
+                        // if (notification == 'true') {
+                        //   isNotificationON.value = true;
+                        // } else {
+                        //   isNotificationON.value = false;
+                        // }
 
                         return Switch(
                           value: isNotificationON.value,
@@ -219,14 +219,14 @@ class MyDrawer extends StatelessWidget {
                         Get.back();
                       }),
                   ListTile(
-                      title: const Text('Deactivate my account'),
-                      onTap: () {
+                      title: const Text('Delete my account'),
+                      onTap: () async {
                         appRelatedQueries.value = false;
                         businessQueries.value = false;
                         deactivateAccount.value = true;
                         other.value = false;
-                        onclickSingleHelp();
                         Get.back();
+                        await onClickDeleteMyAccount();
                       }),
                   ListTile(
                       title: const Text('Other'),
@@ -291,18 +291,18 @@ class MyDrawer extends StatelessWidget {
         Get.snackbar('SORRY!!!', 'Could not launch $url');
       }
     } else if (deactivateAccount.value == true) {
-      final Uri params = Uri(
-        scheme: 'mailto',
-        path: 'tourmakerinfo@gmail.com',
-        query:
-            'subject=I am ${controller?.name} , I need to deactivate/ delete my data from TourMaker app',
-      );
-      final String url = params.toString();
-      if (await canLaunchUrl(Uri.parse(url))) {
-        await launchUrl(Uri.parse(url));
-      } else {
-        Get.snackbar('SORRY!!!', 'Could not launch $url');
-      }
+      // final Uri params = Uri(
+      //   scheme: 'mailto',
+      //   path: 'tourmakerinfo@gmail.com',
+      //   query:
+      //       'subject=I am ${controller?.name} , I need to deactivate/ delete my data from TourMaker app',
+      // );
+      // final String url = params.toString();
+      // if (await canLaunchUrl(Uri.parse(url))) {
+      //   await launchUrl(Uri.parse(url));
+      // } else {
+      //   Get.snackbar('SORRY!!!', 'Could not launch $url');
+      // }
     } else {
       final Uri params = Uri(
         scheme: 'mailto',
@@ -317,6 +317,49 @@ class MyDrawer extends StatelessWidget {
         Get.snackbar('SORRY!!!', 'Could not launch $url');
       }
     }
+  }
+
+  Future<void> onClickDeleteMyAccount() async {
+    CustomDialog().showCustomDialog('Are you sure ??',
+        contentText:
+            'After delete your profile all of your data will be removed from our server . it cant be reversible !!.',
+        confirmText: 'Delete',
+        cancelText: 'Go Back', onCancel: () {
+      Get.back();
+    }, onConfirm: () async {
+      Get.back();
+      await reauthenticateUser();
+    });
+  }
+
+  Future<void> reauthenticateUser() async {
+    final FirebaseAuth auth = FirebaseAuth.instance;
+    try {
+      await auth
+          .verifyPhoneNumber(
+        phoneNumber: auth.currentUser!.phoneNumber,
+        timeout: const Duration(seconds: 60),
+        verificationCompleted: (PhoneAuthCredential authCredential) async {},
+        verificationFailed: (FirebaseAuthException authException) {
+          CustomDialog().showCustomDialog(
+              'Phone number ${auth.currentUser!.phoneNumber} verification failed.',
+              contentText:
+                  'Code: ${authException.code}. Message: ${authException.message}');
+        },
+        codeSent: (String verificationId, [int? forceResendingToken]) async {
+          await Get.toNamed(Routes.REAUTHENTICATION_SCREEN,
+              arguments: <dynamic>[
+                verificationId,
+                auth.currentUser!.phoneNumber,
+                forceResendingToken
+              ]);
+        },
+        codeAutoRetrievalTimeout: (String verificationId) {},
+      )
+          .catchError((dynamic e) {
+        CustomDialog().showCustomDialog('Error !', contentText: e.toString());
+      });
+    } catch (e) {}
   }
 
   Future<void> logout() async {
@@ -340,7 +383,7 @@ class MyDrawer extends StatelessWidget {
 
   Future<void> onToggleNotification(bool value) async {
     final FirebaseMessaging firebaseMessaging = FirebaseMessaging.instance;
-
+    isNotificationON.value = value;
     if (value) {
       try {
         // Ask the user for permission to receive notifications
