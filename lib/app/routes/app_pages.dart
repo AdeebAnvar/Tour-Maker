@@ -40,6 +40,8 @@ import '../modules/pdf_view/bindings/pdf_view_binding.dart';
 import '../modules/pdf_view/views/pdf_view_view.dart';
 import '../modules/profile/bindings/profile_binding.dart';
 import '../modules/profile/views/profile_view.dart';
+import '../modules/reauthentication_screen/bindings/reauthentication_screen_binding.dart';
+import '../modules/reauthentication_screen/views/reauthentication_screen_view.dart';
 import '../modules/rewards/bindings/rewards_binding.dart';
 import '../modules/rewards/views/rewards_view.dart';
 import '../modules/search_details/bindings/search_details_binding.dart';
@@ -347,6 +349,11 @@ class AppPages {
       name: _Paths.SUGGEST_FRIEND,
       page: () => const SuggestFriendView(),
       binding: SuggestFriendBinding(),
+    ),
+    GetPage(
+      name: _Paths.REAUTHENTICATION_SCREEN,
+      page: () => const ReauthenticationScreenView(),
+      binding: ReauthenticationScreenBinding(),
     ),
   ];
 }

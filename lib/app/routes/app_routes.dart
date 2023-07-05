@@ -48,6 +48,7 @@ abstract class Routes {
   static const String PAYMENT_SUMMARY = _Paths.PAYMENT_SUMMARY;
   static const String INVOICE_PDF = _Paths.INVOICE_PDF;
   static const String SUGGEST_FRIEND = _Paths.SUGGEST_FRIEND;
+  static const String REAUTHENTICATION_SCREEN = _Paths.REAUTHENTICATION_SCREEN;
 }
 
 abstract class _Paths {
@@ -97,4 +98,5 @@ abstract class _Paths {
   static const String PAYMENT_SUMMARY = '/payment-summary';
   static const String INVOICE_PDF = '/invoice-pdf';
   static const String SUGGEST_FRIEND = '/suggest-friend';
+  static const String REAUTHENTICATION_SCREEN = '/reauthentication-screen';
 }

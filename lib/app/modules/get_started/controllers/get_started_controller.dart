@@ -14,6 +14,7 @@ class GetStartedController extends GetxController with StateMixin<dynamic> {
   int? otp;
   RxBool isButtonVisible = true.obs;
   RxBool isloading = false.obs;
+  RxBool isClicked = false.obs;
   RxString authStatus = ''.obs;
   Rx<bool> isFinished = false.obs;
   String? phone;

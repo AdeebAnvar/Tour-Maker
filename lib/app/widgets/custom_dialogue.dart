@@ -46,7 +46,7 @@ class CustomDialog {
                           overflow: TextOverflow.visible),
                     )
                   else
-                    SizedBox(),
+                    const SizedBox(),
                   const SizedBox(height: 29),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
