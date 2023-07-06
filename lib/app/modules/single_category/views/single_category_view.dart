@@ -38,111 +38,135 @@ class SingleCategoryView extends GetView<SingleCategoryController> {
         onError: (String? error) => CustomErrorScreen(
           errorText: 'Error occurred: $error',
         ),
-        (SingleCategoryView? state) => RefreshIndicator(
-          onRefresh: controller.loadData,
-          color: englishViolet,
-          child: SingleChildScrollView(
-            physics: const AlwaysScrollableScrollPhysics(),
-            controller: scrollController,
-            child: Column(
-              children: <Widget>[
-                Obx(() => Container(
-                      width: double.infinity,
-                      height: 35.h,
-                      clipBehavior: Clip.hardEdge,
-                      decoration: BoxDecoration(
-                        borderRadius: const BorderRadius.only(
-                          bottomLeft: Radius.circular(25),
-                          bottomRight: Radius.circular(25),
-                        ),
-                        image: DecorationImage(
-                          image:
-                              NetworkImage(controller.categoryImage.toString()),
-                          fit: BoxFit.cover,
-                        ),
+        (SingleCategoryView? state) => controller.packageList.isEmpty
+            ? RefreshIndicator(
+                onRefresh: controller.loadData,
+                color: englishViolet,
+                child: Center(
+                  child: Column(
+                    children: <Widget>[
+                      SizedBox(height: 35.h),
+                      Image.asset('assets/empty screen.png'),
+                      const SizedBox(height: 40),
+                      Text(
+                        'Nothing Found Here',
+                        style: subheading1,
+                        textAlign: TextAlign.center,
                       ),
-                      // child: Center(
-                      //   child: Text(
-                      //     controller.categoryName.value,
-                      //     style: const TextStyle(
-                      //       fontFamily: 'Tahu',
-                      //       fontSize: 50,
-                      //       color: Colors.white,
-                      //     ),
-                      //   ),
-                      // ),
-                    )),
-                Obx(() {
-                  return ListView.builder(
-                    shrinkWrap: true,
-                    padding: EdgeInsets.zero,
-                    physics: const BouncingScrollPhysics(),
-                    itemCount: controller.packageList.length + 1,
-                    itemBuilder: (BuildContext context, int index) {
-                      if (index == controller.packageList.length) {
-                        // Reached the end of the list, show the loading indicator
-                        return const Padding(
+                    ],
+                  ),
+                ),
+              )
+            : RefreshIndicator(
+                onRefresh: controller.loadData,
+                color: englishViolet,
+                child: SingleChildScrollView(
+                  physics: const AlwaysScrollableScrollPhysics(),
+                  controller: scrollController,
+                  child: Column(
+                    children: <Widget>[
+                      Obx(() => Container(
+                            width: double.infinity,
+                            height: 35.h,
+                            clipBehavior: Clip.hardEdge,
+                            decoration: BoxDecoration(
+                              borderRadius: const BorderRadius.only(
+                                bottomLeft: Radius.circular(25),
+                                bottomRight: Radius.circular(25),
+                              ),
+                              image: DecorationImage(
+                                image: NetworkImage(
+                                    controller.categoryImage.toString()),
+                                fit: BoxFit.cover,
+                              ),
+                            ),
+                            // child: Center(
+                            //   child: Text(
+                            //     controller.categoryName.value,
+                            //     style: const TextStyle(
+                            //       fontFamily: 'Tahu',
+                            //       fontSize: 50,
+                            //       color: Colors.white,
+                            //     ),
+                            //   ),
+                            // ),
+                          )),
+                      Obx(() {
+                        return ListView.builder(
+                          shrinkWrap: true,
                           padding: EdgeInsets.zero,
-                          child: Center(
-                            child: CircularProgressIndicator(
-                              color: Colors.transparent,
-                            ),
-                          ),
+                          physics: const BouncingScrollPhysics(),
+                          itemCount: controller.packageList.length + 1,
+                          itemBuilder: (BuildContext context, int index) {
+                            if (index == controller.packageList.length) {
+                              // Reached the end of the list, show the loading indicator
+                              return const Padding(
+                                padding: EdgeInsets.zero,
+                                child: Center(
+                                  child: CircularProgressIndicator(
+                                    color: Colors.transparent,
+                                  ),
+                                ),
+                              );
+                            } else {
+                              final PackageModel package =
+                                  controller.packageList[index];
+                              for (final WishListModel wm
+                                  in controller.wishList) {
+                                if (wm.id == controller.packageList[index].id) {
+                                  controller.isFavorite(package.id!).value =
+                                      true;
+                                } else {
+                                  controller.isFavorite(package.id!).value =
+                                      false;
+                                }
+                              }
+                              return Obx(() {
+                                return PackageTile(
+                                  tourAmount: package.amount.toString(),
+                                  tourCode: package.tourCode.toString(),
+                                  tourDays: package.days.toString(),
+                                  tourImage: package.image.toString(),
+                                  tourName: package.name.toString(),
+                                  tournights: package.nights.toString(),
+                                  isFavourite:
+                                      controller.isFavorite(package.id!).value,
+                                  onClickedFavourites: () =>
+                                      controller.toggleFavorite(package.id!),
+                                  onPressed: () =>
+                                      controller.onSingleTourPressed(package),
+                                );
+                              });
+                            }
+                          },
                         );
-                      } else {
-                        final PackageModel package =
-                            controller.packageList[index];
-                        for (final WishListModel wm in controller.wishList) {
-                          if (wm.id == controller.packageList[index].id) {
-                            controller.isFavorite(package.id!).value = true;
-                          } else {
-                            controller.isFavorite(package.id!).value = false;
-                          }
-                        }
-                        return Obx(() {
-                          return PackageTile(
-                            tourAmount: package.amount.toString(),
-                            tourCode: package.tourCode.toString(),
-                            tourDays: package.days.toString(),
-                            tourImage: package.image.toString(),
-                            tourName: package.name.toString(),
-                            tournights: package.nights.toString(),
-                            isFavourite:
-                                controller.isFavorite(package.id!).value,
-                            onClickedFavourites: () =>
-                                controller.toggleFavorite(package.id!),
-                            onPressed: () =>
-                                controller.onSingleTourPressed(package),
-                          );
-                        });
-                      }
-                    },
-                  );
-                }),
-                Obx(
-                  () => controller.hasReachedEnd.value
-                      ? Padding(
-                          padding: const EdgeInsets.symmetric(vertical: 15.0),
-                          child: Column(
-                            children: <Widget>[
-                              const Divider(indent: 70, endIndent: 70),
-                              Text('You Are All Caught Up', style: subheading1),
-                            ],
-                          ),
-                        )
-                      : Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Center(
-                            child: CircularProgressIndicator(
-                              color: englishViolet,
-                            ),
-                          ),
-                        ),
-                )
-              ],
-            ),
-          ),
-        ),
+                      }),
+                      Obx(
+                        () => controller.hasReachedEnd.value
+                            ? Padding(
+                                padding:
+                                    const EdgeInsets.symmetric(vertical: 15.0),
+                                child: Column(
+                                  children: <Widget>[
+                                    const Divider(indent: 70, endIndent: 70),
+                                    Text('You Are All Caught Up',
+                                        style: subheading1),
+                                  ],
+                                ),
+                              )
+                            : Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Center(
+                                  child: CircularProgressIndicator(
+                                    color: englishViolet,
+                                  ),
+                                ),
+                              ),
+                      )
+                    ],
+                  ),
+                ),
+              ),
       ),
     );
   }

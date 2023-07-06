@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:get/get.dart';
 
 import '../../../data/models/network_models/package_model.dart';
@@ -102,8 +104,10 @@ class SingleCategoryController extends GetxController
           if (newData.length < 10) {
             hasReachedEnd.value = true;
           }
+          log('message1');
         } else {
-          hasReachedEnd.value = true;
+          log('message2');
+          // hasReachedEnd.value = true;
           // Empty response, indicating end of data
         }
       } else {

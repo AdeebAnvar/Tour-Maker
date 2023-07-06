@@ -1,8 +1,10 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:sizer/sizer.dart';
 
 import '../../core/theme/style.dart';
+import 'custom_shimmer.dart';
 
 class PackageTile extends StatelessWidget {
   const PackageTile({
@@ -44,19 +46,29 @@ class PackageTile extends StatelessWidget {
             children: <Widget>[
               Column(
                 children: <Widget>[
-                  Container(
-                    margin: const EdgeInsets.all(10),
-                    width: 125,
-                    height: 125,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(12),
-                      color: Colors.grey.shade200,
-                      image: DecorationImage(
-                        fit: BoxFit.fill,
-                        image: NetworkImage(tourImage),
-                      ),
-                    ),
-                  ),
+                  CachedNetworkImage(
+                      placeholder: (BuildContext context, String url) =>
+                          const CustomShimmer(
+                            width: 125,
+                            height: 125,
+                          ),
+                      imageUrl: tourImage,
+                      imageBuilder: (BuildContext context,
+                          ImageProvider<Object> imageProvider) {
+                        return Container(
+                          margin: const EdgeInsets.all(10),
+                          width: 125,
+                          height: 125,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(12),
+                            color: Colors.grey.shade200,
+                            image: DecorationImage(
+                              fit: BoxFit.fill,
+                              image: imageProvider,
+                            ),
+                          ),
+                        );
+                      }),
                 ],
               ),
               Padding(

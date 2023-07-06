@@ -1,3 +1,5 @@
+import 'package:cached_network_image/cached_network_image.dart';
+import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:sizer/sizer.dart';
@@ -94,53 +96,40 @@ class MainScreenView extends GetView<MainScreenController> {
                 child: GestureDetector(
                   onTap: () => controller.onClickedSingleTravelTypeTour(
                       controller.travelTypesToursList[index].name),
-                  child: Hero(
-                    tag: controller.travelTypesToursList[index],
-                    transitionOnUserGestures: true,
-                    child: Card(
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(18),
-                      ),
-                      elevation: 5,
-                      child: Container(
-                        padding: const EdgeInsets.all(10),
-                        height: 100,
-                        width: screenWidth * 0.75,
-                        decoration: BoxDecoration(
-                          image: DecorationImage(
-                            fit: BoxFit.cover,
-                            image: NetworkImage(
-                              controller.travelTypesToursList[index].image
-                                  .toString(),
-                            ),
-                          ),
-                          color: Colors.grey,
-                          borderRadius: BorderRadius.circular(18),
-                        ),
-                        // child: Center(
-                        //   child: Column(
-                        //     mainAxisAlignment: MainAxisAlignment.center,
-                        //     children: <Widget>[
-                        //       Column(
-                        //         children: <Widget>[
-                        //           Text(
-                        //             controller
-                        //                 .travelTypesToursList[index].name
-                        //                 .toString(),
-                        //             overflow: TextOverflow.clip,
-                        //             style: GoogleFonts.montserrat(
-                        //               fontWeight: FontWeight.w600,
-                        //               fontSize: 24,
-                        //               color: Colors.white,
-                        //             ),
-                        //           ),
-                        //         ],
-                        //       ),
-                        //     ],
-                        //   ),
-                        // ),
-                      ),
+                  child: Card(
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(18),
                     ),
+                    elevation: 5,
+                    child: CachedNetworkImage(
+                        fadeInCurve: Curves.bounceInOut,
+                        placeholder: (BuildContext context, String url) =>
+                            CustomShimmer(
+                              height: screenWidth * 0.75,
+                              width: 171,
+                              borderRadius: BorderRadius.circular(30),
+                            ),
+                        imageUrl: controller.travelTypesToursList[index].image
+                            .toString(),
+                        imageBuilder: (BuildContext context,
+                            ImageProvider<Object> imageProvider) {
+                          return Container(
+                            padding: const EdgeInsets.all(10),
+                            height: 100,
+                            width: screenWidth * 0.75,
+                            decoration: BoxDecoration(
+                              image: DecorationImage(
+                                fit: BoxFit.cover,
+                                image: NetworkImage(
+                                  controller.travelTypesToursList[index].image
+                                      .toString(),
+                                ),
+                              ),
+                              color: Colors.grey,
+                              borderRadius: BorderRadius.circular(18),
+                            ),
+                          );
+                        }),
                   ),
                 ),
               ),
@@ -155,64 +144,53 @@ class MainScreenView extends GetView<MainScreenController> {
               height: screenHeight * 0.35,
               borderRadius: BorderRadius.circular(30),
             )
-          : Container(
+          : SizedBox(
               height: screenHeight * 0.35,
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(30),
-              ),
-              child: ListView.builder(
-                physics: const RangeMaintainingScrollPhysics(),
+              child: CarouselSlider.builder(
                 itemCount: controller.exclusiveToursList.length,
-                scrollDirection: Axis.horizontal,
-                itemBuilder: (BuildContext context, int index) => Padding(
+                options: CarouselOptions(
+                    height: screenHeight * 0.35,
+                    aspectRatio: 3 / 4,
+                    enlargeCenterPage: true,
+                    viewportFraction: 0.9,
+                    autoPlay: true,
+                    disableCenter: true),
+                itemBuilder: (BuildContext context, int index, int realIndex) =>
+                    Padding(
                   padding: const EdgeInsets.all(3.0),
                   child: GestureDetector(
                     onTap: () => controller.onClickSingleExclusiveTour(
                         controller.exclusiveToursList[index].name),
-                    child: Hero(
-                      tag: controller.exclusiveToursList[index],
-                      transitionOnUserGestures: true,
-                      child: Card(
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(18),
-                        ),
-                        elevation: 5,
-                        child: Container(
-                          padding: const EdgeInsets.all(10),
-                          width: screenWidth * 0.75,
-                          decoration: BoxDecoration(
-                            image: DecorationImage(
-                              fit: BoxFit.cover,
-                              image: NetworkImage(controller
-                                  .exclusiveToursList[index].image
-                                  .toString()),
-                            ),
-                            color: englishlinearViolet,
-                            borderRadius: BorderRadius.circular(18),
-                          ),
-                          // child: Center(
-                          //   child: Column(
-                          //     mainAxisAlignment: MainAxisAlignment.center,
-                          //     children: <Widget>[
-                          //       Column(
-                          //         children: <Widget>[
-                          //           Text(
-                          //             controller
-                          //                 .exclusiveToursList[index].name
-                          //                 .toString(),
-                          //             style: GoogleFonts.montserrat(
-                          //               fontWeight: FontWeight.w600,
-                          //               fontSize: 24,
-                          //               color: Colors.white,
-                          //             ),
-                          //           ),
-                          //         ],
-                          //       ),
-                          //     ],
-                          //   ),
-                          // ),
-                        ),
+                    child: Card(
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(18),
                       ),
+                      elevation: 5,
+                      child: CachedNetworkImage(
+                          fadeInCurve: Curves.bounceInOut,
+                          placeholder: (BuildContext context, String url) =>
+                              CustomShimmer(
+                                height: screenHeight * 0.30,
+                                width: 171,
+                                borderRadius: BorderRadius.circular(30),
+                              ),
+                          imageUrl: controller.exclusiveToursList[index].image
+                              .toString(),
+                          imageBuilder: (BuildContext context,
+                              ImageProvider<Object> imageProvider) {
+                            return Container(
+                              padding: const EdgeInsets.all(10),
+                              width: screenWidth * 0.75,
+                              decoration: BoxDecoration(
+                                image: DecorationImage(
+                                  fit: BoxFit.cover,
+                                  image: imageProvider,
+                                ),
+                                color: englishlinearViolet,
+                                borderRadius: BorderRadius.circular(18),
+                              ),
+                            );
+                          }),
                     ),
                   ),
                 ),
@@ -228,106 +206,54 @@ class MainScreenView extends GetView<MainScreenController> {
               height: screenHeight * 0.30,
               borderRadius: BorderRadius.circular(30),
             )
-          : Container(
+          : SizedBox(
               height: screenHeight * 0.30,
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(30),
-              ),
-              child: ListView.builder(
-                physics: const PageScrollPhysics(),
+              child: CarouselSlider.builder(
                 itemCount: controller.trendingToursList.length,
-                scrollDirection: Axis.horizontal,
-                itemBuilder: (BuildContext context, int index) => Padding(
+                options: CarouselOptions(
+                    height: screenHeight * 0.30,
+                    aspectRatio: 3 / 4,
+                    enlargeCenterPage: true,
+                    viewportFraction: 0.5,
+                    autoPlay: true,
+                    disableCenter: true),
+                itemBuilder: (BuildContext context, int index, int realIndex) =>
+                    Padding(
                   padding: const EdgeInsets.all(6.0),
                   child: GestureDetector(
                     onTap: () => controller.onClickSingleTrendingTour(
                         controller.trendingToursList[index].destination),
-                    child: Hero(
-                      tag: controller.trendingToursList[index],
-                      transitionOnUserGestures: true,
-                      child: Card(
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(18),
-                        ),
-                        // borderOnForeground: false,
-                        clipBehavior: Clip.hardEdge,
-                        elevation: 4,
-                        child: Container(
-                          padding: const EdgeInsets.all(10),
-                          width: 171,
-                          decoration: BoxDecoration(
-                            image: DecorationImage(
-                              fit: BoxFit.cover,
-                              image: NetworkImage(
-                                controller.trendingToursList[index].image
-                                    .toString(),
-                              ),
-                            ),
-                            color: englishlinearViolet,
-                            borderRadius: BorderRadius.circular(18),
-                          ),
-                          // child: Center(
-                          //   child: Column(
-                          //     mainAxisAlignment: MainAxisAlignment.center,
-                          //     children: <Widget>[
-                          //       Padding(
-                          //         padding: const EdgeInsets.symmetric(
-                          //             vertical: 45.0),
-                          //         child: Column(
-                          //           children: <Widget>[
-                          //             Text(
-                          //               controller.trendingToursList[index]
-                          //                   .destination
-                          //                   .toString(),
-                          //               style: TextStyle(
-                          //                 fontFamily: 'Tahu',
-                          //                 fontSize: 18.sp,
-                          //                 color: Colors.white,
-                          //               ),
-                          //             ),
-                          //             const Text(
-                          //               'Tours',
-                          //               style: TextStyle(
-                          //                 fontFamily: 'Tahu',
-                          //                 fontSize: 20,
-                          //                 color: Colors.amber,
-                          //               ),
-                          //             ),
-                          //           ],
-                          //         ),
-                          //       ),
-                          //       const SizedBox(height: 10),
-                          //       Spacer(),
-                          //       Row(
-                          //         mainAxisAlignment:
-                          //             MainAxisAlignment.spaceAround,
-                          //         children: <Widget>[
-                          //           Text(
-                          //             'Starting From: ',
-                          //             style: GoogleFonts.montserrat(
-                          //               fontWeight: FontWeight.w500,
-                          //               fontSize: 12,
-                          //               color: Colors.white,
-                          //             ),
-                          //           ),
-                          //           Text(
-                          //             controller
-                          //                 .trendingToursList[index].minAmount
-                          //                 .toString(),
-                          //             style: GoogleFonts.montserrat(
-                          //               fontWeight: FontWeight.w500,
-                          //               fontSize: 12,
-                          //               color: Colors.amber,
-                          //             ),
-                          //           ),
-                          //           const SizedBox(height: 24)
-                          //         ],
-                          //       ),
-                          //     ],
-                          //   ),
-                          // ),
-                        ),
+                    child: Card(
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(18),
                       ),
+                      clipBehavior: Clip.hardEdge,
+                      elevation: 4,
+                      child: CachedNetworkImage(
+                          fadeInCurve: Curves.bounceInOut,
+                          placeholder: (BuildContext context, String url) =>
+                              CustomShimmer(
+                                height: screenHeight * 0.30,
+                                width: 171,
+                                borderRadius: BorderRadius.circular(30),
+                              ),
+                          imageUrl: controller.trendingToursList[index].image
+                              .toString(),
+                          imageBuilder: (BuildContext context,
+                              ImageProvider<Object> imageProvider) {
+                            return Container(
+                              // padding: const EdgeInsets.all(10),
+                              width: 171,
+                              decoration: BoxDecoration(
+                                image: DecorationImage(
+                                  fit: BoxFit.cover,
+                                  image: imageProvider,
+                                ),
+                                color: englishlinearViolet,
+                                borderRadius: BorderRadius.circular(18),
+                              ),
+                            );
+                          }),
                     ),
                   ),
                 ),
@@ -390,59 +316,47 @@ class MainScreenView extends GetView<MainScreenController> {
                                   controller.categoryList[index].image
                                       .toString(),
                                 ),
-                                child: Hero(
-                                  transitionOnUserGestures: true,
-                                  tag: controller.categoryList[index].image
-                                      .toString(),
-                                  child: SizedBox(
-                                    height: 73,
-                                    width: 73,
-                                    child: Column(
-                                      children: <Widget>[
-                                        // CachedNetworkImage(
-                                        // cacheKey:
-                                        //     'categories_image_cache_key ${controller.categoryList[index].image}',
-                                        // cacheManager: DefaultCacheManager(),
-                                        // fadeInDuration:
-                                        //       const Duration(milliseconds: 600),
-                                        //   imageUrl: controller
-                                        //       .categoryList[index].image!,
-                                        //   imageBuilder: (BuildContext context,
-                                        //           ImageProvider<Object>
-                                        //               imageProvider) =>
-                                        Container(
+                                child: SizedBox(
+                                  height: 73,
+                                  width: 73,
+                                  child: Column(
+                                    children: <Widget>[
+                                      CachedNetworkImage(
+                                        imageUrl: controller
+                                            .categoryList[index].image!,
+                                        imageBuilder: (BuildContext context,
+                                                ImageProvider<Object>
+                                                    imageProvider) =>
+                                            Container(
                                           width: 55,
                                           height: 55,
                                           decoration: BoxDecoration(
                                             shape: BoxShape.circle,
                                             image: DecorationImage(
-                                              image: NetworkImage(controller
-                                                  .categoryList[index].image
-                                                  .toString()),
+                                              image: imageProvider,
                                               fit: BoxFit.cover,
                                             ),
                                           ),
                                         ),
-                                        //   placeholder: (BuildContext context,
-                                        //           String url) =>
-                                        //       const CustomShimmer(
-                                        //     width: 55,
-                                        //     height: 55,
-                                        //     shape: BoxShape.circle,
-                                        //   ),
-                                        //   errorWidget: (BuildContext context,
-                                        //           String url, dynamic error) =>
-                                        //       const Icon(Icons.error),
-                                        // ),
-                                        const SizedBox(height: 3),
-                                        Text(
-                                          controller.categoryList[index].name
-                                              .toString(),
-                                          overflow: TextOverflow.clip,
-                                          style: paragraph4,
+                                        placeholder: (BuildContext context,
+                                                String url) =>
+                                            const CustomShimmer(
+                                          width: 55,
+                                          height: 55,
+                                          shape: BoxShape.circle,
                                         ),
-                                      ],
-                                    ),
+                                        errorWidget: (BuildContext context,
+                                                String url, dynamic error) =>
+                                            const Icon(Icons.error),
+                                      ),
+                                      const SizedBox(height: 3),
+                                      Text(
+                                        controller.categoryList[index].name
+                                            .toString(),
+                                        overflow: TextOverflow.clip,
+                                        style: paragraph4,
+                                      ),
+                                    ],
                                   ),
                                 ),
                               );
@@ -476,26 +390,6 @@ class MainScreenView extends GetView<MainScreenController> {
             ),
           ),
         ),
-        // Padding(
-        //   padding: EdgeInsets.symmetric(vertical: 6.h, horizontal: 80.w),
-        //   child: badges.Badge(
-        //     badgeContent: Text(
-        //       '3',
-        //       style: GoogleFonts.montserrat(
-        //         fontWeight: FontWeight.w500,
-        //         fontSize: 12,
-        //         color: Colors.white,
-        //       ),
-        //     ),
-        //     badgeAnimation: const badges.BadgeAnimation.fade(),
-        //     ignorePointer: true,
-        //     badgeStyle: badges.BadgeStyle(
-        //       borderRadius: BorderRadius.circular(50),
-        //     ),
-        //     position: badges.BadgePosition.topEnd(end: -28, top: -12),
-        //     child: Icon(TourMaker.notification, color: englishViolet),
-        //   ),
-        // ),
         Padding(
           padding: EdgeInsets.symmetric(vertical: 10.h, horizontal: 100),
           child: Image.asset('assets/Logo.png', height: 50),
