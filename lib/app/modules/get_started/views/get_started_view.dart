@@ -57,16 +57,32 @@ class GetStartedView extends GetView<GetStartedController> {
               ],
             ),
           ),
-          Align(
-            alignment: Alignment.bottomCenter,
+          Positioned(
+            bottom: 30,
+            right: -2.w,
+            left: -2.w,
             child: Padding(
-              padding: EdgeInsets.symmetric(vertical: 20),
+              padding: EdgeInsets.symmetric(vertical: 23, horizontal: 20),
               child: CustomButton().showIconButtonWithGradient(
                 height: 72,
                 width: 100.w,
                 // isLoading: controller.isloading.value,
                 text: '     Continue',
                 onPressed: () => onClickContinue(context),
+              ),
+            ),
+          ),
+          SizedBox(height: 40),
+          Align(
+            alignment: Alignment.bottomCenter,
+            child: Padding(
+              padding: EdgeInsets.symmetric(vertical: 20),
+              child: GestureDetector(
+                onTap: () => controller.onClickDemoOfTheApp(),
+                child: Text(
+                  'See a demo of the app',
+                  style: subheading1.copyWith(color: Colors.white),
+                ),
               ),
             ),
           ),
@@ -145,7 +161,7 @@ class GetStartedView extends GetView<GetStartedController> {
                         text: '     Continue',
                         onPressed: () => controller.onVerifyPhoneNumber(),
                       ),
-                    )
+                    ),
                   ],
                 ),
               ),

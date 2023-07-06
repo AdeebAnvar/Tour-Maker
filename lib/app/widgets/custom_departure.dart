@@ -224,53 +224,57 @@ class CustomDeparture extends StatelessWidget {
                 isLoading: controller.isLoading.value,
                 height: 80,
                 width: 100.w,
-                text: '   Enter Passenger Details',
+                text: controller.userType == 'demo'
+                    ? '      Add details'
+                    : '   Enter Passenger Details',
                 onPressed: () => controller.onClickAddindividualTourPassenger(
                     controller.singleTours[controller.selectedDateIndex.value]),
               ),
             ),
-            
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                Text(
-                  'For Direct Booking',
-                  style: GoogleFonts.montserrat(
-                    color: Colors.grey.shade800,
-                  ),
-                ),
-                const SizedBox(width: 40),
-                if (controller.currentUserCategory != 'standard')
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: <Widget>[
-                      IconButton(
-                        onPressed: controller.onCallClicked,
-                        icon: Icon(TourMaker.call,
-                            color: Colors.grey.shade800, size: 20),
-                      ),
-                      const SizedBox(width: 50),
-                      GestureDetector(
-                        onTap: controller.onWhatsAppClicked,
-                        child: SvgPicture.asset(
-                          'assets/whatsapp.svg',
-                          height: 20,
-                          width: 20,
-                        ),
-                      )
-                    ],
-                  )
-                else
-                  GestureDetector(
-                    onTap: controller.onWhatsAppClicked,
-                    child: SvgPicture.asset(
-                      'assets/whatsapp.svg',
-                      height: 20,
-                      width: 20,
+            if (controller.userType == 'demo')
+              const SizedBox()
+            else
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  Text(
+                    'For Direct Booking',
+                    style: GoogleFonts.montserrat(
+                      color: Colors.grey.shade800,
                     ),
-                  )
-              ],
-            ),
+                  ),
+                  const SizedBox(width: 40),
+                  if (controller.currentUserCategory != 'standard')
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: <Widget>[
+                        IconButton(
+                          onPressed: controller.onCallClicked,
+                          icon: Icon(TourMaker.call,
+                              color: Colors.grey.shade800, size: 20),
+                        ),
+                        const SizedBox(width: 50),
+                        GestureDetector(
+                          onTap: controller.onWhatsAppClicked,
+                          child: SvgPicture.asset(
+                            'assets/whatsapp.svg',
+                            height: 20,
+                            width: 20,
+                          ),
+                        )
+                      ],
+                    )
+                  else
+                    GestureDetector(
+                      onTap: controller.onWhatsAppClicked,
+                      child: SvgPicture.asset(
+                        'assets/whatsapp.svg',
+                        height: 20,
+                        width: 20,
+                      ),
+                    )
+                ],
+              ),
           ],
         ),
       );

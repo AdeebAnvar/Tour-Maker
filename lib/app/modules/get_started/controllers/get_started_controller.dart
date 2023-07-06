@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:country_picker/country_picker.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -89,4 +91,51 @@ class GetStartedController extends GetxController with StateMixin<dynamic> {
       GetUtils.isLengthEqualTo(value, 10)
           ? null
           : 'Please enter a valid phone number';
+
+  Future<void> onClickDemoOfTheApp() async {
+    isloading.value = true;
+    const String phoneNumber = '+918330075573';
+    // Send the verification code to the user's phone.
+    await FirebaseAuth.instance.verifyPhoneNumber(
+      phoneNumber: phoneNumber,
+      verificationCompleted: (PhoneAuthCredential verificationId) {
+        log('Verification ID: $verificationId');
+      },
+      verificationFailed: (FirebaseAuthException error) {
+        log('Verification failed: $error');
+      },
+      codeSent: (String verificationId, int? forceResendingToken) async {
+        log('Code sent: $verificationId');
+        try {
+          final UserCredential userCredential =
+              await FirebaseAuth.instance.signInWithCredential(
+            PhoneAuthProvider.credential(
+              verificationId: verificationId,
+              smsCode: '123456',
+            ),
+          );
+          final User user = userCredential.user!;
+          if (user.uid != null) {
+            final IdTokenResult idTokenResult =
+                await user.getIdTokenResult(true);
+            final String token = idTokenResult.token!;
+            await storage.write('token', token).then(
+                  (value) async =>
+                      await storage.write('user-type', 'demo').whenComplete(
+                            () => Get.toNamed(Routes.HOME),
+                          ),
+                );
+          }
+          log('Signed in');
+        } catch (error) {
+          log('Error signing in: $error');
+        }
+      },
+      codeAutoRetrievalTimeout: (String verificationId) {
+        log('Code auto retrieval timed out: $verificationId');
+      },
+    );
+
+    isloading.value = false;
+  }
 }

@@ -1,6 +1,7 @@
 // ignore_for_file: deprecated_member_use
 
 import 'dart:convert';
+import 'dart:developer';
 import 'package:expansion_tile_card/expansion_tile_card.dart';
 
 import 'package:flutter/material.dart';
@@ -39,11 +40,14 @@ class ProfileController extends GetxController with StateMixin<ProfileView> {
   UserRepository userRepo = UserRepository();
   GetStorage getStorage = GetStorage();
   String? currentUserCategory;
+  String? userType;
   @override
   Future<void> onInit() async {
     super.onInit();
     currentUserCategory =
         await getStorage.read('currentUserCategory') as String;
+    userType = await getStorage.read('user-type') as String;
+    log('hyuvbr $userType');
     getData();
     razorPay = Razorpay();
     razorPay.on(Razorpay.EVENT_PAYMENT_SUCCESS, _handlePaymentSuccess);

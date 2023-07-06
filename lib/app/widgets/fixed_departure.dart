@@ -247,54 +247,58 @@ class FixedDepartures extends StatelessWidget {
                 isLoading: controller.isLoading.value,
                 height: 80,
                 width: 100.w,
-                text: '   Enter Passenger Details',
-                onPressed: () => controller.onClickAddBatchTourPassenger(controller
-                    .batchTours
-                    .value
-                    .packageData![controller.selectedBatchIndex.value]),
+                text: controller.userType == 'demo'
+                    ? '      Add details'
+                    : '   Enter Passenger Details',
+                onPressed: () => controller.onClickAddBatchTourPassenger(
+                    controller.batchTours.value
+                        .packageData![controller.selectedBatchIndex.value]),
               ),
             ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                Text(
-                  'For Direct Booking',
-                  style: GoogleFonts.montserrat(
-                    color: Colors.grey.shade800,
-                  ),
-                ),
-                const SizedBox(width: 20),
-                if (controller.currentUserCategory != 'standard')
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: <Widget>[
-                      IconButton(
-                        onPressed: controller.onCallClicked,
-                        icon: Icon(TourMaker.call,
-                            color: Colors.grey.shade800, size: 20),
-                      ),
-                      const SizedBox(width: 20),
-                      GestureDetector(
-                        onTap: controller.onWhatsAppClicked,
-                        child: SvgPicture.asset(
-                          'assets/whatsapp.svg',
-                          height: 20,
-                          width: 20,
-                        ),
-                      )
-                    ],
-                  )
-                else
-                  GestureDetector(
-                    onTap: controller.onWhatsAppClicked,
-                    child: SvgPicture.asset(
-                      'assets/whatsapp.svg',
-                      height: 20,
-                      width: 20,
+            if (controller.userType == 'demo')
+              const SizedBox()
+            else
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  Text(
+                    'For Direct Booking',
+                    style: GoogleFonts.montserrat(
+                      color: Colors.grey.shade800,
                     ),
-                  )
-              ],
-            ),
+                  ),
+                  const SizedBox(width: 20),
+                  if (controller.currentUserCategory != 'standard')
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: <Widget>[
+                        IconButton(
+                          onPressed: controller.onCallClicked,
+                          icon: Icon(TourMaker.call,
+                              color: Colors.grey.shade800, size: 20),
+                        ),
+                        const SizedBox(width: 20),
+                        GestureDetector(
+                          onTap: controller.onWhatsAppClicked,
+                          child: SvgPicture.asset(
+                            'assets/whatsapp.svg',
+                            height: 20,
+                            width: 20,
+                          ),
+                        )
+                      ],
+                    )
+                  else
+                    GestureDetector(
+                      onTap: controller.onWhatsAppClicked,
+                      child: SvgPicture.asset(
+                        'assets/whatsapp.svg',
+                        height: 20,
+                        width: 20,
+                      ),
+                    )
+                ],
+              ),
           ],
         ),
       );

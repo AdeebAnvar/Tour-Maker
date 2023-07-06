@@ -38,11 +38,14 @@ class SingleTourController extends GetxController
   int? tourID;
   int? order;
   String? currentUserAddress;
+  String? userType;
+
   String? currentUserCategory;
   @override
   Future<void> onInit() async {
     super.onInit();
     await fetchData();
+    userType = await getStorage.read('user-type') as String;
   }
 
   Future<void> fetchData() async {
@@ -156,43 +159,66 @@ class SingleTourController extends GetxController
   }
 
   Future<void> onClickAddBatchTourPassenger(PackageData package) async {
-    if (currentUserAddress != null && currentUserAddress != '') {
-      final DateTime selectedDate =
-          DateTime.parse(package.dateOfTravel.toString());
-      final DateTime today = DateTime.now();
-      if (package.availableSeats == 0) {
-        CustomDialog().showCustomDialog(
-          'Seats Filled!!',
-          contentText:
-              "Sorry the seat's are filled in this tour .  we will reach out you soon when the seats are available",
-        );
+    if (userType == 'demo') {
+      CustomDialog().showCustomDialog(
+        'You need to log in again',
+        cancelText: 'Go Back',
+        confirmText: 'Ok',
+        onCancel: () => Get.back(),
+        onConfirm: () => Get.offAllNamed(Routes.GET_STARTED),
+      );
+      log('uhijkml 123');
+    } else {
+      log('uhijkml 12');
+
+      if (currentUserAddress != null && currentUserAddress != '') {
+        final DateTime selectedDate =
+            DateTime.parse(package.dateOfTravel.toString());
+        final DateTime today = DateTime.now();
+        if (package.availableSeats == 0) {
+          CustomDialog().showCustomDialog(
+            'Seats Filled!!',
+            contentText:
+                "Sorry the seat's are filled in this tour .  we will reach out you soon when the seats are available",
+          );
+        } else {
+          if (selectedDate.difference(today).inDays <= 7) {
+            await showWarningDialogue(package);
+          } else {
+            await confirmPayment(package.iD!, package);
+          }
+        }
       } else {
+        await Get.toNamed(Routes.USER_REGISTERSCREEN)!
+            .whenComplete(() => fetchData());
+      }
+    }
+  }
+
+  Future<void> onClickAddindividualTourPassenger(PackageData package) async {
+    if (userType == 'demo') {
+      CustomDialog().showCustomDialog(
+        'You need to log in again',
+        cancelText: 'Go Back',
+        confirmText: 'Ok',
+        onCancel: () => Get.back(),
+        onConfirm: () => Get.offAllNamed(Routes.GET_STARTED),
+      );
+    } else {
+      if (currentUserAddress != null && currentUserAddress != '') {
+        final DateTime selectedDate =
+            DateTime.parse(package.dateOfTravel.toString());
+        final DateTime today = DateTime.now();
+
         if (selectedDate.difference(today).inDays <= 7) {
           await showWarningDialogue(package);
         } else {
           await confirmPayment(package.iD!, package);
         }
-      }
-    } else {
-      await Get.toNamed(Routes.USER_REGISTERSCREEN)!
-          .whenComplete(() => fetchData());
-    }
-  }
-
-  Future<void> onClickAddindividualTourPassenger(PackageData package) async {
-    if (currentUserAddress != null && currentUserAddress != '') {
-      final DateTime selectedDate =
-          DateTime.parse(package.dateOfTravel.toString());
-      final DateTime today = DateTime.now();
-
-      if (selectedDate.difference(today).inDays <= 7) {
-        await showWarningDialogue(package);
       } else {
-        await confirmPayment(package.iD!, package);
+        await Get.toNamed(Routes.USER_REGISTERSCREEN)!
+            .whenComplete(() => fetchData());
       }
-    } else {
-      await Get.toNamed(Routes.USER_REGISTERSCREEN)!
-          .whenComplete(() => fetchData());
     }
   }
 

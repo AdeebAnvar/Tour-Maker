@@ -34,7 +34,6 @@ class SingleTourView extends GetView<SingleTourController> {
             child: Stack(
               children: <Widget>[
                 tourImge(controller),
-                // tourName(controller),
                 tourDetailContainer(screenWidth, controller, context),
               ],
             ),

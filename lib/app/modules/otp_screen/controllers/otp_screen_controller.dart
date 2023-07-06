@@ -140,6 +140,8 @@ class OtpScreenController extends GetxController
             ? await getStorage.write('initialPayment', 'paid')
             : await getStorage.write('initialPayment', '');
         await Get.offAllNamed(Routes.HOME);
+        await getStorage.write('user-type', 'real');
+
         isLoading.value = false;
       } else {
         await notificationPermissionwithPostMethod();

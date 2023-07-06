@@ -12,12 +12,14 @@ import '../../core/theme/style.dart';
 
 import '../../core/tour_maker_icons.dart';
 import '../data/models/network_models/user_model.dart';
+import '../modules/profile/controllers/profile_controller.dart';
 import '../routes/app_pages.dart';
 import 'custom_dialogue.dart';
 
 class MyDrawer extends StatelessWidget {
-  MyDrawer({super.key, this.controller});
-  final UserModel? controller;
+  MyDrawer({super.key, this.userController, this.profileController});
+  final UserModel? userController;
+  final ProfileController? profileController;
   final Rx<bool> isNotificationON = true.obs;
   final Rx<bool> appRelatedQueries = false.obs;
   final Rx<bool> businessQueries = false.obs;
@@ -36,7 +38,7 @@ class MyDrawer extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: <Widget>[
-              Text('Hi ${controller?.name}', style: heading2),
+              Text('Hi ${userController?.name}', style: heading2),
               const SizedBox(height: 30),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -152,7 +154,8 @@ class MyDrawer extends StatelessWidget {
                 title: const Text('Feedback'),
               ),
               ListTile(
-                onTap: onClickEditProfile,
+                onTap: () =>
+                    onClickEditProfile(profileController!.userType.toString()),
                 leading: Icon(Icons.edit, color: englishViolet),
                 title: const Text('Edit My Profile'),
               ),
@@ -251,7 +254,7 @@ class MyDrawer extends StatelessWidget {
     final Uri params = Uri(
       scheme: 'mailto',
       path: 'tourmakerinfo@gmail.com',
-      query: 'subject=Hi , I am ${controller?.name}',
+      query: 'subject=Hi , I am ${userController?.name}',
     );
     final String url = params.toString();
     if (await canLaunchUrl(Uri.parse(url))) {
@@ -269,7 +272,7 @@ class MyDrawer extends StatelessWidget {
         scheme: 'mailto',
         path: 'tourmakerinfo@gmail.com',
         query:
-            'subject=I am ${controller?.name} , i need help about TourMaker app',
+            'subject=I am ${userController?.name} , i need help about TourMaker app',
       );
       final String url = params.toString();
       if (await canLaunchUrl(Uri.parse(url))) {
@@ -282,7 +285,7 @@ class MyDrawer extends StatelessWidget {
         scheme: 'mailto',
         path: 'tourmakerinfo@gmail.com',
         query:
-            'subject=I am ${controller?.name} , i would like to collab with TourMaker app',
+            'subject=I am ${userController?.name} , i would like to collab with TourMaker app',
       );
       final String url = params.toString();
       if (await canLaunchUrl(Uri.parse(url))) {
@@ -308,7 +311,7 @@ class MyDrawer extends StatelessWidget {
         scheme: 'mailto',
         path: 'tourmakerinfo@gmail.com',
         query:
-            'subject=I am ${controller?.name} , i need help about TourMaker app',
+            'subject=I am ${userController?.name} , i need help about TourMaker app',
       );
       final String url = params.toString();
       if (await canLaunchUrl(Uri.parse(url))) {
@@ -607,8 +610,16 @@ The company have all the guaranteed rights to ban your login if we notice misuse
     );
   }
 
-  void onClickEditProfile() {
-    Get.toNamed(Routes.USER_REGISTERSCREEN);
+  void onClickEditProfile(String userType) {
+    userType == 'demo'
+        ? CustomDialog().showCustomDialog(
+            'You need to log in again',
+            cancelText: 'Go Back',
+            confirmText: 'Ok',
+            onCancel: () => Get.back(),
+            onConfirm: () => Get.offAllNamed(Routes.GET_STARTED),
+          )
+        : Get.toNamed(Routes.USER_REGISTERSCREEN);
   }
 
   Future<void> onTapViewMore() async {
