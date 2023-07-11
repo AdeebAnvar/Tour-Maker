@@ -22,6 +22,14 @@ class FixedDepartures extends StatelessWidget {
   final Widget countOfChildrens;
   @override
   Widget build(BuildContext context) {
+    final ScrollController scrollController = ScrollController();
+
+    scrollController.addListener(() {
+      if (scrollController.position.pixels ==
+          scrollController.position.maxScrollExtent) {
+        controller.loadMoreFixedTours();
+      }
+    });
     return Obx(() {
       return AnimatedContainer(
         duration: const Duration(milliseconds: 600),
@@ -31,12 +39,13 @@ class FixedDepartures extends StatelessWidget {
             SizedBox(
               height: 90,
               child: ListView.builder(
+                controller: scrollController,
                 scrollDirection: Axis.horizontal,
-                itemCount: controller.batchTours.value.packageData?.length,
+                itemCount: controller.batchTourPackageDatesRX.length,
                 itemBuilder: (BuildContext context, int index) =>
                     GestureDetector(
                   onTap: () {
-                    controller.selectedBatchIndex.value = index;
+                    controller.selectedBatchTourIndex.value = index;
                   },
                   child: Obx(() {
                     return AnimatedContainer(
@@ -47,23 +56,23 @@ class FixedDepartures extends StatelessWidget {
                       width: 52,
                       height: 90,
                       decoration: BoxDecoration(
-                        color: index == controller.selectedBatchIndex.value
+                        color: index == controller.selectedBatchTourIndex.value
                             ? englishViolet
                             : backgroundColor,
                         borderRadius: BorderRadius.circular(15),
                       ),
                       child: Center(
                         child: Text(
-                          controller
-                              .batchTours.value.packageData![index].dateOfTravel
+                          controller.batchTourPackageDatesRX[index].dateOfTravel
                               .toString()
                               .parseFromIsoDate()
                               .toDatewithMonthFormat(),
                           textAlign: TextAlign.center,
                           style: GoogleFonts.montserrat(
-                            color: index == controller.selectedBatchIndex.value
-                                ? Colors.white
-                                : Colors.black,
+                            color:
+                                index == controller.selectedBatchTourIndex.value
+                                    ? Colors.white
+                                    : Colors.black,
                             fontWeight: FontWeight.w600,
                           ),
                         ),
@@ -97,7 +106,7 @@ class FixedDepartures extends StatelessWidget {
             ),
             const SizedBox(height: 10),
             Text(
-                'Transportation via ${controller.batchTours.value.packageData![controller.selectedBatchIndex.value].transportationMode}',
+                'Transportation via ${controller.batchTourPackageDatesRX[controller.selectedBatchTourIndex.value].transportationMode}',
                 style: subheading1),
             const SizedBox(height: 10),
             Card(
@@ -112,7 +121,7 @@ class FixedDepartures extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
                     Text(
-                      'Available seats : ${controller.batchTours.value.packageData![controller.selectedBatchIndex.value].availableSeats}/${controller.batchTours.value.packageData![controller.selectedBatchIndex.value].totalSeats}',
+                      'Available seats : ${controller.batchTourPackageDatesRX[controller.selectedBatchTourIndex.value].availableSeats}/${controller.batchTourPackageDatesRX[controller.selectedBatchTourIndex.value].totalSeats}',
                       style: subheading1,
                     ),
                     const SizedBox(height: 10),
@@ -129,18 +138,14 @@ class FixedDepartures extends StatelessWidget {
                             ),
                           ),
                           if (controller
-                                  .batchTours
-                                  .value
-                                  .packageData![
-                                      controller.selectedBatchIndex.value]
+                                  .batchTourPackageDatesRX[
+                                      controller.selectedBatchTourIndex.value]
                                   .offerAmount ==
                               0)
                             TextSpan(
                               text: controller
-                                  .batchTours
-                                  .value
-                                  .packageData![
-                                      controller.selectedBatchIndex.value]
+                                  .batchTourPackageDatesRX[
+                                      controller.selectedBatchTourIndex.value]
                                   .amount
                                   .toString(),
                             )
@@ -148,14 +153,14 @@ class FixedDepartures extends StatelessWidget {
                             TextSpan(text: '', children: <TextSpan>[
                               TextSpan(
                                 text:
-                                    '₹ ${controller.batchTours.value.packageData![controller.selectedBatchIndex.value].amount}',
+                                    '₹ ${controller.batchTourPackageDatesRX[controller.selectedBatchTourIndex.value].amount}',
                                 style: const TextStyle(
                                   decoration: TextDecoration.lineThrough,
                                 ),
                               ),
                               TextSpan(
                                 text:
-                                    '    ₹ ${controller.batchTours.value.packageData![controller.selectedBatchIndex.value].offerAmount}',
+                                    '    ₹ ${controller.batchTourPackageDatesRX[controller.selectedBatchTourIndex.value].offerAmount}',
                                 style: const TextStyle(
                                   fontWeight: FontWeight.w700,
                                 ),
@@ -179,18 +184,14 @@ class FixedDepartures extends StatelessWidget {
                             ),
                           ),
                           if (controller
-                                  .batchTours
-                                  .value
-                                  .packageData![
-                                      controller.selectedBatchIndex.value]
+                                  .batchTourPackageDatesRX[
+                                      controller.selectedBatchTourIndex.value]
                                   .kidsOfferAmount ==
                               0)
                             TextSpan(
                               text: controller
-                                  .batchTours
-                                  .value
-                                  .packageData![
-                                      controller.selectedBatchIndex.value]
+                                  .batchTourPackageDatesRX[
+                                      controller.selectedBatchTourIndex.value]
                                   .amount
                                   .toString(),
                             )
@@ -198,14 +199,14 @@ class FixedDepartures extends StatelessWidget {
                             TextSpan(text: '', children: <TextSpan>[
                               TextSpan(
                                 text:
-                                    '₹ ${controller.batchTours.value.packageData![controller.selectedBatchIndex.value].kidsAmount}',
+                                    '₹ ${controller.batchTourPackageDatesRX[controller.selectedBatchTourIndex.value].kidsAmount}',
                                 style: const TextStyle(
                                   decoration: TextDecoration.lineThrough,
                                 ),
                               ),
                               TextSpan(
                                   text:
-                                      '    ₹ ${controller.batchTours.value.packageData![controller.selectedBatchIndex.value].kidsOfferAmount}',
+                                      '    ₹ ${controller.batchTourPackageDatesRX[controller.selectedBatchTourIndex.value].kidsOfferAmount}',
                                   style: const TextStyle(
                                       fontWeight: FontWeight.w700))
                             ]),
@@ -219,7 +220,7 @@ class FixedDepartures extends StatelessWidget {
                           children: <Widget>[
                             Text('Total Amount', style: heading3),
                             Text(
-                                '(Excluding GST ${controller.batchTours.value.packageData![controller.selectedBatchIndex.value].gstPercent}%)',
+                                '(Excluding GST ${controller.batchTourPackageDatesRX[controller.selectedBatchTourIndex.value].gstPercent}%)',
                                 style: paragraph3),
                           ],
                         ),
@@ -227,11 +228,11 @@ class FixedDepartures extends StatelessWidget {
                         Column(
                           children: <Widget>[
                             Text(
-                              '₹ ${controller.getTotalAmountOFtour(controller.adult.value, controller.children.value, controller.batchTours.value.packageData![controller.selectedBatchIndex.value], controller.selectedBatchIndex.value)}',
+                              '₹ ${controller.getTotalAmountOFtour(controller.adult.value, controller.children.value, controller.batchTourPackageDatesRX[controller.selectedBatchTourIndex.value], controller.selectedBatchTourIndex.value)}',
                               style: heading2,
                             ),
                             Text(
-                              'Pay now : ₹ ${controller.batchTours.value.packageData![controller.selectedBatchIndex.value].advanceAmount}',
+                              'Pay now : ₹ ${controller.batchTourPackageDatesRX[controller.selectedBatchTourIndex.value].advanceAmount! * (controller.adult.value + controller.children.value)}',
                               style: paragraph4,
                             ),
                           ],
@@ -244,15 +245,15 @@ class FixedDepartures extends StatelessWidget {
             ),
             Obx(
               () => CustomButton().showIconButtonWithGradient(
-                isLoading: controller.isLoading.value,
+                isLoading: controller.isloading.value,
                 height: 80,
                 width: 100.w,
                 text: controller.userType == 'demo'
                     ? '      Add details'
                     : '   Enter Passenger Details',
                 onPressed: () => controller.onClickAddBatchTourPassenger(
-                    controller.batchTours.value
-                        .packageData![controller.selectedBatchIndex.value]),
+                    controller.batchTour.value
+                        .packageData![controller.selectedBatchTourIndex.value]),
               ),
             ),
             if (controller.userType == 'demo')

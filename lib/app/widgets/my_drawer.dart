@@ -38,7 +38,10 @@ class MyDrawer extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: <Widget>[
-              Text('Hi ${userController?.name}', style: heading2),
+              if (profileController!.userType == 'demo')
+                const SizedBox()
+              else
+                Text('Hi ${userController?.name}', style: heading2),
               const SizedBox(height: 30),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,

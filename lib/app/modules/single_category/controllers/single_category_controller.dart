@@ -18,7 +18,7 @@ class SingleCategoryController extends GetxController
   Rx<String> categoryImage = ''.obs;
   RxList<WishListModel> wishList = <WishListModel>[].obs;
   int page = 1;
-  bool isLoading = false;
+  // bool isLoading = false;
   RxBool hasReachedEnd = false.obs;
 
   @override

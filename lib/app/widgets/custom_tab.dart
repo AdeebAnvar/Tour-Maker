@@ -25,7 +25,7 @@ class CustomTabBar extends StatelessWidget {
         children: <Widget>[
           GestureDetector(
             onTap: () {
-              controller.selectedIndex.value = 0;
+              controller.selectedTabIndex.value = 0;
             },
             child: Obx(() {
               return AnimatedContainer(
@@ -34,7 +34,7 @@ class CustomTabBar extends StatelessWidget {
                 curve: Curves.easeInOut,
                 width: 37.w,
                 decoration: BoxDecoration(
-                  color: controller.selectedIndex.value == 0
+                  color: controller.selectedTabIndex.value == 0
                       ? englishViolet
                       : Colors.white,
                   borderRadius: BorderRadius.circular(15),
@@ -44,7 +44,7 @@ class CustomTabBar extends StatelessWidget {
                     'Fixed Departure',
                     style: TextStyle(
                       fontWeight: FontWeight.bold,
-                      color: controller.selectedIndex.value == 0
+                      color: controller.selectedTabIndex.value == 0
                           ? Colors.white
                           : Colors.black,
                     ),
@@ -55,7 +55,7 @@ class CustomTabBar extends StatelessWidget {
           ),
           GestureDetector(
             onTap: () {
-              controller.selectedIndex.value = 1;
+              controller.selectedTabIndex.value = 1;
             },
             child: Obx(() {
               return AnimatedContainer(
@@ -64,7 +64,7 @@ class CustomTabBar extends StatelessWidget {
                 width: 37.w,
                 margin: const EdgeInsets.all(10),
                 decoration: BoxDecoration(
-                  color: controller.selectedIndex.value == 1
+                  color: controller.selectedTabIndex.value == 1
                       ? englishViolet
                       : Colors.white,
                   borderRadius: BorderRadius.circular(15),
@@ -74,7 +74,7 @@ class CustomTabBar extends StatelessWidget {
                     'Custom Departure',
                     style: TextStyle(
                       fontWeight: FontWeight.bold,
-                      color: controller.selectedIndex.value == 1
+                      color: controller.selectedTabIndex.value == 1
                           ? Colors.white
                           : Colors.black,
                     ),

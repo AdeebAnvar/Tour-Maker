@@ -24,19 +24,27 @@ class SingleTourController extends GetxController
     with StateMixin<SingleTourView> {
   final GetStorage getStorage = GetStorage();
   late int totalAmount;
-  final RxInt selectedDateIndex = 0.obs;
-  RxList<PackageData> singleTours = <PackageData>[].obs;
-  List<PackageData> singleTour = <PackageData>[];
-  Rx<SingleTourModel> batchTours = SingleTourModel().obs;
+  final RxInt selectedIndividualTourDateIndex = 0.obs;
+  final RxInt selectedBatchTourIndex = 0.obs;
+  RxList<PackageData> individualTourPackagesRX = <PackageData>[].obs;
+  List<PackageData> individualTourPackages = <PackageData>[];
+  Rx<SingleTourModel> batchTour = SingleTourModel().obs;
+  RxList<PackageData> batchTourPackageDatesRX = <PackageData>[].obs;
+  // RxList<PackageData> batchTourPackageDates = <PackageData>[].obs;
   RxList<WishListModel> wishlists = <WishListModel>[].obs;
-  Rx<int> selectedIndex = 0.obs;
-  Rx<int> selectedBatchIndex = 0.obs;
+  Rx<int> selectedTabIndex = 0.obs;
   Rx<int> adult = 1.obs;
   Rx<int> children = 0.obs;
-  Rx<bool> isLoading = false.obs;
+  Rx<bool> isloading = false.obs;
   Rx<bool> isFavourite = false.obs;
+  bool isLoading = false;
+  RxBool hasReachedEndofBatchTours = false.obs;
+  RxBool hasReachedEndofIndividualTours = false.obs;
   int? tourID;
   int? order;
+  int batchToursDatesPage = 1;
+  int individualToursDatesPage = 1;
+
   String? currentUserAddress;
   String? userType;
 
@@ -55,13 +63,13 @@ class SingleTourController extends GetxController
     await datasFromLocalStorage();
     try {
       final int id = await loadData();
-      singleTours.value = await loadCustomDeparturesTours(id);
-      singleTour = await loadCustomDeparturesTours(id);
-      batchTours.value = await loadFixedTourData(id);
+      await loadCustomDeparturesTours(id);
+      await loadFixedTourData(id);
       await loadWishLists(id);
       change(null, status: RxStatus.success());
     } catch (er) {
-      CustomDialog().showCustomDialog('Error !', contentText: er.toString());
+      CustomDialog()
+          .showCustomDialog('Error dff !', contentText: er.toString());
     }
   }
 
@@ -73,12 +81,26 @@ class SingleTourController extends GetxController
     return tourID!;
   }
 
-  Future<SingleTourModel> loadFixedTourData(int tourID) async {
+  Future<void> loadFixedTourData(int tourID, {int page = 1}) async {
     try {
       final ApiResponse<SingleTourModel> res =
-          await SingleTourRepository().getSingleTour(tourID);
+          await SingleTourRepository().getSingleTour(tourID, page);
       if (res.data != null) {
-        return res.data!;
+        final SingleTourModel data = res.data!;
+        batchTour.value = res.data!;
+        final List<PackageData> newData = data.packageData!;
+        if (newData.isNotEmpty) {
+          batchTourPackageDatesRX.addAll(newData.toList());
+          batchToursDatesPage = page;
+          if (newData.length < 10) {
+            hasReachedEndofBatchTours.value = true;
+          }
+          log('message1');
+        } else {
+          log('message2');
+          // hasReachedEnd.value = true;
+          // Empty response, indicating the end of data
+        }
       } else {
         throw Exception('Failed to load single tour data: empty response');
       }
@@ -88,18 +110,33 @@ class SingleTourController extends GetxController
     }
   }
 
-  Future<List<PackageData>> loadCustomDeparturesTours(int tourID) async {
+  Future<void> loadCustomDeparturesTours(int tourID, {int page = 1}) async {
     try {
       final ApiResponse<SingleTourModel> res =
-          await SingleTourRepository().getSingleTourIndividual(tourID);
+          await SingleTourRepository().getSingleTourIndividual(tourID, page);
       log('Adeeb controll data ${res.data}');
       log('Adeeb controll message ${res.message}');
       log('Adeeb controll status ${res.status}');
       if (res.data != null) {
-        final SingleTourModel customDepartureToures = res.data!;
-        return customDepartureToures.packageData!;
+        final SingleTourModel data = res.data!;
+        individualTourPackagesRX.value = data.packageData!;
+        individualTourPackages = data.packageData!;
+        final List<PackageData> newData = data.packageData!;
+        if (newData.isNotEmpty) {
+          individualTourPackagesRX.addAll(newData.toList());
+          individualTourPackages.addAll(newData.toList());
+          individualToursDatesPage = page;
+          if (newData.length < 10) {
+            hasReachedEndofIndividualTours.value = true;
+          }
+          log('message1');
+        } else {
+          log('message2');
+          // hasReachedEnd.value = true;
+          // Empty response, indicating the end of data
+        }
       } else {
-        throw Exception('Failed to load indivdual tour data');
+        throw Exception('Failed to load individual tour data');
       }
     } catch (e) {
       throw Exception(
@@ -118,20 +155,6 @@ class SingleTourController extends GetxController
       return null;
     } else {
       throw Exception('Failed to load wishlist data');
-    }
-  }
-
-  void onSerchDateChanged(String text) {
-    if (text.isNotEmpty) {
-      singleTours.value = singleTour
-          .where(
-            (PackageData package) => package.dateOfTravel!.contains(
-              text,
-            ),
-          )
-          .toList();
-    } else {
-      singleTours.value = singleTour;
     }
   }
 
@@ -167,10 +190,7 @@ class SingleTourController extends GetxController
         onCancel: () => Get.back(),
         onConfirm: () => Get.offAllNamed(Routes.GET_STARTED),
       );
-      log('uhijkml 123');
     } else {
-      log('uhijkml 12');
-
       if (currentUserAddress != null && currentUserAddress != '') {
         final DateTime selectedDate =
             DateTime.parse(package.dateOfTravel.toString());
@@ -290,7 +310,7 @@ class SingleTourController extends GetxController
   }
 
   Future<void> confirmPayment(int packageID, PackageData packageData) async {
-    isLoading.value = true;
+    isloading.value = true;
     order = await createUserOrder(packageID, packageData);
     if (order != null) {
       final CheckOutModel cm = CheckOutModel(
@@ -300,14 +320,14 @@ class SingleTourController extends GetxController
         commission: packageData.agentCommission,
         dateOfTravel: packageData.dateOfTravel,
         gst: packageData.gstPercent,
-        tourID: batchTours.value.tourData?.iD,
+        tourID: batchTour.value.tourData?.iD,
         kidsAmount: packageData.kidsAmount,
         kidsOfferAmount: packageData.kidsOfferAmount,
         offerAmount: packageData.offerAmount,
         orderID: order,
-        tourCode: batchTours.value.tourData?.tourCode,
-        tourItinerary: batchTours.value.tourData?.itinerary,
-        tourName: batchTours.value.tourData?.name,
+        tourCode: batchTour.value.tourData?.tourCode,
+        tourItinerary: batchTour.value.tourData?.itinerary,
+        tourName: batchTour.value.tourData?.name,
         transportationMode: packageData.transportationMode,
         advanceAmount: packageData.advanceAmount,
       );
@@ -320,11 +340,12 @@ class SingleTourController extends GetxController
       Get.toNamed(Routes.ADD_PASSENGER,
           arguments: <dynamic>[order, passengers]);
     } else {
-      CustomDialog().showCustomDialog('Order Not Placed',
-          contentText:
-              "Sorry your order $order didn't placed from our side . please order again");
+      CustomDialog().showCustomDialog(
+        'Exceeded the Seat Limit',
+        contentText: 'Please check the seats available',
+      );
     }
-    isLoading.value = false;
+    isloading.value = false;
   }
 
   int totaltravellers() {
@@ -371,7 +392,7 @@ class SingleTourController extends GetxController
   Future<void> _deleteFromFav() async {
     try {
       final ApiResponse<Map<String, dynamic>> res =
-          await WishListRepo().deleteFav(batchTours.value.tourData?.iD);
+          await WishListRepo().deleteFav(batchTour.value.tourData?.iD);
       if (res.status == ApiResponseStatus.completed) {
         isFavourite.value = false;
       }
@@ -384,7 +405,7 @@ class SingleTourController extends GetxController
   Future<void> _addToFav() async {
     try {
       final ApiResponse<Map<String, dynamic>> res =
-          await WishListRepo().createFav(batchTours.value.tourData?.iD);
+          await WishListRepo().createFav(batchTour.value.tourData?.iD);
       if (res.status == ApiResponseStatus.completed) {
         isFavourite.value = true;
       }
@@ -393,4 +414,42 @@ class SingleTourController extends GetxController
           .showCustomDialog("Can't Add to fav", contentText: e.toString());
     }
   }
+
+  void loadMoreFixedTours() {
+    final int nextPage = batchToursDatesPage + 1;
+    loadFixedTourData(tourID!, page: nextPage);
+  }
+
+  void loadMoreIndividualToursTours() {
+    final int nextPage = individualToursDatesPage + 1;
+    loadCustomDeparturesTours(tourID!, page: nextPage);
+  }
+
+  void onSerchIndividualTourDateChanged(String text) {
+    if (text.isNotEmpty) {
+      individualTourPackagesRX.value = individualTourPackages
+          .where(
+            (PackageData package) => package.dateOfTravel!.contains(
+              text,
+            ),
+          )
+          .toList();
+    } else {
+      individualTourPackagesRX.value = individualTourPackages;
+    }
+  }
+
+  // void onSerchBatchTourDateChanged(String text) {
+  //   if (text.isNotEmpty) {
+  //     batchTourPackageDatesRX.value = batchTourPackageDates
+  //         .where(
+  //           (PackageData package) => package.dateOfTravel!.contains(
+  //             text,
+  //           ),
+  //         )
+  //         .toList();
+  //   } else {
+  //     batchTourPackageDatesRX.value = batchTourPackageDates;
+  //   }
+  // }
 }

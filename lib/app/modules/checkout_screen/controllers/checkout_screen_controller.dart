@@ -133,7 +133,7 @@ class CheckoutScreenController extends GetxController
       CustomDialog().showCustomDialog(
         'Total amount ${getGrandTotal().toStringAsFixed(2)}',
         contentText:
-            'Advance amount ${checkOutModel.value!.advanceAmount} + GST(${checkOutModel.value!.gst}%)',
+            'Advance amount ${checkOutModel.value!.advanceAmount! * (checkOutModel.value!.adultCount! + checkOutModel.value!.childrenCount!)} + GST(${checkOutModel.value!.gst}%)',
         cancelText: 'Advance Amount',
         confirmText: 'Full Amount',
         onCancel: () {

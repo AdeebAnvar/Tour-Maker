@@ -102,13 +102,13 @@ class SingleTourView extends GetView<SingleTourController> {
                       Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 70),
                         child: Text(
-                          '${controller.batchTours.value.tourData?.tourCode}',
+                          '${controller.batchTour.value.tourData?.tourCode}',
                           style: heading2,
                         ),
                       ),
                       CustomToolTip(
                           onPressed: () => controller.onViewItineraryClicked(
-                              controller.batchTours.value.tourData!.itinerary!),
+                              controller.batchTour.value.tourData!.itinerary!),
                           label: 'VIEW ITINERARY',
                           icon: TourMaker.group_2)
                     ],
@@ -125,7 +125,7 @@ class SingleTourView extends GetView<SingleTourController> {
                   Padding(
                     padding: const EdgeInsets.all(15.0),
                     child: Text(
-                        '${controller.batchTours.value.tourData?.description}',
+                        '${controller.batchTour.value.tourData?.description}',
                         style: paragraph3,
                         textAlign: TextAlign.justify),
                   ),
@@ -133,7 +133,7 @@ class SingleTourView extends GetView<SingleTourController> {
                   CustomTabBar(controller: controller),
                   const SizedBox(height: 30),
                   Obx(
-                    () => controller.selectedIndex.value == 0
+                    () => controller.selectedTabIndex.value == 0
                         ? buildFixedDeparture()
                         : Column(
                             children: <Widget>[
@@ -142,8 +142,8 @@ class SingleTourView extends GetView<SingleTourController> {
                                 validator: (String? value) {
                                   return null;
                                 },
-                                onChange: (String value) =>
-                                    controller.onSerchDateChanged(value),
+                                onChange: (String value) => controller
+                                    .onSerchIndividualTourDateChanged(value),
                               ),
                               buildCustomDeparture(),
                             ],
@@ -164,7 +164,7 @@ class SingleTourView extends GetView<SingleTourController> {
       child: Padding(
         padding: const EdgeInsets.symmetric(vertical: 60.0),
         child: Text(
-          '${controller.batchTours.value.tourData?.name!.split(' ').join('\n')}',
+          '${controller.batchTour.value.tourData?.name!.split(' ').join('\n')}',
           style: const TextStyle(
             fontFamily: 'Tahu',
             color: Colors.white,
@@ -182,7 +182,7 @@ class SingleTourView extends GetView<SingleTourController> {
       decoration: BoxDecoration(
         image: DecorationImage(
           image: NetworkImage(
-            '${controller.batchTours.value.tourData!.image}',
+            '${controller.batchTour.value.tourData!.image}',
           ),
           fit: BoxFit.cover,
         ),
@@ -191,7 +191,8 @@ class SingleTourView extends GetView<SingleTourController> {
   }
 
   Widget buildCustomDeparture() {
-    if (controller.singleTours.isNotEmpty) {
+    if (controller.individualTourPackagesRX.isNotEmpty ||
+        controller.hasReachedEndofIndividualTours.value) {
       return CustomDeparture(
           controller: controller,
           countOfAdults: countOfAdults(),
@@ -212,7 +213,8 @@ class SingleTourView extends GetView<SingleTourController> {
   }
 
   Widget buildFixedDeparture() {
-    if (controller.batchTours.value.packageData!.isNotEmpty) {
+    if (controller.batchTourPackageDatesRX.isNotEmpty ||
+        controller.hasReachedEndofBatchTours.value) {
       return FixedDepartures(
           controller: controller,
           countOfAdults: countOfAdults(),

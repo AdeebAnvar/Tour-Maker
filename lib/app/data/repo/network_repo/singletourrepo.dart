@@ -9,13 +9,12 @@ class SingleTourRepository {
   SingleTourModel tourData = SingleTourModel();
   List<PackageData> individualTours = <PackageData>[];
   final Dio dio = Client().init();
-  Future<ApiResponse<SingleTourModel>> getSingleTour(int id) async {
+  Future<ApiResponse<SingleTourModel>> getSingleTour(int id, int page) async {
     try {
       final Map<String, dynamic>? authHeader = await Client().getAuthHeader();
       final Response<Map<String, dynamic>> res = await dio.getUri(
-          Uri.parse('tours/packages/$id?option=batch'),
+          Uri.parse('tours/packages/$id?option=batch&page=$page'),
           options: Options(headers: authHeader));
-
       if (res.statusCode == 200) {
         tourData = SingleTourModel.fromJson(
             res.data!['result'] as Map<String, dynamic>);
@@ -31,15 +30,14 @@ class SingleTourRepository {
     }
   }
 
-  Future<ApiResponse<SingleTourModel>> getSingleTourIndividual(int id) async {
+  Future<ApiResponse<SingleTourModel>> getSingleTourIndividual(
+      int id, int page) async {
     try {
       final Map<String, dynamic>? authHeader = await Client().getAuthHeader();
       final Response<Map<String, dynamic>> res = await dio.getUri(
-          Uri.parse('tours/packages/$id?option=individual'),
+          Uri.parse('tours/packages/$id?option=individual&page=$page'),
           options: Options(headers: authHeader));
-      log('Adeeb rep res data ${res.data}');
-      log('Adeeb rep res statusCode ${res.statusCode}');
-      log('Adeeb rep res statusMessage ${res.statusMessage}');
+
       if (res.statusCode == 200) {
         final SingleTourModel customDepartureToures = SingleTourModel.fromJson(
             res.data!['result'] as Map<String, dynamic>);
